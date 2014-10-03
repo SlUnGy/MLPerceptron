@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1412361881 source:c:\users\marc\verschiedenes\workspaces\cobl\ai\main.cpp
+	<iostream>
+	"mlp.h"
+
+1412361818 c:\users\marc\verschiedenes\workspaces\cobl\ai\mlp.h
+	<cmath>
+
+1412361789 source:c:\users\marc\verschiedenes\workspaces\cobl\ai\mlp.cpp
+	"mlp.h"
+	<random>
+	<ctime>
+	<iostream>
+
