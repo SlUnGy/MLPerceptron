@@ -15,6 +15,7 @@ MLP::MLP()
 	std::mt19937 mt(time(NULL));
 	std::uniform_real_distribution<> distribution(-1, 1);
 
+    //+1 due to constant coefficient
 	m_hidWeights = new float*[m_inpPerceptrons+1];
     for (int i=0;i<m_inpPerceptrons+1;i++) {
         m_hidWeights[i] = new float[m_hidPerceptrons];
@@ -40,7 +41,17 @@ void MLP::train(const float* pIn,const float pTarget)
     float hidOutput[m_hidPerceptrons][m_outPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        hidOutput[i][0] = sigmoid(1 * m_hidWeights[0][i] + pIn[0] * m_hidWeights[1][i] + pIn[1] * m_hidWeights[2][i]);
+        for(int j=0; j<m_outPerceptrons; ++j)
+        {
+            //add constant
+            hidOutput[i][j] = 1*m_hidWeights[0][i];
+            //sum up all inputs*weightings
+            for(int k=1; k<m_inpPerceptrons+1; ++k)
+            {
+                hidOutput[i][j] += pIn[k-1] * m_hidWeights[k][i];
+            }
+            hidOutput[i][j] = sigmoid(hidOutput[i][j]);
+        }
         //std::cout << "hO [" << i << "][" << 0 << "] =" << hidOutput[i][0] << std::endl;
     }
 
