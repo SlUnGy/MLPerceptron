@@ -89,12 +89,12 @@ void MLP::train(const float* pIn,const float pTarget)
     //std::cout << std::endl;
 }
 
-float MLP::run(const float pIn1, const float pIn2)
+float MLP::run(const float *pIn)
 {
     float hidOutput[m_hidPerceptrons][m_outPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        hidOutput[i][0] = sigmoid(1 * m_hidWeights[0][i] + pIn1 * m_hidWeights[1][i] + pIn2 * m_hidWeights[2][i]);
+        hidOutput[i][0] = sigmoid(1 * m_hidWeights[0][i] + pIn[0] * m_hidWeights[1][i] + pIn[1] * m_hidWeights[2][i]);
     }
 
     float output[m_outPerceptrons];
