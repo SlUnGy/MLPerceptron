@@ -2,7 +2,7 @@
 
 #include "mlp.h"
 
-const unsigned long iterations = 20000;
+const unsigned long iterations = 50000;
 
 int main()
 {

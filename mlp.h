@@ -23,7 +23,7 @@ class MLP {
 		const int m_outPerceptrons;
 
 		float **m_hidWeights;
-		float *m_outWeights;
+		float **m_outWeights;
     private:
 };
 

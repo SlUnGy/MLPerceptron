@@ -24,9 +24,13 @@ MLP::MLP()
 		}
 	}
 
-	m_outWeights = new float[m_hidPerceptrons+1];
+	m_outWeights = new float*[m_hidPerceptrons+1];
     for (int i=0;i<m_hidPerceptrons+1;i++) {
-        m_outWeights[i] = distribution(mt);
+        m_outWeights[i] = new float[m_outPerceptrons];
+
+		for (int j=0;j<m_outPerceptrons;j++) {
+			m_outWeights[i][j] = distribution(mt);
+		}
 	}
 }
 
@@ -43,7 +47,7 @@ void MLP::train(const float pIn1, const float pIn2, const float pTarget)
     float output[m_outPerceptrons];
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        output[i] = sigmoid( 1 * m_outWeights[0] + hidOutput[0][i] * m_outWeights[1] + hidOutput[1][i] * m_outWeights[2] );
+        output[i] = sigmoid( 1 * m_outWeights[0][i] + hidOutput[0][i] * m_outWeights[1][i] + hidOutput[1][i] * m_outWeights[2][i] );
         //std::cout << "output [" << i << "] =" << output[i] << std::endl;
     }
 
@@ -59,17 +63,17 @@ void MLP::train(const float pIn1, const float pIn2, const float pTarget)
     float hidError[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        //m_outWeights[i+] -> skip the constant coeffecient
-        hidError[i] = hidOutput[i][0]*(1-hidOutput[i][0])*m_outWeights[i+1]*outError[0];
+        //m_outWeights[i+1][] -> skip the constant coeffecient
+        hidError[i] = hidOutput[i][0]*(1-hidOutput[i][0])*m_outWeights[i+1][0]*outError[0];
         //std::cout << "hE [" << i << "] =" << hidError[i] << std::endl;
     }
 
     //applying delta to reduce error
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        m_outWeights[0] += m_eta*1*outError[i];
-        m_outWeights[1] += m_eta*hidOutput[0][0]*outError[i];
-        m_outWeights[2] += m_eta*hidOutput[1][0]*outError[i];
+        m_outWeights[0][i] += m_eta*1*outError[i];
+        m_outWeights[1][i] += m_eta*hidOutput[0][0]*outError[i];
+        m_outWeights[2][i] += m_eta*hidOutput[1][0]*outError[i];
         //std::cout << "oW [1] = [" << m_outWeights[0] << "," << m_outWeights[1] << ","
         //                << m_outWeights[2] << "]" << std::endl;
     }
@@ -96,7 +100,7 @@ float MLP::run(const float pIn1, const float pIn2)
     float output[m_outPerceptrons];
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        output[i] = sigmoid( 1 * m_outWeights[0] + hidOutput[0][i] * m_outWeights[1] + hidOutput[1][i] * m_outWeights[2] );
+        output[i] = sigmoid( 1 * m_outWeights[0][i] + hidOutput[0][i] * m_outWeights[1][i] + hidOutput[1][i] * m_outWeights[2][i] );
     }
 
     return output[0];
