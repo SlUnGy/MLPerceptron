@@ -8,11 +8,11 @@ class MLP {
 		MLP();
 		~MLP() {};
 
-		void train(const float, const float, const float);
+		void train(const float*, const float);
 		float run(const float, const float);
 
 		static float sigmoid( const float pNum) {
-            return (1.0f/(1.0f+expf(-pNum)));// The sigmoid function.
+            return (1.0f/(1.0f+expf(-pNum)));
         }
 
 	protected:

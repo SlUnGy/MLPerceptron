@@ -35,12 +35,12 @@ MLP::MLP()
 }
 
 
-void MLP::train(const float pIn1, const float pIn2, const float pTarget)
+void MLP::train(const float* pIn,const float pTarget)
 {
     float hidOutput[m_hidPerceptrons][m_outPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        hidOutput[i][0] = sigmoid(1 * m_hidWeights[0][i] + pIn1 * m_hidWeights[1][i] + pIn2 * m_hidWeights[2][i]);
+        hidOutput[i][0] = sigmoid(1 * m_hidWeights[0][i] + pIn[0] * m_hidWeights[1][i] + pIn[1] * m_hidWeights[2][i]);
         //std::cout << "hO [" << i << "][" << 0 << "] =" << hidOutput[i][0] << std::endl;
     }
 
@@ -81,8 +81,8 @@ void MLP::train(const float pIn1, const float pIn2, const float pTarget)
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
         m_hidWeights[0][i] += m_eta*1*hidError[i];
-        m_hidWeights[1][i] += m_eta*pIn1*hidError[i];
-        m_hidWeights[2][i] += m_eta*pIn2*hidError[i];
+        m_hidWeights[1][i] += m_eta*pIn[0]*hidError[i];
+        m_hidWeights[2][i] += m_eta*pIn[1]*hidError[i];
         //std::cout << "hW [" << i << "] = [" << m_hidWeights[0][i] << "," << m_hidWeights[1][i] << ","
         //                << m_hidWeights[2][i] << "]" << std::endl;
     }
