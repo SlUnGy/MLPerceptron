@@ -6,6 +6,7 @@
 class MLP {
 	public:
 		MLP();
+		MLP(const float, const int, const int, const int);
 		~MLP() {};
 
 		void train(const float*, const float);

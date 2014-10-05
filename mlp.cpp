@@ -6,7 +6,14 @@
 #include <iostream>
 
 MLP::MLP()
-    : m_eta{0.5f}, m_hidPerceptrons{2}, m_inpPerceptrons{2}, m_outPerceptrons{1}
+    :MLP(0.25f, 2, 3, 1)
+{
+
+}
+
+
+MLP::MLP(const float pEta, const int pHiddenPerceptrons, const int pInputPerceptrons, const int pOutputPerceptrons)
+    : m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons}
 {
 	/*
         doesn't work on mingw&windows....
@@ -38,20 +45,17 @@ MLP::MLP()
 
 void MLP::train(const float* pIn,const float pTarget)
 {
-    float hidOutput[m_hidPerceptrons][m_outPerceptrons];
+    float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        for(int j=0; j<m_outPerceptrons; ++j)
+        //add constant
+        hidOutput[i] = 1*m_hidWeights[0][i];
+        //sum up all inputs*weightings
+        for(int k=1; k<m_inpPerceptrons+1; ++k)
         {
-            //add constant
-            hidOutput[i][j] = 1*m_hidWeights[0][i];
-            //sum up all inputs*weightings
-            for(int k=1; k<m_inpPerceptrons+1; ++k)
-            {
-                hidOutput[i][j] += pIn[k-1] * m_hidWeights[k][i];
-            }
-            hidOutput[i][j] = sigmoid(hidOutput[i][j]);
+            hidOutput[i] += pIn[k-1] * m_hidWeights[k][i];
         }
+        hidOutput[i] = sigmoid(hidOutput[i]);
         //std::cout << "hO [" << i << "][" << 0 << "] =" << hidOutput[i][0] << std::endl;
     }
 
@@ -61,7 +65,7 @@ void MLP::train(const float* pIn,const float pTarget)
         output[i] = 1*m_outWeights[0][i];
         for(int j=1; j<m_hidPerceptrons+1; ++j)
         {
-            output[i] += hidOutput[j-1][i] * m_outWeights[j][i];
+            output[i] += hidOutput[j-1] * m_outWeights[j][i];
         }
         output[i] = sigmoid(output[i]);
         //std::cout << "output [" << i << "] =" << output[i] << std::endl;
@@ -69,36 +73,47 @@ void MLP::train(const float* pIn,const float pTarget)
 
     //Backpropagation
     //error calculation
-    float outError[m_outPerceptrons];
+    float outDelta[m_outPerceptrons];
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        outError[i] = output[i]*(1-output[i])*(pTarget-output[i]);
-        //std::cout << "oE [" << i << "] =" << outError[i] << std::endl;
+        outDelta[i] = output[i]*(1-output[i])*(pTarget-output[i]);
+        //std::cout << "oE [" << i << "] =" << outDelta[i] << std::endl;
+    }
+
+    //applying delta to reduce error in output layer
+    for(int i=0; i<m_outPerceptrons; ++i)
+    {
+        m_outWeights[0][i] += m_eta*1*outDelta[i];
+        for(int j=0; j<m_hidPerceptrons; ++j)
+        {
+            m_outWeights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
+        }
+        //std::cout << "oW [1] = [" << m_outWeights[0] << "," << m_outWeights[1] << ","
+        //                << m_outWeights[2] << "]" << std::endl;
     }
 
     float hidError[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
         //m_outWeights[i+1][] -> skip the constant coeffecient
-        hidError[i] = hidOutput[i][0]*(1-hidOutput[i][0])*m_outWeights[i+1][0]*outError[0];
+        hidError[i] = hidOutput[i]*(1-hidOutput[i]);
+        float tmpSum = 0;
+        for(int j=0; j<m_outPerceptrons; ++j)
+        {
+            tmpSum += m_outWeights[i+1][j]*outDelta[j];
+        }
+        hidError[i] *= tmpSum;
+        //hidError[i] = hidOutput[i][0]*(1-hidOutput[i][0])*m_outWeights[i+1][0]*outDelta[0];
         //std::cout << "hE [" << i << "] =" << hidError[i] << std::endl;
-    }
-
-    //applying delta to reduce error
-    for(int i=0; i<m_outPerceptrons; ++i)
-    {
-        m_outWeights[0][i] += m_eta*1*outError[i];
-        m_outWeights[1][i] += m_eta*hidOutput[0][0]*outError[i];
-        m_outWeights[2][i] += m_eta*hidOutput[1][0]*outError[i];
-        //std::cout << "oW [1] = [" << m_outWeights[0] << "," << m_outWeights[1] << ","
-        //                << m_outWeights[2] << "]" << std::endl;
     }
 
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
         m_hidWeights[0][i] += m_eta*1*hidError[i];
-        m_hidWeights[1][i] += m_eta*pIn[0]*hidError[i];
-        m_hidWeights[2][i] += m_eta*pIn[1]*hidError[i];
+        for(int j=0; j<m_inpPerceptrons; ++j)
+        {
+            m_hidWeights[j+1][i] += m_eta*pIn[j]*hidError[i];
+        }
         //std::cout << "hW [" << i << "] = [" << m_hidWeights[0][i] << "," << m_hidWeights[1][i] << ","
         //                << m_hidWeights[2][i] << "]" << std::endl;
     }
@@ -107,18 +122,18 @@ void MLP::train(const float* pIn,const float pTarget)
 
 float MLP::run(const float *pIn)
 {
-    float hidOutput[m_hidPerceptrons][m_outPerceptrons];
+    float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        for(int j=0; j<m_outPerceptrons; ++j)
+        //add constant
+        hidOutput[i] = 1*m_hidWeights[0][i];
+        //sum up all inputs*weightings
+        for(int k=1; k<m_inpPerceptrons+1; ++k)
         {
-            hidOutput[i][j] = 1*m_hidWeights[0][i];
-            for(int k=1; k<m_inpPerceptrons+1; ++k)
-            {
-                hidOutput[i][j] += pIn[k-1] * m_hidWeights[k][i];
-            }
-            hidOutput[i][j] = sigmoid(hidOutput[i][j]);
+            hidOutput[i] += pIn[k-1] * m_hidWeights[k][i];
         }
+        hidOutput[i] = sigmoid(hidOutput[i]);
+        //std::cout << "hO [" << i << "][" << 0 << "] =" << hidOutput[i][0] << std::endl;
     }
 
     float output[m_outPerceptrons];
@@ -127,9 +142,10 @@ float MLP::run(const float *pIn)
         output[i] = 1*m_outWeights[0][i];
         for(int j=1; j<m_hidPerceptrons+1; ++j)
         {
-            output[i] += hidOutput[j-1][i] * m_outWeights[j][i];
+            output[i] += hidOutput[j-1] * m_outWeights[j][i];
         }
         output[i] = sigmoid(output[i]);
+        //std::cout << "output [" << i << "] =" << output[i] << std::endl;
     }
 
     return output[0];
