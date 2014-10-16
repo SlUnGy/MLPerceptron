@@ -10,7 +10,7 @@ class MLP {
 		~MLP() {};
 
 		void train(const float*, const float);
-		float run(const float*);
+		float* run(const float*);
 
 		static float sigmoid( const float pNum) {
             return (1.0f/(1.0f+expf(-pNum)));
