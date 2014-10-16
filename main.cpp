@@ -18,7 +18,7 @@ int main()
         std::cout << "(";
         for(int j=0; j<inputWidth-1; ++j)
         {
-            std::cout << params[i][0] << ",";
+            std::cout << params[i][j] << ",";
         }
         std::cout << params[i][inputWidth-1] << ")=" << targets[i] << std::endl;
     }
@@ -57,7 +57,7 @@ int main()
         std::cout << "(";
         for(int j=0; j<inputWidth-1; ++j)
         {
-            std::cout << params[i][0] << ",";
+            std::cout << params[i][j] << ",";
         }
         std::cout << params[i][inputWidth-1] << ")=" << results[i] << std::endl;
     }
