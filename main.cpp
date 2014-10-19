@@ -1,9 +1,13 @@
 #include <iostream>
 
 #include "mlp.h"
+#include "idxfile.h"
 
 int main()
 {
+    IDXFile trainLabels("./data/train-labels.idx1-ubyte", false);
+
+
     constexpr int samples    = 4;
     constexpr int inputWidth = 2;
 
