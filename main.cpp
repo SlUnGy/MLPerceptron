@@ -29,7 +29,7 @@ int main()
 
     MLP bp(eta, inputWidth, 3 ,1);
     //train the mlp
-    const unsigned long iterations = 5000;
+    const unsigned long iterations = 50000;
     for ( unsigned  long i = 0; i < iterations; ++i )
     {
         for(int i=0; i<samples; ++i)
