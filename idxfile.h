@@ -6,7 +6,7 @@
 class IDXFile
 {
 public:
-    IDXFile( const std::string&, bool );
+    IDXFile( const std::string& );
     virtual ~IDXFile();
 
     uint32_t getMagicNumber() { return m_magicNumber; }

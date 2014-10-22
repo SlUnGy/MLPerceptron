@@ -11,7 +11,7 @@ uint32_t read32_be(std::istream& pIn)
     return tmp;
 }
 
-IDXFile::IDXFile(const std::string &pFile, bool pMSB)
+IDXFile::IDXFile(const std::string &pFile)
     : m_magicNumber{0}, m_dimensionNumber{0}, m_dimension{nullptr}, m_data{nullptr}
 {
     std::ifstream file(pFile, std::ios::in | std::ios::binary);
