@@ -9,7 +9,7 @@ class MLP {
 		MLP(const float, const int, const int, const int);
 		~MLP() {};
 
-		void train(const float*, const float);
+		void train(const float*, const float*);
 		float* run(const float*);
 
 		static float sigmoid( const float pNum) {

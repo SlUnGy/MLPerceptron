@@ -45,7 +45,7 @@ MLP::MLP(const float pEta, const int pInputPerceptrons, const int pHiddenPercept
 }
 
 
-void MLP::train(const float* pIn,const float pTarget)
+void MLP::train(const float* pIn,const float *pTarget)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -76,7 +76,7 @@ void MLP::train(const float* pIn,const float pTarget)
     float outDelta[m_outPerceptrons];
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        outDelta[i] = output[i]*(1-output[i])*(pTarget-output[i]);
+        outDelta[i] = output[i]*(1-output[i])*(pTarget[i]-output[i]);
     }
 
     //applying delta to reduce error in output layer

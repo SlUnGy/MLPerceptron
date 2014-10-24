@@ -17,7 +17,6 @@ int main()
 {
     IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
 
-
     constexpr int samples    = 4;
     constexpr int inputWidth = 2;
 
@@ -44,7 +43,7 @@ int main()
     {
         for(int i=0; i<samples; ++i)
         {
-            mlp.train(params[i],targets[i]);
+            mlp.train(params[i],&targets[i]);
         }
     }
 
