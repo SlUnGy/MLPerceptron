@@ -13,9 +13,8 @@ float calcMeanSquaredError(const int pSize,const float* pTarget, const float* pR
     return error/pSize;
 }
 
-int main()
+void trainXOR()
 {
-    IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
 
     constexpr int samples    = 4;
     constexpr int inputWidth = 2;
@@ -69,7 +68,16 @@ int main()
         }
         std::cout << params[i][inputWidth-1] << ")=" << results[i] << std::endl;
     }
-    std::cout << "MSE  =" << error << std::endl;
+    std::cout << "XOR-MSE=" << error << std::endl;
+}
 
+void trainOCR()
+{
+    IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
+}
+
+int main()
+{
+    trainXOR();
     return 0;
 }
