@@ -3,9 +3,19 @@
 #include "mlp.h"
 #include "idxfile.h"
 
+float calcMeanSquaredError(const int pSize,const float* pTarget, const float* pResult)
+{
+    float error = 0;
+    for(int i=0; i<pSize; ++i)
+    {
+        error += (pResult[i]-pTarget[i])*(pResult[i]-pTarget[i]);
+    }
+    return error/pSize;
+}
+
 int main()
 {
-    IDXFile trainLabels("./data/train-labels.idx1-ubyte", false);
+    IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
 
 
     constexpr int samples    = 4;
@@ -27,33 +37,28 @@ int main()
         std::cout << params[i][inputWidth-1] << ")=" << targets[i] << std::endl;
     }
 
-    MLP bp(eta, inputWidth, 3 ,1);
+    MLP mlp(eta, inputWidth, 3 ,1);
     //train the mlp
     const unsigned long iterations = 50000;
     for ( unsigned  long i = 0; i < iterations; ++i )
     {
         for(int i=0; i<samples; ++i)
         {
-            bp.train(params[i],targets[i]);
+            mlp.train(params[i],targets[i]);
         }
     }
 
-    //see if it learned something
+    //see if the mlp learned something
     float results[samples];
     for(int i=0; i<samples; ++i)
     {
-        float *tmp= bp.run(params[i]);
+        float *tmp= mlp.run(params[i]);
         results[i]= tmp[0];
         delete [] tmp;
     }
 
     //calculate mean squared error
-    float error = 0;
-    for(int i=0; i<samples; ++i)
-    {
-        error += (results[i]-targets[i])*(results[i]-targets[i]);
-    }
-    error *= 1.0f/samples;
+    float error = calcMeanSquaredError(samples, targets, results);
 
     std::cout << std::endl << "results= " << std::endl;
     for(int i=0; i<samples; ++i)
@@ -65,7 +70,7 @@ int main()
         }
         std::cout << params[i][inputWidth-1] << ")=" << results[i] << std::endl;
     }
-    std::cout << "MSE  = " << error << std::endl;
+    std::cout << "MSE  =" << error << std::endl;
 
     return 0;
 }
