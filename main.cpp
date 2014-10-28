@@ -15,7 +15,7 @@ float calcMeanSquaredError(const int pSize,const float* pTarget, const float* pR
 
 void trainXOR()
 {
-
+    std::cout << "XOR-Training:" << std::endl;
     constexpr int samples    = 4;
     constexpr int inputWidth = 2;
 
@@ -74,10 +74,38 @@ void trainXOR()
 void trainOCR()
 {
     IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
+    IDXFile trainImages("./data/train-images.idx3-ubyte" );
+
+    IDXFile testLabels("./data/t10k-labels.idx1-ubyte" );
+    IDXFile testImages("./data/t10k-images.idx3-ubyte" );
+
+    if(trainLabels.getDimensionNumber() == 1 && trainImages.getDimensionNumber() == 3
+       && testLabels.getDimensionNumber() == 1 && testImages.getDimensionNumber() == 3)
+    {
+        const unsigned int samples = 10;
+        const unsigned int imageSize = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
+
+        MLP mlp(0.25f,imageSize,20,10);
+//        for(unsigned int i=0; i<trainImages.getDimensionNumber(); ++i)
+//        {
+//            std::cout << "dim["<<i<<"]="<<trainImages.getDimensions()[i]<<std::endl;
+//        }
+
+        for(unsigned int i=0; i<samples; ++i)
+        {
+//            mlp.train(*(trainImages.getData()+i*imageSize),);
+        }
+
+    }
+    else
+    {
+        std::cerr << "files appear not to have the correct amount of dimensions" << std::endl;
+    }
 }
 
 int main()
 {
     trainXOR();
+    trainOCR();
     return 0;
 }
