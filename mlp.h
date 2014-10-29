@@ -26,8 +26,8 @@ class MLP {
         }
 
 
-		template<typename T> void train(const T*, const T*);
-		template<typename T> T* run(const T*);
+		template<typename T> void train(const T*, const float*);
+		template<typename T> float* run(const T*);
 
         template<typename T> static float sigmoid(const T pNum)
         {
@@ -52,7 +52,7 @@ class MLP {
     private:
 };
 
-template<typename T> void MLP::train(const T* pIn,const T* pTarget)
+template<typename T> void MLP::train(const T* pIn,const float* pTarget)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -119,7 +119,7 @@ template<typename T> void MLP::train(const T* pIn,const T* pTarget)
     }
 }
 
-template<typename T> T* MLP::run(const T *pIn)
+template<typename T> float* MLP::run(const T *pIn)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -134,7 +134,7 @@ template<typename T> T* MLP::run(const T *pIn)
         hidOutput[i] = sigmoid(hidOutput[i]);
     }
 
-    T* output = new T[m_outPerceptrons]();
+    float* output = new float[m_outPerceptrons]();
     for(int i=0; i<m_outPerceptrons; ++i)
     {
         output[i] = 1*m_outWeights[0][i];
