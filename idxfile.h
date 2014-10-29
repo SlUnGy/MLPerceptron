@@ -12,7 +12,7 @@ public:
     uint32_t getMagicNumber() { return m_magicNumber; }
     unsigned int getDimensionNumber() { return m_dimensionNumber; }
 
-    uint8_t* getData() { return m_data; }
+    uint8_t* getDataPointer() { return m_data; }
     uint32_t* getDimensions() { return m_dimension; }
 protected:
 private:
