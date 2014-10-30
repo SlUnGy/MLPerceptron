@@ -83,8 +83,8 @@ void trainOCR()
        && testLabels.getDimensionNumber() == 1 && testImages.getDimensionNumber() == 3)
     {
         std::cout << "OCR-Training" << std::endl;
-        constexpr unsigned int samples = 100;
-        const unsigned int iterationCount = 1000;
+        constexpr unsigned int samples = 10;
+        const unsigned int iterationCount = 500;
         const unsigned int imageSize = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
 
         float targets[samples+1][10]={0};
@@ -93,25 +93,47 @@ void trainOCR()
             targets[i][i]=1.0f;
         }
 
-        MLP mlp(0.25f,imageSize,20,10);
+        MLP mlp(0.25f,imageSize,30,10);
 
-        for(unsigned int iterations=0;iterations<iterationCount;++iterations)
+        for(unsigned int iterations=0;iterations<1;++iterations)
         {
-            for(unsigned int i=0; i<samples; ++i)
+            for(unsigned int i=0,t=0;t<50&&i<trainImages.getDimensions()[0];++i)
             {
-                mlp.train(trainImages.getDataPointer()+i*imageSize,targets[(int)trainLabels.getDataPointer()[i]]);
+                const int targetIndex = (int)trainLabels.getDataPointer()[i];
+                if(targetIndex==0)
+                {
+                    const uint8_t * const targetImage = trainImages.getDataPointer()+i*imageSize;
+//                    for(int j=0;j<imageSize;++j)
+//                    {
+//                        std::cout << targetImage[j];
+//                        if(!(j%(trainImages.getDimensions()[1])))
+//                        {
+//                            std::cout << std::endl;
+//                        }
+//                    }
+//                    mlp.train(targetImage,targets[targetIndex]);
+                    ++t;
+                }
             }
-
-            float result[samples];
-            for(unsigned int i=0; i<samples; ++i)
+        }
+        std::cout << "using test data" << std::endl;
+        for(unsigned int i=0,t=0;t<10&&i<trainImages.getDimensions()[0];++i)
+        {
+            const int targetIndex = (int)testLabels.getDataPointer()[i];
+            if(targetIndex==0)
             {
-                float* tmpResults = mlp.run(testImages.getDataPointer()+i*imageSize);
-                result[i] = calcMeanSquaredError(samples,targets[(int)testLabels.getDataPointer()[i]],tmpResults);
+                const uint8_t * const targetImage = testImages.getDataPointer()+i*imageSize;
+                float* tmpResults = mlp.run(targetImage);
+                std::cout << "[";
+                for(int k=0;k<samples-1;++k)
+                {
+                    std::cout << tmpResults[k] << ",";
+                }
+                std::cout << tmpResults[samples-1] << "],mse="<<calcMeanSquaredError(samples,targets[targetIndex],tmpResults) << std::endl
+                <<std::endl;
                 delete [] tmpResults;
+                ++t;
             }
-
-            float mse = calcMeanSquaredError(samples,targets[samples],result);
-            std::cout << "OCR-MSE=" << mse << std::endl;
         }
     }
     else
