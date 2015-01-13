@@ -13,6 +13,21 @@ float calcMeanSquaredError(const int pSize,const float* pTarget, const float* pR
     return error/pSize;
 }
 
+int findHighestIndex(const float* pResults, const int pSize)
+{
+    int highestIndex = 0;
+    float highestValue = 0.0f;
+    for(int i=0;i<pSize;++i)
+    {
+        if(pResults[i]>highestValue)
+        {
+            highestIndex = i;
+            highestValue = pResults[i];
+        }
+    }
+    return highestIndex;
+}
+
 void trainXOR()
 {
     std::cout << "XOR-Training:" << std::endl;
@@ -97,10 +112,10 @@ void trainOCR()
 
         for(unsigned int iterations=0;iterations<1;++iterations)
         {
-            for(unsigned int i=0,t=0;t<50&&i<trainImages.getDimensions()[0];++i)
+            for(unsigned int i=0;i<trainImages.getDimensions()[0];++i)
             {
                 const int targetIndex = (int)trainLabels.getDataPointer()[i];
-                if(targetIndex==0)
+                if(targetIndex==0 || targetIndex == 8)
                 {
                     const uint8_t * const targetImage = trainImages.getDataPointer()+i*imageSize;
 //                    for(int j=0;j<imageSize;++j)
@@ -111,16 +126,15 @@ void trainOCR()
 //                            std::cout << std::endl;
 //                        }
 //                    }
-//                    mlp.train(targetImage,targets[targetIndex]);
-                    ++t;
+                    mlp.train(targetImage,targets[targetIndex]);
                 }
             }
         }
         std::cout << "using test data" << std::endl;
-        for(unsigned int i=0,t=0;t<10&&i<trainImages.getDimensions()[0];++i)
+        for(unsigned int i=0,t=0;t<30&&i<trainImages.getDimensions()[0];++i)
         {
             const int targetIndex = (int)testLabels.getDataPointer()[i];
-            if(targetIndex==0)
+            if(targetIndex == 0 || targetIndex == 8)
             {
                 const uint8_t * const targetImage = testImages.getDataPointer()+i*imageSize;
                 float* tmpResults = mlp.run(targetImage);
@@ -129,8 +143,10 @@ void trainOCR()
                 {
                     std::cout << tmpResults[k] << ",";
                 }
-                std::cout << tmpResults[samples-1] << "],mse="<<calcMeanSquaredError(samples,targets[targetIndex],tmpResults) << std::endl
-                <<std::endl;
+                std::cout << tmpResults[samples-1] << "],mse="
+                << calcMeanSquaredError(samples,targets[targetIndex],tmpResults) << ","
+                << findHighestIndex(tmpResults,10) << "?=" << targetIndex
+                << std::endl << std::endl;
                 delete [] tmpResults;
                 ++t;
             }
