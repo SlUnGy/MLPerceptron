@@ -106,6 +106,7 @@ bool IDXFile::readFile(const std::string& pFile)
         m_error = true;
         return false;
     }
+    return true;
 }
 
 IDXFile::~IDXFile()
