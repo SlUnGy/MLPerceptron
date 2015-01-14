@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+//read a 32bit bigendian number from a istream
 uint32_t read32_be(std::istream& pIn)
 {
     char b[4];
@@ -17,7 +18,7 @@ IDXFile::IDXFile(const std::string& pFile)
     readFile(pFile);
 }
 
-void IDXFile::readFile(const std::string& pFile)
+bool IDXFile::readFile(const std::string& pFile)
 {
     std::ifstream file(pFile, std::ios::in | std::ios::binary);
     if(file.is_open())
@@ -43,7 +44,6 @@ void IDXFile::readFile(const std::string& pFile)
                 case( 0x0D ): //float
                 case( 0x0E ): //double
                 default:
-                    std::cerr << pFile << ":magic number(" << m_magicNumber << "): unrecognized third byte: " << std::endl;
                     recognized = false;
                 }
                 if( recognized )
@@ -62,6 +62,8 @@ void IDXFile::readFile(const std::string& pFile)
                         else
                         {
                             std::cerr << pFile << ":error while reading dimension " << ( int ) i << std::endl;
+                            m_error = true;
+                            return false;
                         }
                     }
                     m_data = new uint8_t[totalSize]();
@@ -73,22 +75,36 @@ void IDXFile::readFile(const std::string& pFile)
                     else
                     {
                         std::cerr << pFile << ":error while reading data" << std::endl;
+                        m_error = true;
+                        return false;
                     }
+                }
+                else
+                {
+                    std::cerr << pFile << ":magic number(" << m_magicNumber << "): unrecognized third byte: " << std::endl;
+                    m_error = true;
+                    return false;
                 }
             }
             else
             {
                 std::cerr << pFile << ":magic number(" << m_magicNumber << "): missing two zero bytes: " << ( int )firstByte << "/" << ( int )secondByte << std::endl;
+                m_error = true;
+                return false;
             }
         }
         else
         {
             std::cerr << pFile << ":error while reading magic number " << std::endl;
+            m_error = true;
+            return false;
         }
     }
     else
     {
         std::cerr << pFile << ":couldn't be opened" << std::endl;
+        m_error = true;
+        return false;
     }
 }
 

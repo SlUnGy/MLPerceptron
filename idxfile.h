@@ -11,12 +11,14 @@ public:
 
     uint32_t getMagicNumber() { return m_magicNumber; }
     unsigned int getDimensionNumber() { return m_dimensionNumber; }
+    bool hasError() { return m_error; }
 
     uint8_t* getDataPointer() { return m_data; }
     uint32_t* getDimensions() { return m_dimension; }
 
-    void readFile(const std::string& );
+    bool readFile(const std::string& );
 protected:
+    bool m_error;
 private:
     uint32_t m_magicNumber;
 

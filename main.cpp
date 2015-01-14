@@ -94,8 +94,10 @@ void trainOCR()
     IDXFile testLabels("./data/t10k-labels.idx1-ubyte" );
     IDXFile testImages("./data/t10k-images.idx3-ubyte" );
 
-    if(trainLabels.getDimensionNumber() == 1 && trainImages.getDimensionNumber() == 3
-       && testLabels.getDimensionNumber() == 1 && testImages.getDimensionNumber() == 3)
+    if(!trainLabels.hasError() && trainLabels.getDimensionNumber() == 1 &&
+       !trainImages.hasError() && trainImages.getDimensionNumber() == 3 &&
+       !testLabels.hasError() && testLabels.getDimensionNumber() == 1 &&
+       !testImages.hasError() && testImages.getDimensionNumber() == 3)
     {
         std::cout << "OCR-Training" << std::endl;
         constexpr unsigned int samples = 10;
@@ -108,7 +110,7 @@ void trainOCR()
             targets[i][i]=1.0f;
         }
 
-        MultilayerPerceptron mlp(0.25f,imageSize,30,10);
+        MultilayerPerceptron mlp(0.25f,imageSize,60,10);
 
         for(unsigned int iterations=0;iterations<1;++iterations)
         {
@@ -154,7 +156,7 @@ void trainOCR()
     }
     else
     {
-        std::cerr << "files appear not to have the correct amount of dimensions" << std::endl;
+        std::cerr << "required files appear to contain errors" << std::endl;
     }
 }
 
