@@ -14,6 +14,8 @@ public:
 
     uint8_t* getDataPointer() { return m_data; }
     uint32_t* getDimensions() { return m_dimension; }
+
+    void readFile(const std::string& );
 protected:
 private:
     uint32_t m_magicNumber;
