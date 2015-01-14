@@ -5,11 +5,11 @@
 #include <cstdint>
 #include <iostream>
 
-class MLP {
+class MultilayerPerceptron {
 	public:
-		MLP():MLP(0.25f, 2, 3, 1){}
-		MLP(const float, const int, const int, const int);
-		~MLP()
+		MultilayerPerceptron():MultilayerPerceptron(0.25f, 2, 3, 1){}
+		MultilayerPerceptron(const float, const int, const int, const int);
+		~MultilayerPerceptron()
         {
             for(int i=0; i<m_hidPerceptrons; ++i)
             {
@@ -52,7 +52,7 @@ class MLP {
     private:
 };
 
-template<typename T> void MLP::train(const T* pIn,const float* pTarget)
+template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* pTarget)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -119,7 +119,7 @@ template<typename T> void MLP::train(const T* pIn,const float* pTarget)
     }
 }
 
-template<typename T> float* MLP::run(const T *pIn)
+template<typename T> float* MultilayerPerceptron::run(const T *pIn)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)

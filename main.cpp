@@ -50,7 +50,7 @@ void trainXOR()
         std::cout << params[i][inputWidth-1] << ")=" << targets[i] << std::endl;
     }
 
-    MLP mlp(eta, inputWidth, 3 ,1);
+    MultilayerPerceptron mlp(eta, inputWidth, 3 ,1);
     //train the mlp
     const unsigned long iterations = 50000;
     for ( unsigned  long i = 0; i < iterations; ++i )
@@ -102,13 +102,13 @@ void trainOCR()
         const unsigned int iterationCount = 500;
         const unsigned int imageSize = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
 
-        float targets[samples+1][10]={0};
-        for(int i=0; i<10; ++i)
+        float targets[samples][samples]={0};
+        for(unsigned int i=0; i<samples; ++i)
         {
             targets[i][i]=1.0f;
         }
 
-        MLP mlp(0.25f,imageSize,30,10);
+        MultilayerPerceptron mlp(0.25f,imageSize,30,10);
 
         for(unsigned int iterations=0;iterations<1;++iterations)
         {
@@ -139,7 +139,7 @@ void trainOCR()
                 const uint8_t * const targetImage = testImages.getDataPointer()+i*imageSize;
                 float* tmpResults = mlp.run(targetImage);
                 std::cout << "[";
-                for(int k=0;k<samples-1;++k)
+                for(unsigned int k=0;k<samples-1;++k)
                 {
                     std::cout << tmpResults[k] << ",";
                 }
