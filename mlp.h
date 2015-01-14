@@ -9,6 +9,7 @@ class MultilayerPerceptron {
 	public:
 		MultilayerPerceptron():MultilayerPerceptron(0.25f, 2, 3, 1){}
 		MultilayerPerceptron(const float, const int, const int, const int);
+
 		~MultilayerPerceptron()
         {
             for(int i=0; i<m_hidPerceptrons; ++i)
@@ -39,6 +40,9 @@ class MultilayerPerceptron {
             return (1.0f/(1.0f+expf(-pNum)));
         }
 
+        bool writeToFile(const std::string&);
+
+        void randomizeWeights();
 
 	protected:
 		const float m_eta;

@@ -7,6 +7,11 @@
 MultilayerPerceptron::MultilayerPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
     : m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons}
 {
+    randomizeWeights();
+}
+
+void MultilayerPerceptron::randomizeWeights()
+{
 	/*
         doesn't work on mingw&windows....
         std::random_device rd;
@@ -34,4 +39,9 @@ MultilayerPerceptron::MultilayerPerceptron(const float pEta, const int pInputPer
 			m_outWeights[i][j] = distribution(mt);
 		}
 	}
+}
+
+bool MultilayerPerceptron::writeToFile(const std::string& pFilename)
+{
+    return true;
 }
