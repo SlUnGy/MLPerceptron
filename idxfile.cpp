@@ -13,7 +13,7 @@ uint32_t read32_be(std::istream& pIn)
 }
 
 IDXFile::IDXFile(const std::string& pFile)
-    : m_magicNumber{0}, m_dimensionNumber{0}, m_dimension{nullptr}, m_data{nullptr}
+    :m_error{false}, m_magicNumber{0}, m_dimensionNumber{0}, m_dimension{nullptr}, m_data{nullptr}
 {
     readFile(pFile);
 }
