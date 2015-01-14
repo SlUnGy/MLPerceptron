@@ -99,10 +99,13 @@ void trainOCR()
        !testLabels.hasError() && testLabels.getDimensionNumber() == 1 &&
        !testImages.hasError() && testImages.getDimensionNumber() == 3)
     {
-        std::cout << "OCR-Training" << std::endl;
-        constexpr unsigned int samples = 10;
-        const unsigned int iterationCount = 500;
-        const unsigned int imageSize = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
+        std::cout << "OCR-Training." << std::endl;
+        constexpr unsigned int samples      = 10;
+        const unsigned int iterationCount   = 500;
+        const unsigned int imageSize        = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
+        const unsigned int hiddenNodes      = 150;
+        std::cout << "using images with " << imageSize << " pixels." << std::endl;
+        std::cout << "using mlp with " << hiddenNodes << " hidden nodes." << std::endl;
 
         float targets[samples][samples]={0};
         for(unsigned int i=0; i<samples; ++i)
@@ -110,7 +113,7 @@ void trainOCR()
             targets[i][i]=1.0f;
         }
 
-        MultilayerPerceptron mlp(0.25f,imageSize,60,10);
+        MultilayerPerceptron mlp(0.25f,imageSize,hiddenNodes,10);
 
         for(unsigned int iterations=0;iterations<1;++iterations)
         {
