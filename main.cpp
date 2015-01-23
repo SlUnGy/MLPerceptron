@@ -101,12 +101,12 @@ void trainOCR()
     {
         std::cout << "OCR-Training." << std::endl;
         constexpr unsigned int samples      = 10;
-        const unsigned int iterationCount   = 500;
         const unsigned int imageSize        = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
-        const unsigned int hiddenNodes      = 150;
+        const unsigned int hiddenNodes      = 200;
         std::cout << "using images with " << imageSize << " pixels." << std::endl;
         std::cout << "using mlp with " << hiddenNodes << " hidden nodes." << std::endl;
 
+        std::cout << "setting up data." << std::endl;
         float targets[samples][samples]={0};
         for(unsigned int i=0; i<samples; ++i)
         {
@@ -115,6 +115,7 @@ void trainOCR()
 
         MultilayerPerceptron mlp(0.25f,imageSize,hiddenNodes,10);
 
+        std::cout << "training the mlp." << std::endl;
         for(unsigned int iterations=0;iterations<1;++iterations)
         {
             for(unsigned int i=0;i<trainImages.getDimensions()[0];++i)
@@ -135,27 +136,24 @@ void trainOCR()
                 }
             }
         }
-        std::cout << "using test data" << std::endl;
-        for(unsigned int i=0,t=0;t<30&&i<trainImages.getDimensions()[0];++i)
+        std::cout << "running test data through mlp." << std::endl;
+        int correct = 0, total = 0;
+        for(unsigned int i=0;i<testImages.getDimensions()[0];++i)
         {
             const int targetIndex = (int)testLabels.getDataPointer()[i];
             if(targetIndex == 0 || targetIndex == 8)
             {
                 const uint8_t * const targetImage = testImages.getDataPointer()+i*imageSize;
                 float* tmpResults = mlp.run(targetImage);
-                std::cout << "[";
-                for(unsigned int k=0;k<samples-1;++k)
+                if(findHighestIndex(tmpResults,10)==targetIndex)
                 {
-                    std::cout << tmpResults[k] << ",";
+                    ++correct;
                 }
-                std::cout << tmpResults[samples-1] << "],mse="
-                << calcMeanSquaredError(samples,targets[targetIndex],tmpResults) << ","
-                << findHighestIndex(tmpResults,10) << "?=" << targetIndex
-                << std::endl << std::endl;
+                ++total;
                 delete [] tmpResults;
-                ++t;
             }
         }
+        std::cout << "correct: " << correct << " total: " << total << " error: " << (1-correct/(float)total) << "." <<std::endl;
     }
     else
     {
