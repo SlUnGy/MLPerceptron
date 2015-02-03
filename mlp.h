@@ -93,17 +93,19 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     //applying delta to reduce error in output layer
     for(int i=0; i<m_outPerceptrons; ++i)
     {
+        //apply to bias
         m_outWeights[0][i] += m_eta*1*outDelta[i];
+        //m_outWeights[i+1][] -> skip the constant coeffecient we already did above
         for(int j=0; j<m_hidPerceptrons; ++j)
         {
             m_outWeights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
         }
     }
 
+    //calculate hidden layer error
     float hidError[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        //m_outWeights[i+1][] -> skip the constant coeffecient
         hidError[i] = hidOutput[i]*(1-hidOutput[i]);
         float tmpSum = 0;
         for(int j=0; j<m_outPerceptrons; ++j)
