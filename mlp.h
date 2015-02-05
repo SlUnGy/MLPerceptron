@@ -28,7 +28,7 @@ class MultilayerPerceptron {
 
 
 		template<typename T> void train(const T*, const float*);
-		template<typename T> float* run(const T*);
+		template<typename T> float* classify(const T*);
 
         template<typename T> static float sigmoid(const T pNum)
         {
@@ -47,7 +47,9 @@ class MultilayerPerceptron {
 	protected:
 		const float m_eta;
 
+        //pointer for multiple hidden layers might be useful
 		const int m_hidPerceptrons;
+
 		const int m_inpPerceptrons;
 		const int m_outPerceptrons;
 
@@ -125,7 +127,7 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     }
 }
 
-template<typename T> float* MultilayerPerceptron::run(const T *pIn)
+template<typename T> float* MultilayerPerceptron::classify(const T *pIn)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)

@@ -28,64 +28,6 @@ int findHighestIndex(const float* pResults, const int pSize)
     return highestIndex;
 }
 
-void trainXOR()
-{
-    std::cout << "XOR-Training:" << std::endl;
-    constexpr int samples    = 4;
-    constexpr int inputWidth = 2;
-
-    const float params[samples][inputWidth] = {{0.0f, 0.0f},{0.0f, 1.0f},{1.0f, 0.0f},{1.0f, 1.0f}};
-    const float targets[samples] = {0.0f, 1.0f, 1.0, 0.0f};
-    const float eta = 0.25f;
-
-    //print the used data
-    std::cout << "input=" << std::endl;
-    for(int i=0; i<samples; ++i)
-    {
-        std::cout << "(";
-        for(int j=0; j<inputWidth-1; ++j)
-        {
-            std::cout << params[i][j] << ",";
-        }
-        std::cout << params[i][inputWidth-1] << ")=" << targets[i] << std::endl;
-    }
-
-    MultilayerPerceptron mlp(eta, inputWidth, 3 ,1);
-    //train the mlp
-    const unsigned long iterations = 50000;
-    for ( unsigned  long i = 0; i < iterations; ++i )
-    {
-        for(int i=0; i<samples; ++i)
-        {
-            mlp.train(params[i],&targets[i]);
-        }
-    }
-
-    //see if the mlp learned something
-    float results[samples];
-    for(int i=0; i<samples; ++i)
-    {
-        float *tmp= mlp.run(params[i]);
-        results[i]= tmp[0];
-        delete [] tmp;
-    }
-
-    //calculate mean squared error
-    float error = calcMeanSquaredError(samples, targets, results);
-
-    std::cout << std::endl << "results= " << std::endl;
-    for(int i=0; i<samples; ++i)
-    {
-        std::cout << "(";
-        for(int j=0; j<inputWidth-1; ++j)
-        {
-            std::cout << params[i][j] << ",";
-        }
-        std::cout << params[i][inputWidth-1] << ")=" << results[i] << std::endl;
-    }
-    std::cout << "XOR-MSE=" << error << std::endl;
-}
-
 void trainOCR()
 {
     IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
@@ -101,10 +43,11 @@ void trainOCR()
     {
         std::cout << "OCR-Training." << std::endl;
         constexpr unsigned int samples      = 10;
+        constexpr float eta                 = 0.025f;
         const unsigned int imageSize        = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
-        const unsigned int hiddenNodes      = 200;
-        std::cout << "using images with " << imageSize << " pixels." << std::endl;
-        std::cout << "using mlp with " << hiddenNodes << " hidden nodes." << std::endl;
+        const unsigned int hiddenNodes      = 300;
+        std::cout << "using images with: " << imageSize << " pixels." << std::endl;
+        std::cout << "using mlp with: " << hiddenNodes << " hidden nodes and eta: " << eta << "." << std::endl;
 
         std::cout << "setting up data." << std::endl;
         float targets[samples][samples]={0};
@@ -113,47 +56,37 @@ void trainOCR()
             targets[i][i]=1.0f;
         }
 
-        MultilayerPerceptron mlp(0.25f,imageSize,hiddenNodes,10);
+        MultilayerPerceptron mlp(eta,imageSize,hiddenNodes,samples);
 
+        float error     = 1.0f;
+        const unsigned int testTotal = testImages.getDimensions()[0];
+        while(error > 0.05){
         std::cout << "training the mlp." << std::endl;
-        for(unsigned int iterations=0;iterations<1;++iterations)
-        {
-            for(unsigned int i=0;i<trainImages.getDimensions()[0];++i)
+            for(unsigned int iterations=0; iterations<1; ++iterations)
             {
-                const int targetIndex = (int)trainLabels.getDataPointer()[i];
-                if(targetIndex==0 || targetIndex == 8)
+                for(unsigned int i=0; i<trainImages.getDimensions()[0]; ++i)
                 {
+                    const int targetIndex = (int)trainLabels.getDataPointer()[i];
                     const uint8_t * const targetImage = trainImages.getDataPointer()+i*imageSize;
-//                    for(int j=0;j<imageSize;++j)
-//                    {
-//                        std::cout << targetImage[j];
-//                        if(!(j%(trainImages.getDimensions()[1])))
-//                        {
-//                            std::cout << std::endl;
-//                        }
-//                    }
                     mlp.train(targetImage,targets[targetIndex]);
                 }
             }
-        }
-        std::cout << "running test data through mlp." << std::endl;
-        int correct = 0, total = 0;
-        for(unsigned int i=0;i<testImages.getDimensions()[0];++i)
-        {
-            const int targetIndex = (int)testLabels.getDataPointer()[i];
-            if(targetIndex == 0 || targetIndex == 8)
+            std::cout << "classifying test data." << std::endl;
+            int correct = 0;
+            for(unsigned int i=0; i<testTotal; ++i)
             {
+                const int targetIndex = (int)testLabels.getDataPointer()[i];
                 const uint8_t * const targetImage = testImages.getDataPointer()+i*imageSize;
-                float* tmpResults = mlp.run(targetImage);
+                float* tmpResults = mlp.classify(targetImage);
                 if(findHighestIndex(tmpResults,10)==targetIndex)
                 {
                     ++correct;
                 }
-                ++total;
                 delete [] tmpResults;
             }
+            error = (1-correct/(float)testTotal);
+            std::cout << "error: " << error << "." <<std::endl;
         }
-        std::cout << "correct: " << correct << " total: " << total << " error: " << (1-correct/(float)total) << "." <<std::endl;
     }
     else
     {
@@ -163,7 +96,6 @@ void trainOCR()
 
 int main()
 {
-    //trainXOR();
     trainOCR();
     return 0;
 }
