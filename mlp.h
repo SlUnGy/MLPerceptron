@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <iostream>
 
+#include "layer.h"
+
 class MultilayerPerceptron {
 	public:
 		MultilayerPerceptron():MultilayerPerceptron(0.25f, 2, 3, 1){}
@@ -48,6 +50,7 @@ class MultilayerPerceptron {
 		const float m_eta;
 
         //pointer for multiple hidden layers might be useful
+        const int m_hidLayers;
 		const int m_hidPerceptrons;
 
 		const int m_inpPerceptrons;

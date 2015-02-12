@@ -5,7 +5,7 @@
 #include <random>
 
 MultilayerPerceptron::MultilayerPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
-    : m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons}
+    : m_eta{pEta}, m_hidLayers{1}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons}
 {
     //+1 due to constant coefficient, i.e. bias
 	m_hidWeights = new float*[m_inpPerceptrons+1];
