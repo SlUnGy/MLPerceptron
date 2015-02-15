@@ -4,11 +4,15 @@
 class Layer
 {
     public:
-        Layer(const int, const int);
+        Layer();
+        Layer(const unsigned int, const unsigned int);
         ~Layer();
 
-        const int m_in;
-        const int m_width;
+        setupWeights(const unsigned int, const unsigned int);
+        randomizeWeights();
+
+        const unsigned int m_in;
+        const unsigned int m_width;
         float **m_weights;
 };
 

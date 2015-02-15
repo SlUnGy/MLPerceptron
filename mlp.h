@@ -10,24 +10,19 @@
 class MultilayerPerceptron {
 	public:
 		MultilayerPerceptron():MultilayerPerceptron(0.25f, 2, 3, 1){}
-		MultilayerPerceptron(const float, const int, const int, const int);
+		MultilayerPerceptron(const float, const unsigned int, const unsigned int, const unsigned int*, const unsigned int);
 
 		~MultilayerPerceptron()
         {
-            for(int i=0; i<m_hidPerceptrons; ++i)
+            if(m_hiddenLayers)
             {
-                delete [] m_hidWeights[i];
+                delete [] m_hiddenLayers;
             }
-            delete [] m_hidWeights;
-
-
-            for(int i=0; i<m_outPerceptrons; ++i)
+            if(m_outputLayer)
             {
-                delete [] m_outWeights[i];
+                delete m_outputLayer;
             }
-            delete [] m_outWeights;
         }
-
 
 		template<typename T> void train(const T*, const float*);
 		template<typename T> float* classify(const T*);
@@ -43,26 +38,26 @@ class MultilayerPerceptron {
         }
 
         bool writeToFile(const std::string&);
-
-        void randomizeWeights();
-
 	protected:
 		const float m_eta;
+        const unsigned int m_maxHiddenLayer;
 
-        //pointer for multiple hidden layers might be useful
-        const int m_hidLayers;
-		const int m_hidPerceptrons;
-
-		const int m_inpPerceptrons;
-		const int m_outPerceptrons;
-
-		float **m_hidWeights;
-		float **m_outWeights;
+		Layer *m_hiddenLayers;
+		Layer *m_outputLayer;
     private:
 };
 
 template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* pTarget)
 {
+    float *temporaryInput   = pIn;
+    float *temporaryOutput  = new float[m_hiddenLayers[0].m_width+1];
+
+    for(unsigned int i=0; i<m_maxHiddenLayer; ++i)
+    {
+
+    }
+
+
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
