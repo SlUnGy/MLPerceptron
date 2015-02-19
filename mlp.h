@@ -50,25 +50,25 @@ class MultilayerPerceptron {
 template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* pTarget)
 {
     float *temporaryInput   = pIn;
-    float *temporaryOutput  = new float[m_hiddenLayers[0].m_width+1];
+    float *temporaryOutput  = nullptr;
 
     for(unsigned int i=0; i<m_maxHiddenLayer; ++i)
     {
-
-    }
-
-
-    float hidOutput[m_hidPerceptrons];
-    for(int i=0; i<m_hidPerceptrons; ++i)
-    {
-        //add constant
-        hidOutput[i] = 1*m_hidWeights[0][i];
-        //sum up all inputs*weightings
-        for(int j=1; j<m_inpPerceptrons+1; ++j)
+        temporaryOutput  = new float[m_hiddenLayers[i].m_width+1];
+        for(unsigned int j=0; j<m_hiddenLayers[i].m_width; ++j)
         {
-            hidOutput[i] += pIn[j-1] * m_hidWeights[j][i];
+            temporaryOutput[j] = 1*m_hiddenLayers[i].m_weights[0][j];
+            for(unsigned int k=1; k<m_hiddenLayers[i].m_in+1; ++k)
+            {
+                temporaryOutput[j] += temporaryInput[j-1]*m_hiddenLayers[i].m_weights[k][j];
+            }
+            temporaryOutput[i] = sigmoid(temporaryOutput[i]);
         }
-        hidOutput[i] = sigmoid(hidOutput[i]);
+        if(i > 0)//TODO: only change allocated memory when next layer doesnt fit
+        {
+            delete [] temporaryInput ;
+        }
+        temporaryInput = temporaryOutput;
     }
 
     float output[m_outPerceptrons];
