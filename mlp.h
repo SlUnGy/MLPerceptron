@@ -49,37 +49,33 @@ class MultilayerPerceptron {
 
 template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* pTarget)
 {
-    float *temporaryInput   = pIn;
-    float *temporaryOutput  = nullptr;
+    float *tmpInput         = pIn;
+    float **tmpHiddenOutput = new float*[m_maxHiddenLayer];
 
     for(unsigned int i=0; i<m_maxHiddenLayer; ++i)
     {
-        temporaryOutput  = new float[m_hiddenLayers[i].m_width+1];
+        tmpHiddenOutput[i] = new float[m_hiddenLayers[i].m_width];
         for(unsigned int j=0; j<m_hiddenLayers[i].m_width; ++j)
         {
-            temporaryOutput[j] = 1*m_hiddenLayers[i].m_weights[0][j];
+            tmpHiddenOutput[i][j] = 1*m_hiddenLayers[i].m_weights[0][j];
             for(unsigned int k=1; k<m_hiddenLayers[i].m_in+1; ++k)
             {
-                temporaryOutput[j] += temporaryInput[j-1]*m_hiddenLayers[i].m_weights[k][j];
+                tmpHiddenOutput[i][j] += tmpInput[j-1]*m_hiddenLayers[i].m_weights[k][j];
             }
-            temporaryOutput[i] = sigmoid(temporaryOutput[i]);
+            tmpHiddenOutput[i][j] = sigmoid(tmpHiddenOutput[i][j]);
         }
-        if(i > 0)//TODO: only change allocated memory when next layer doesnt fit
-        {
-            delete [] temporaryInput ;
-        }
-        temporaryInput = temporaryOutput;
+        tmpInput = tmpHiddenOutput[i];
     }
 
-    float output[m_outPerceptrons];
-    for(int i=0; i<m_outPerceptrons; ++i)
+    float tmpOutOutput [m_outputLayer.m_width];
+    for(unsigned int i=0; i<m_outputLayer.m_width; ++i)
     {
-        output[i] = 1*m_outWeights[0][i];
-        for(int j=1; j<m_hidPerceptrons+1; ++j)
+        tmpOutOutput[i] = 1*m_outputLayer.m_weights[0][i];
+        for(unsigned int j=1; j<m_outputLayer.m_in; ++j)
         {
-            output[i] += hidOutput[j-1] * m_outWeights[j][i];
+            tmpOutOutput[i] += tmpInput[j-1] * m_outputLayer.m_weights[j][i];
         }
-        output[i] = sigmoid(output[i]);
+        tmpOutOutput[i] = sigmoid(tmpOutOutput[i]);
     }
 
     //Backpropagation
@@ -87,7 +83,7 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     float outDelta[m_outPerceptrons];
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        outDelta[i] = output[i]*(1-output[i])*(pTarget[i]-output[i]);
+        outDelta[i] = tmpOutOutput[i]*(1-tmpOutOutput[i])*(pTarget[i]-tmpOutOutput[i]);
     }
 
     //applying delta to reduce error in output layer
