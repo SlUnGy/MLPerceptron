@@ -80,21 +80,21 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
 
     //Backpropagation
     //error calculation
-    float outDelta[m_outPerceptrons];
-    for(int i=0; i<m_outPerceptrons; ++i)
+    float outDelta[m_outputLayer->m_width];
+    for(int i=0; i<m_outputLayer->m_width; ++i)
     {
         outDelta[i] = tmpOutOutput[i]*(1-tmpOutOutput[i])*(pTarget[i]-tmpOutOutput[i]);
     }
 
     //applying delta to reduce error in output layer
-    for(int i=0; i<m_outPerceptrons; ++i)
+    for(int i=0; i<m_outputLayer->m_width; ++i)
     {
         //apply to bias
-        m_outWeights[0][i] += m_eta*1*outDelta[i];
+        m_outputLayer->m_weights[0][i] += m_eta*1*outDelta[i];
         //m_outWeights[i+1][] -> skip the constant coeffecient we already did above
-        for(int j=0; j<m_hidPerceptrons; ++j)
+        for(int j=0; j<m_outputLayer->m_in; ++j)
         {
-            m_outWeights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
+            m_outputLayer->m_weights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
         }
     }
 
