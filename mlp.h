@@ -91,34 +91,58 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     {
         //apply to bias
         m_outputLayer->m_weights[0][i] += m_eta*1*outDelta[i];
-        //m_outWeights[i+1][] -> skip the constant coeffecient we already did above
+        //weights[j+1][] -> skip the constant coeffecient we already did above
         for(int j=0; j<m_outputLayer->m_in; ++j)
         {
-            m_outputLayer->m_weights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
+            m_outputLayer->m_weights[j+1][i] += m_eta*tmpOutOutput[j]*outDelta[i];
         }
     }
+
+    Layer *previousLayer    = m_outputLayer;
+    float **hidDelta        = new float*[m_maxHiddenLayer];
+    float *previousDelta    = outDelta;
 
     //calculate hidden layer error
-    float hidError[m_hidPerceptrons];
-    for(int i=0; i<m_hidPerceptrons; ++i)
+    for(int k=m_maxHiddenLayer-1;k>0;--k)
     {
-        hidError[i] = hidOutput[i]*(1-hidOutput[i]);
-        float tmpSum = 0;
-        for(int j=0; j<m_outPerceptrons; ++j)
+        tmpInput = tmpHiddenOutput[k]
+        hidDelta[k] = new float[m_hiddenLayers[k].m_width];
+        for(int i=0; i<m_hiddenLayers[k].m_width; ++i)
         {
-            tmpSum += m_outWeights[i+1][j]*outDelta[j];
+            hidDelta[i] = tmpInput[i]*(1-tmpInput[i]);
+            float tmpSum = 0;
+            for(int j=0; j<previousLayer->m_width; ++j)
+            {
+                tmpSum += previousLayer->m_weights[i+1][j]*previousDelta[j];
+            }
+            hidDelta[i] *= tmpSum;
         }
-        hidError[i] *= tmpSum;
+        previousLayer = m_hiddenLayers[k];
+        previousDelta = hidDelta[k];
     }
 
-    for(int i=0; i<m_hidPerceptrons; ++i)
+    //apply delta to weights
+    tmpInput = pIn;
+    for(int k=0; k<m_maxHiddenLayer;++k)
     {
-        m_hidWeights[0][i] += m_eta*1*hidError[i];
-        for(int j=0; j<m_inpPerceptrons; ++j)
+        for(int i=0; i<m_hiddenLayers[k].m_width; ++i)
         {
-            m_hidWeights[j+1][i] += m_eta*pIn[j]*hidError[i];
+            m_hiddenLayers[k-1].m_weights[0][i] += m_eta*1*hidDelta[k][i];
+            for(int j=0; j<m_hiddenLayers[k-1].m_width; ++j)
+            {
+                m_hiddenLayers[k-1].m_weights[j+1][i] += m_eta*tmpInput[j]*hidDelta[k][i];
+            }
         }
+        tmpInput = tmpHiddenOutput[k];
     }
+
+    for(int i=0; i<m_maxHiddenLayer;++i)
+    {
+        delete [] delta[k];
+        delete [] tmpHiddenOutput[k];
+    }
+    delete [] delta;
+    delete [] tmpHiddenOutput;
 }
 
 template<typename T> float* MultilayerPerceptron::classify(const T *pIn)
