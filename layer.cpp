@@ -29,7 +29,7 @@ Layer::~Layer()
     m_weights = nullptr;
 }
 
-Layer::setupWeights(const unsigned int pIn, const unsigned int pWidth)
+void Layer::setupWeights(const unsigned int pIn, const unsigned int pWidth)
 {
     if(m_in==0 && m_width == 0 && m_weights == nullptr)
     {
@@ -43,14 +43,14 @@ Layer::setupWeights(const unsigned int pIn, const unsigned int pWidth)
     }
 }
 
-Layer::randomizeWeights()
+void Layer::randomizeWeights()
 {
     std::mt19937 mt(time(NULL));
 	std::uniform_real_distribution<> distribution(-1, 1);
 
-    for (int i=0;i<m_in+1;i++)
+    for (unsigned int i=0;i<m_in+1;i++)
     {
-		for (int j=0;j<m_width;j++) {
+		for (unsigned int j=0;j<m_width;j++) {
 			m_weights[i][j] = distribution(mt);
 		}
 	}

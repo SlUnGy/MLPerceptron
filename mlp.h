@@ -67,13 +67,13 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
         tmpInput = tmpHiddenOutput[i];
     }
 
-    float tmpOutOutput [m_outputLayer.m_width];
-    for(unsigned int i=0; i<m_outputLayer.m_width; ++i)
+    float tmpOutOutput [m_outputLayer->m_width];
+    for(unsigned int i=0; i<m_outputLayer->m_width; ++i)
     {
-        tmpOutOutput[i] = 1*m_outputLayer.m_weights[0][i];
-        for(unsigned int j=1; j<m_outputLayer.m_in; ++j)
+        tmpOutOutput[i] = 1*m_outputLayer->m_weights[0][i];
+        for(unsigned int j=1; j<m_outputLayer->m_in; ++j)
         {
-            tmpOutOutput[i] += tmpInput[j-1] * m_outputLayer.m_weights[j][i];
+            tmpOutOutput[i] += tmpInput[j-1] * m_outputLayer->m_weights[j][i];
         }
         tmpOutOutput[i] = sigmoid(tmpOutOutput[i]);
     }
@@ -105,7 +105,7 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     //calculate hidden layer error
     for(int k=m_maxHiddenLayer-1;k>0;--k)
     {
-        tmpInput = tmpHiddenOutput[k]
+        tmpInput = tmpHiddenOutput[k];
         hidDelta[k] = new float[m_hiddenLayers[k].m_width];
         for(int i=0; i<m_hiddenLayers[k].m_width; ++i)
         {
@@ -138,10 +138,10 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
 
     for(int i=0; i<m_maxHiddenLayer;++i)
     {
-        delete [] delta[k];
-        delete [] tmpHiddenOutput[k];
+        delete [] hidDelta[i];
+        delete [] tmpHiddenOutput[i];
     }
-    delete [] delta;
+    delete [] hidDelta;
     delete [] tmpHiddenOutput;
 }
 

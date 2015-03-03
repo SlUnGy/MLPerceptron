@@ -8,11 +8,11 @@ class Layer
         Layer(const unsigned int, const unsigned int);
         ~Layer();
 
-        setupWeights(const unsigned int, const unsigned int);
-        randomizeWeights();
+        void setupWeights(const unsigned int, const unsigned int);
+        void randomizeWeights();
 
-        const unsigned int m_in;
-        const unsigned int m_width;
+        unsigned int m_in;
+        unsigned int m_width;
         float **m_weights;
 };
 
