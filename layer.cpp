@@ -48,7 +48,7 @@ void Layer::randomizeWeights()
     std::mt19937 mt(time(NULL));
 	std::uniform_real_distribution<> distribution(-1, 1);
 
-    for (unsigned int i=0;i<m_in+1;i++)
+    for (unsigned int i=0;i<m_in;i++)
     {
 		for (unsigned int j=0;j<m_width;j++) {
 			m_weights[i][j] = distribution(mt);
