@@ -31,23 +31,59 @@ int findHighestIndex(const float* pResults, const int pSize)
 void trainOCR()
 {
     IDXFile trainLabels("./data/train-labels.idx1-ubyte" );
-    IDXFile trainImages("./data/train-images.idx3-ubyte" );
+    IDXFile *trainImages = new IDXFile("./data/train-images.idx3-ubyte" );
 
     IDXFile testLabels("./data/t10k-labels.idx1-ubyte" );
-    IDXFile testImages("./data/t10k-images.idx3-ubyte" );
+    IDXFile *testImages = new IDXFile("./data/t10k-images.idx3-ubyte" );
 
+    //test if all files have been correctly read and have the right sizes
     if(!trainLabels.hasError() && trainLabels.getDimensionNumber() == 1 &&
-       !trainImages.hasError() && trainImages.getDimensionNumber() == 3 &&
+       !trainImages->hasError() && trainImages->getDimensionNumber() == 3 &&
        !testLabels.hasError() && testLabels.getDimensionNumber() == 1 &&
-       !testImages.hasError() && testImages.getDimensionNumber() == 3)
+       !testImages->hasError() && testImages->getDimensionNumber() == 3 &&
+       trainImages->getDimensions()[1]*trainImages->getDimensions()[2] ==
+       testImages->getDimensions()[1]*testImages->getDimensions()[2])
     {
+        const unsigned int imageSize        = trainImages->getDimensions()[1]*trainImages->getDimensions()[2];
+        std::cout << "Preparing images." << std::endl;
+        float **fTrainImages = new float*[trainImages->getDimensions()[0]];
+        for(unsigned int i=0;i<trainImages->getDimensions()[0];++i)
+        {
+            fTrainImages[i] = new float[imageSize];
+            for(unsigned int j=0;j<imageSize;++j)
+            {
+                fTrainImages[i][j] = (1.0f/255.0f)**(trainImages->getDataPointer()+i*imageSize+j);
+            }
+        }
+        trainImages->deleteData();
+
+        float **fTestImages = new float*[testImages->getDimensions()[0]];
+        for(unsigned int i=0;i<testImages->getDimensions()[0];++i)
+        {
+            fTestImages[i] = new float[imageSize];
+            for(unsigned int j=0;j<imageSize;++j)
+            {
+                fTestImages[i][j] = (1.0f/255.0f)**(testImages->getDataPointer()+i*imageSize+j);
+            }
+        }
+        testImages->deleteData();
+
         std::cout << "OCR-Training." << std::endl;
         constexpr unsigned int samples      = 10;
         constexpr float eta                 = 0.025f;
-        const unsigned int imageSize        = trainImages.getDimensions()[1]*trainImages.getDimensions()[2];
-        const unsigned int hiddenNodes      = 300;
+        const unsigned int hiddenNodes[]    = {300};
+        const unsigned int hiddenLayers     = 1;
         std::cout << "using images with: " << imageSize << " pixels." << std::endl;
-        std::cout << "using mlp with: " << hiddenNodes << " hidden nodes and eta: " << eta << "." << std::endl;
+        std::cout << "using mlp with: ";
+        for(unsigned int i=0; i<hiddenLayers; ++i)
+        {
+            std::cout << hiddenNodes[i];
+            if(i<hiddenLayers-1)
+            {
+                std::cout << ",";
+            }
+        }
+        std::cout << " hidden nodes and eta: " << eta << "." << std::endl;
 
         std::cout << "setting up data." << std::endl;
         float targets[samples][samples]={0};
@@ -56,19 +92,19 @@ void trainOCR()
             targets[i][i]=1.0f;
         }
 
-        MultilayerPerceptron mlp(eta,imageSize,hiddenNodes,samples);
+        MultilayerPerceptron mlp(eta,imageSize,hiddenLayers,hiddenNodes,samples);
 
         float error     = 1.0f;
-        const unsigned int testTotal = testImages.getDimensions()[0];
-        while(error > 0.05){
-        std::cout << "training the mlp." << std::endl;
+        const unsigned int testTotal = testImages->getDimensions()[0];
+        while(error > 0.05)
+        {
+            std::cout << "training the mlp." << std::endl;
             for(unsigned int iterations=0; iterations<1; ++iterations)
             {
-                for(unsigned int i=0; i<trainImages.getDimensions()[0]; ++i)
+                for(unsigned int i=0; i<trainImages->getDimensions()[0]; ++i)
                 {
                     const int targetIndex = (int)trainLabels.getDataPointer()[i];
-                    const uint8_t * const targetImage = trainImages.getDataPointer()+i*imageSize;
-                    mlp.train(targetImage,targets[targetIndex]);
+                    mlp.train(fTrainImages[i],targets[targetIndex]);
                 }
             }
             std::cout << "classifying test data." << std::endl;
@@ -76,8 +112,7 @@ void trainOCR()
             for(unsigned int i=0; i<testTotal; ++i)
             {
                 const int targetIndex = (int)testLabels.getDataPointer()[i];
-                const uint8_t * const targetImage = testImages.getDataPointer()+i*imageSize;
-                float* tmpResults = mlp.classify(targetImage);
+                float* tmpResults = mlp.classify(fTestImages[i]);
                 if(findHighestIndex(tmpResults,10)==targetIndex)
                 {
                     ++correct;
@@ -87,6 +122,18 @@ void trainOCR()
             error = (1-correct/(float)testTotal);
             std::cout << "error: " << error << "." <<std::endl;
         }
+
+        //free used memory
+        for(unsigned int i=0;i<trainImages->getDimensions()[0];++i)
+        {
+            delete [] fTrainImages[i];
+        }
+        delete [] fTrainImages;
+        for(unsigned int i=0;i<testImages->getDimensions()[0];++i)
+        {
+            delete [] fTestImages[i];
+        }
+        delete [] fTestImages;
     }
     else
     {
