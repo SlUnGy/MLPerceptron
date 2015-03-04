@@ -115,8 +115,5 @@ IDXFile::~IDXFile()
     {
         delete [] m_dimension;
     }
-    if(m_data != nullptr)
-    {
-        delete m_data;
-    }
+    deleteData();
 }

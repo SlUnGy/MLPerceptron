@@ -17,6 +17,7 @@ public:
     uint32_t* getDimensions() { return m_dimension; }
 
     bool readFile(const std::string& );
+    void deleteData(){ if(m_data != nullptr){delete [] m_data; m_data = nullptr;}}
 protected:
     bool m_error;
 private:
