@@ -133,7 +133,7 @@ float* MultilayerPerceptron::classify(const float *pIn)
         for(unsigned int j=0; j<m_hiddenLayers[i].m_width; ++j)
         {
             tmpHiddenOutput[i][j] = 1*m_hiddenLayers[i].m_weights[0][j];
-            for(unsigned int k=1; k<m_hiddenLayers[i].m_in+1; ++k)
+            for(unsigned int k=1; k<m_hiddenLayers[i].m_in; ++k)
             {
                 tmpHiddenOutput[i][j] += tmpInput[j-1]*m_hiddenLayers[i].m_weights[k][j];
             }
