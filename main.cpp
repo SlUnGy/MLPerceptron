@@ -52,7 +52,7 @@ void trainOCR()
             fTrainImages[i] = new float[imageSize];
             for(unsigned int j=0;j<imageSize;++j)
             {
-                fTrainImages[i][j] = (1.0f/255.0f)**(trainImages->getDataPointer()+i*imageSize+j);
+                fTrainImages[i][j] = *(trainImages->getDataPointer()+i*imageSize+j);
             }
         }
         trainImages->deleteData();
@@ -63,7 +63,7 @@ void trainOCR()
             fTestImages[i] = new float[imageSize];
             for(unsigned int j=0;j<imageSize;++j)
             {
-                fTestImages[i][j] = (1.0f/255.0f)**(testImages->getDataPointer()+i*imageSize+j);
+                fTestImages[i][j] = *(testImages->getDataPointer()+i*imageSize+j);
             }
         }
         testImages->deleteData();
