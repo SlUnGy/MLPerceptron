@@ -1,67 +1,57 @@
-#ifndef MLP_H_INCLUDED
-#define MLP_H_INCLUDED
+#include "olp.h"
 
-#include <cmath>
-#include <cstdint>
-#include <iostream>
+#include <ctime>
 
-#include "layer.h"
+#include <random>
 
-class MultilayerPerceptron {
-	public:
-		MultilayerPerceptron():MultilayerPerceptron(0.25f, 2, 3, 1){}
-		MultilayerPerceptron(const float, const int, const int, const int);
+OneLayerPerceptron::OneLayerPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
+    : m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons}
+{
+    //+1 due to constant coefficient, i.e. bias
+	m_hidWeights = new float*[m_inpPerceptrons+1];
+    for (int i=0;i<m_inpPerceptrons+1;i++)
+    {
+        m_hidWeights[i] = new float[m_hidPerceptrons];
+	}
 
-		~MultilayerPerceptron()
-        {
-            for(int i=0; i<m_hidPerceptrons; ++i)
-            {
-                delete [] m_hidWeights[i];
-            }
-            delete [] m_hidWeights;
+	m_outWeights = new float*[m_hidPerceptrons+1];
+    for (int i=0;i<m_hidPerceptrons+1;i++)
+    {
+        m_outWeights[i] = new float[m_outPerceptrons];
+	}
+    randomizeWeights();
+}
 
+void OneLayerPerceptron::randomizeWeights()
+{
+	/*
+        doesn't work on mingw&windows....
+        std::random_device rd;
+    */
+	std::mt19937 mt(time(NULL));
+	std::uniform_real_distribution<> distribution(-1, 1);
 
-            for(int i=0; i<m_outPerceptrons; ++i)
-            {
-                delete [] m_outWeights[i];
-            }
-            delete [] m_outWeights;
-        }
+    for (int i=0;i<m_inpPerceptrons+1;i++)
+    {
+		for (int j=0;j<m_hidPerceptrons;j++) {
+			m_hidWeights[i][j] = distribution(mt);
+		}
+	}
 
+    for (int i=0;i<m_hidPerceptrons+1;i++)
+    {
+		for (int j=0;j<m_outPerceptrons;j++) {
+			m_outWeights[i][j] = distribution(mt);
+		}
+	}
+}
 
-		template<typename T> void train(const T*, const float*);
-		template<typename T> float* classify(const T*);
+bool OneLayerPerceptron::writeToFile(const std::string& pFilename)
+{
+    return true;
+}
 
-        template<typename T> static float sigmoid(const T pNum)
-        {
-            return (1.0f/(1.0f+exp(-pNum)));
-        }
-
-        static float sigmoid( const float pNum )
-        {
-            return (1.0f/(1.0f+expf(-pNum)));
-        }
-
-        bool writeToFile(const std::string&);
-
-        void randomizeWeights();
-
-	protected:
-		const float m_eta;
-
-        //pointer for multiple hidden layers might be useful
-        const int m_hidLayers;
-		const int m_hidPerceptrons;
-
-		const int m_inpPerceptrons;
-		const int m_outPerceptrons;
-
-		float **m_hidWeights;
-		float **m_outWeights;
-    private:
-};
-
-template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* pTarget)
+void OneLayerPerceptron::train(const float* pIn,const float* pTarget)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -98,19 +88,17 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     //applying delta to reduce error in output layer
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        //apply to bias
         m_outWeights[0][i] += m_eta*1*outDelta[i];
-        //m_outWeights[i+1][] -> skip the constant coeffecient we already did above
         for(int j=0; j<m_hidPerceptrons; ++j)
         {
             m_outWeights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
         }
     }
 
-    //calculate hidden layer error
     float hidError[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
+        //m_outWeights[i+1][] -> skip the constant coeffecient
         hidError[i] = hidOutput[i]*(1-hidOutput[i]);
         float tmpSum = 0;
         for(int j=0; j<m_outPerceptrons; ++j)
@@ -130,7 +118,7 @@ template<typename T> void MultilayerPerceptron::train(const T* pIn,const float* 
     }
 }
 
-template<typename T> float* MultilayerPerceptron::classify(const T *pIn)
+float* OneLayerPerceptron::classify(const float *pIn)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -158,5 +146,3 @@ template<typename T> float* MultilayerPerceptron::classify(const T *pIn)
 
     return output;
 }
-
-#endif // MLP_H_INCLUDED
