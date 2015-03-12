@@ -1,10 +1,10 @@
-#include "mlp.h"
+#include "nlp.h"
 
 #include <ctime>
 
 #include <random>
 
-MultilayerPerceptron::MultilayerPerceptron(const float pEta, const unsigned int pInput, const unsigned int pLayers, const unsigned int *pHidden, const unsigned int pOut)
+NLayerPerceptron::NLayerPerceptron(const float pEta, const unsigned int pInput, const unsigned int pLayers, const unsigned int *pHidden, const unsigned int pOut)
     : m_eta{pEta}, m_maxHiddenLayer{pLayers}, m_hiddenLayers{new Layer[m_maxHiddenLayer]}, m_outputLayer{new Layer()}
 {
     m_hiddenLayers[0].setupWeights(pInput+1, pHidden[0]);
@@ -19,12 +19,12 @@ MultilayerPerceptron::MultilayerPerceptron(const float pEta, const unsigned int 
     m_outputLayer->randomizeWeights();
 }
 
-bool MultilayerPerceptron::writeToFile(const std::string& pFilename)
+bool NLayerPerceptron::writeToFile(const std::string& pFilename)
 {
     return true;
 }
 
-void MultilayerPerceptron::train(const float* pIn,const float* pTarget)
+void NLayerPerceptron::train(const float* pIn,const float* pTarget)
 {
     const float *tmpInput   = pIn;
     float **tmpHiddenOutput = new float*[m_maxHiddenLayer];
@@ -122,7 +122,7 @@ void MultilayerPerceptron::train(const float* pIn,const float* pTarget)
     delete [] tmpHiddenOutput;
 }
 
-float* MultilayerPerceptron::classify(const float *pIn)
+float* NLayerPerceptron::classify(const float *pIn)
 {
     const float *tmpInput   = pIn;
     float **tmpHiddenOutput = new float*[m_maxHiddenLayer];

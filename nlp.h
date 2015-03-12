@@ -1,5 +1,5 @@
-#ifndef MLP_H_INCLUDED
-#define MLP_H_INCLUDED
+#ifndef NLP_H_INCLUDED
+#define NLP_H_INCLUDED
 
 #include <cmath>
 #include <cstdint>
@@ -7,11 +7,11 @@
 
 #include "layer.h"
 
-class MultilayerPerceptron {
+class NLayerPerceptron {
 	public:
-		MultilayerPerceptron(const float, const unsigned int, const unsigned int, const unsigned int*, const unsigned int);
+		NLayerPerceptron(const float, const unsigned int, const unsigned int, const unsigned int*, const unsigned int);
 
-		~MultilayerPerceptron()
+		~NLayerPerceptron()
         {
             if(m_hiddenLayers)
             {
@@ -25,11 +25,6 @@ class MultilayerPerceptron {
 
 		void train(const float*, const float*);
 		float* classify(const float*);
-
-        template<typename T> static float sigmoid(const T pNum)
-        {
-            return (1.0f/(1.0f+exp(-pNum)));
-        }
 
         static float sigmoid( const float pNum )
         {
@@ -46,4 +41,4 @@ class MultilayerPerceptron {
     private:
 };
 
-#endif // MLP_H_INCLUDED
+#endif // NLP_H_INCLUDED
