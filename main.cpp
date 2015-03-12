@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "mlp.h"
+#include "nlp.h"
 #include "idxfile.h"
 
 float calcMeanSquaredError(const int pSize,const float* pTarget, const float* pResult)
@@ -92,7 +92,7 @@ void trainOCR()
             targets[i][i]=1.0f;
         }
 
-        MultilayerPerceptron mlp(eta,imageSize,hiddenLayers,hiddenNodes,samples);
+        NLayerPerceptron mlp(eta,imageSize,hiddenLayers,hiddenNodes,samples);
 
         float error     = 1.0f;
         const unsigned int testTotal = testImages->getDimensions()[0];
