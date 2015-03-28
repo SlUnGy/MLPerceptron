@@ -5,3 +5,4 @@ data/
 *.layout
 *.cbp
 *.out
+*.dll
