@@ -160,13 +160,6 @@ inline void checkErr(cl_int err, const char * name)
 }
 
 static const char source[] =
-    "#if defined(cl_khr_fp64)\n"
-    "#  pragma OPENCL EXTENSION cl_khr_fp64: enable\n"
-    "#elif defined(cl_amd_fp64)\n"
-    "#  pragma OPENCL EXTENSION cl_amd_fp64: enable\n"
-    "#else\n"
-    "#  error double precision is not supported\n"
-    "#endif\n"
     "kernel void add(\n"
     "       ulong n,\n"
     "       global const double *a,\n"
@@ -194,7 +187,6 @@ int OCLTest() {
             return 1;
         }
 
-        // Get first available GPU device which supports double precision.
         cl::Context context;
         std::vector<cl::Device> device;
         for(auto p = platform.begin(); device.empty() && p != platform.end(); p++)
@@ -203,18 +195,13 @@ int OCLTest() {
 
             try
             {
-                p->getDevices(CL_DEVICE_TYPE_GPU, &pldev);
+                p->getDevices(CL_DEVICE_TYPE_CPU, &pldev);
 
                 for(auto d = pldev.begin(); device.empty() && d != pldev.end(); d++)
                 {
                     if (!d->getInfo<CL_DEVICE_AVAILABLE>()) continue;
 
                     std::string ext = d->getInfo<CL_DEVICE_EXTENSIONS>();
-
-                    if (
-                        ext.find("cl_khr_fp64") == std::string::npos &&
-                        ext.find("cl_amd_fp64") == std::string::npos
-                    ) continue;
 
                     device.push_back(*d);
                     context = cl::Context(device);
@@ -228,7 +215,7 @@ int OCLTest() {
 
         if (device.empty())
         {
-            std::cerr << "GPUs with double precision not found." << std::endl;
+            std::cerr << "no usable device found." << std::endl;
             return 1;
         }
 
@@ -288,10 +275,7 @@ int OCLTest() {
     }
     catch (const cl::Error &err)
     {
-        std::cerr
-                << "OpenCL error: "
-        << err.what() << "(" << err.err() << ")"
-        << std::endl;
+        std::cerr << "OpenCL error: " << err.what() << "(" << err.err() << ")" << std::endl;
         return 1;
     }
     return 0;
