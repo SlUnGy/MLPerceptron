@@ -8,7 +8,6 @@
 #define __CL_ENABLE_EXCEPTIONS
 #include <CL/cl.hpp>
 
-
 #include "nlp.h"
 #include "olp.h"
 #include "idxfile.h"
@@ -225,19 +224,15 @@ int OCLTest() {
         cl::CommandQueue queue(context, device[0]);
 
         // Compile OpenCL program for found device.
-        cl::Program program(context, cl::Program::Sources(
-                                1, std::make_pair(source, strlen(source))
-                            ));
+        cl::Program program(context, cl::Program::Sources( 1, std::make_pair(source, strlen(source))));
 
         try {
             program.build(device);
         }
         catch (const cl::Error&)
         {
-            std::cerr
-                    << "OpenCL compilation error" << std::endl
-            << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device[0])
-            << std::endl;
+            std::cerr << "OpenCL compilation error" << std::endl;
+            std::cerr << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device[0]) << std::endl;
             return 1;
         }
 
@@ -249,14 +244,9 @@ int OCLTest() {
         std::vector<double> c(N);
 
         // Allocate device buffers and transfer input data to device.
-        cl::Buffer A(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-        a.size() * sizeof(double), a.data());
-
-        cl::Buffer B(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-        b.size() * sizeof(double), b.data());
-
-        cl::Buffer C(context, CL_MEM_READ_WRITE,
-        c.size() * sizeof(double));
+        cl::Buffer A(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, a.size() * sizeof(double), a.data());
+        cl::Buffer B(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, b.size() * sizeof(double), b.data());
+        cl::Buffer C(context, CL_MEM_READ_WRITE, c.size() * sizeof(double));
 
         // Set kernel parameters.
         add.setArg(0, static_cast<cl_ulong>(N));
