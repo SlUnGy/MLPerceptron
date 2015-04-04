@@ -1,18 +1,24 @@
 #ifndef OCLP_H_INCLUDED
 #define OCLP_H_INCLUDED
 
-#define __CL_ENABLE_EXCEPTIONS
-#include <CL/cl.hpp>
+#include <string>
 
 class OpenCLPerceptron
 {
 public:
-    OpenCLPerceptron(cl::Context&,cl::Device&);
+    OpenCLPerceptron();
     ~OpenCLPerceptron();
+
+    bool hasFoundDevice(){return m_foundDevice;}
+    int init();
+
+    void train(const float**, const float**);
+    float** classify(const float**);
 protected:
+    bool m_foundDevice;
+    const std::string m_sourceFile;
+    const std::string m_kernelName;
 private:
-    const std::string sourceFile;
-    cl::Program compiledOCL;
 };
 
 #endif // OCLP_H_INCLUDED
