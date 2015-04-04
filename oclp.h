@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+#define __CL_ENABLE_EXCEPTIONS
+#include <CL/cl.hpp>
+
 class OpenCLPerceptron
 {
 public:
@@ -12,8 +15,9 @@ public:
 
     bool hasFoundDevice(){return m_foundDevice;}
 
-    int initTraining(const std::vector<float>&, const std::vector<float>&);
-    int initTesting(const std::vector<float>&)
+    bool initOpenCL();
+    bool initTraining(const std::vector<float>&, const std::vector<float>&);
+    bool initTesting(const std::vector<float>&);
 
     void trainAll();
     //will only do classification
@@ -23,6 +27,8 @@ protected:
     const std::string m_sourceFile;
     const std::string m_kernelName;
 private:
+    cl::Context m_context;
+    std::vector<cl::Device> m_device;
 };
 
 #endif // OCLP_H_INCLUDED

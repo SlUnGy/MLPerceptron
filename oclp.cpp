@@ -3,9 +3,6 @@
 #include <iostream>
 #include <fstream>
 
-#define __CL_ENABLE_EXCEPTIONS
-#include <CL/cl.hpp>
-
 OpenCLPerceptron::OpenCLPerceptron()
 :m_foundDevice{false},m_sourceFile{"mlp.cl"},m_kernelName{"add"}
 {
@@ -17,20 +14,18 @@ OpenCLPerceptron::~OpenCLPerceptron()
 
 }
 
-int OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std::vector<float> &trainClf)
+bool OpenCLPerceptron::initOpenCL()
 {
-    try {
+    try{
         std::vector<cl::Platform> allPlatforms;
         cl::Platform::get(&allPlatforms);
 
         if (allPlatforms.empty())
         {
             std::cerr << "OpenCL platforms not found." << std::endl;
-            return 1;
+            return false;
         }
 
-        cl::Context context;
-        std::vector<cl::Device> device;
         for(auto currentPlatform = allPlatforms.begin();
             !m_foundDevice && currentPlatform != allPlatforms.end();
             currentPlatform++)
@@ -44,8 +39,8 @@ int OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std
             {
                 if (currentDevice->getInfo<CL_DEVICE_AVAILABLE>())//add other selection criteria here
                 {
-                    device.push_back(*currentDevice);
-                    context = cl::Context(device);
+                    m_device.push_back(*currentDevice);
+                    m_context = cl::Context(m_device);
                     m_foundDevice = true;
                 }
             }
@@ -54,22 +49,35 @@ int OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std
         if (!m_foundDevice)
         {
             std::cerr << "no usable device found." << std::endl;
-            return 1;
+            return false;
         }
 
-        std::cout << "using:" << device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
-        cl::CommandQueue queue(context, device[0]);
+        std::cout << "using:" << m_device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
+    }
+    catch (const cl::Error &err)
+    {
+        std::cerr << "OpenCL error: " << err.what() << "(" << err.err() << ")" << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std::vector<float> &trainClf)
+{
+    try {
+        cl::CommandQueue queue(m_context, m_device[0]);
         std::ifstream file(m_sourceFile);
         std::string prog( std::istreambuf_iterator<char>(file),(std::istreambuf_iterator<char>()));
-        cl::Program program(context, cl::Program::Sources( 1, std::make_pair(prog.c_str(), prog.length()+1)));
+
+        cl::Program program(m_context, cl::Program::Sources( 1, std::make_pair(prog.c_str(), prog.length()+1)));
 
         try {
-            program.build(device);
+            program.build(m_device);
         }
         catch (const cl::Error&)
         {
-            std::cerr << "compilation error: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device[0]) << std::endl;
-            return 1;
+            std::cerr << "compilation error: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_device[0]) << std::endl;
+            return false;
         }
 
         cl::Kernel add(program, m_kernelName.c_str());
@@ -81,9 +89,9 @@ int OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std
         std::vector<double> c(N);
 
         // Allocate device buffers and transfer input data to device.
-        cl::Buffer A(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, a.size() * sizeof(double), a.data());
-        cl::Buffer B(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, b.size() * sizeof(double), b.data());
-        cl::Buffer C(context, CL_MEM_READ_WRITE, c.size() * sizeof(double));
+        cl::Buffer A(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, a.size() * sizeof(double), a.data());
+        cl::Buffer B(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, b.size() * sizeof(double), b.data());
+        cl::Buffer C(m_context, CL_MEM_READ_WRITE, c.size() * sizeof(double));
 
         // Set kernel parameters.
         add.setArg(0, static_cast<cl_ulong>(N));
@@ -99,22 +107,22 @@ int OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std
     catch (const cl::Error &err)
     {
         std::cerr << "OpenCL error: " << err.what() << "(" << err.err() << ")" << std::endl;
-        return 1;
+        return false;
     }
-    return 0;
+    return true;
 }
 
-int OpenCLPerceptron::initTesting(const std::vector<float> &testImg)
+bool OpenCLPerceptron::initTesting(const std::vector<float> &testImg)
 {
-
+    return true;
 }
 
-void OpenCLPerceptron::trainAll(const float**, const float**)
+void OpenCLPerceptron::trainAll()
 {
 
 }
 
 float** OpenCLPerceptron::testAll()
 {
-
+    return nullptr;
 }

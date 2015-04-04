@@ -156,31 +156,36 @@ bool loadData(std::vector<float> &trainImg, std::vector<float> &trainClf, std::v
     return true;
 }
 
-float calcCorrectPerc(const float** pClassifications, const float** pTargets)
+float calcCorrectPerc(float** pClassifications,float** pTargets)
 {
-    return 0.0f;
+    return 1.0f;
 }
 
 int OCLTest() {
-    OpenCLPerceptron test;
+    OpenCLPerceptron oclp;
+
     std::vector<float> trainingImages;
     std::vector<float> trainingClassifications;
     std::vector<float> testingImages;
     float** testingClassifications;
-    if(loadData(trainingImages,trainingClassifications,testingImages,testingClassifications))
+
+    if(oclp.initOpenCL() && loadData(trainingImages,trainingClassifications,testingImages,testingClassifications))
     {
-        test.initTraining(trainingImages,trainingClassifications);
-        test.initTesting(testingImages);
-
-        float correctPercentage = 0.0f;
-        const float target      = 0.5f;
-        while(correctPercentage>target)
+        if(oclp.initTraining(trainingImages,trainingClassifications) && oclp.initTesting(testingImages))
         {
-            test.trainAll();
-            correctPercentage = calcCorrectPerc(test.testAll(),testingClassifications)
+            float correctPercentage = 0.0f;
+            const float target      = 0.5f;
+            while(correctPercentage>target)
+            {
+                oclp.trainAll();
+                correctPercentage = calcCorrectPerc(oclp.testAll(),testingClassifications);
+            }
+            return 0;
         }
-
-        return 0;
+        else
+        {
+            return 1;
+        }
     }
     else
     {
