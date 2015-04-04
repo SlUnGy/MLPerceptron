@@ -17,7 +17,7 @@ OpenCLPerceptron::~OpenCLPerceptron()
 
 }
 
-int OpenCLPerceptron::init()
+int OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std::vector<float> &trainClf)
 {
     try {
         std::vector<cl::Platform> allPlatforms;
@@ -104,12 +104,17 @@ int OpenCLPerceptron::init()
     return 0;
 }
 
-void OpenCLPerceptron::train(const float**, const float**)
+int OpenCLPerceptron::initTesting(const std::vector<float> &testImg)
 {
 
 }
 
-float** OpenCLPerceptron::classify(const float**)
+void OpenCLPerceptron::trainAll(const float**, const float**)
+{
+
+}
+
+float** OpenCLPerceptron::testAll()
 {
 
 }

@@ -151,9 +151,41 @@ void trainOCR()
     }
 }
 
+bool loadData(std::vector<float> &trainImg, std::vector<float> &trainClf, std::vector<float> &testImg,float** testClf)
+{
+    return true;
+}
+
+float calcCorrectPerc(const float** pClassifications, const float** pTargets)
+{
+    return 0.0f;
+}
+
 int OCLTest() {
     OpenCLPerceptron test;
-    return test.init();
+    std::vector<float> trainingImages;
+    std::vector<float> trainingClassifications;
+    std::vector<float> testingImages;
+    float** testingClassifications;
+    if(loadData(trainingImages,trainingClassifications,testingImages,testingClassifications))
+    {
+        test.initTraining(trainingImages,trainingClassifications);
+        test.initTesting(testingImages);
+
+        float correctPercentage = 0.0f;
+        const float target      = 0.5f;
+        while(correctPercentage>target)
+        {
+            test.trainAll();
+            correctPercentage = calcCorrectPerc(test.testAll(),testingClassifications)
+        }
+
+        return 0;
+    }
+    else
+    {
+        return 2;
+    }
 }
 
 int main()
