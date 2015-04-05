@@ -25,9 +25,11 @@ public:
 protected:
     bool m_foundDevice;
     const std::string m_sourceFile;
-    const std::string m_kernelName;
 private:
     cl::Context m_context;
+    cl::Program m_program;
+    cl::Kernel m_classify, m_calculateDelta, m_backpropagation;
+    cl::Buffer m_trImg,m_trClf,C;
     std::vector<cl::Device> m_device;
 };
 

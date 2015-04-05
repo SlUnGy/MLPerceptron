@@ -4,7 +4,7 @@
 #include <fstream>
 
 OpenCLPerceptron::OpenCLPerceptron()
-:m_foundDevice{false},m_sourceFile{"mlp.cl"},m_kernelName{"add"}
+:m_foundDevice{false},m_sourceFile{"mlp.cl"}
 {
 
 }
@@ -53,6 +53,24 @@ bool OpenCLPerceptron::initOpenCL()
         }
 
         std::cout << "using:" << m_device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
+
+        std::ifstream file(m_sourceFile);
+        std::string prog( std::istreambuf_iterator<char>(file),(std::istreambuf_iterator<char>()));
+
+        m_program = cl::Program(m_context, cl::Program::Sources( 1, std::make_pair(prog.c_str(), prog.length()+1)));
+
+        try {
+            m_program.build(m_device);
+        }
+        catch (const cl::Error&)
+        {
+            std::cerr << "compilation error: " << m_program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_device[0]) << std::endl;
+            return false;
+        }
+
+        m_classify          = cl::Kernel(m_program, "classify");
+        m_calculateDelta    = cl::Kernel(m_program, "calcDelta");
+        m_backpropagation   = cl::Kernel(m_program, "backprop");
     }
     catch (const cl::Error &err)
     {
@@ -65,48 +83,24 @@ bool OpenCLPerceptron::initOpenCL()
 bool OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std::vector<float> &trainClf)
 {
     try {
-        cl::CommandQueue queue(m_context, m_device[0]);
-        std::ifstream file(m_sourceFile);
-        std::string prog( std::istreambuf_iterator<char>(file),(std::istreambuf_iterator<char>()));
-
-        cl::Program program(m_context, cl::Program::Sources( 1, std::make_pair(prog.c_str(), prog.length()+1)));
-
-        try {
-            program.build(m_device);
-        }
-        catch (const cl::Error&)
-        {
-            std::cerr << "compilation error: " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_device[0]) << std::endl;
-            return false;
-        }
-
-        cl::Kernel add(program, m_kernelName.c_str());
-
-        // Prepare input data.
         const size_t N = 1 << 20;
         std::vector<double> a(N, 1);
         std::vector<double> b(N, 41);
-        std::vector<double> c(N);
 
         // Allocate device buffers and transfer input data to device.
-        cl::Buffer A(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, a.size() * sizeof(double), a.data());
-        cl::Buffer B(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, b.size() * sizeof(double), b.data());
-        cl::Buffer C(m_context, CL_MEM_READ_WRITE, c.size() * sizeof(double));
+        m_trImg = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, a.size() * sizeof(double), a.data());
+        m_trClf = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, b.size() * sizeof(double), b.data());
+        C = cl::Buffer(m_context, CL_MEM_READ_WRITE, N * sizeof(double));
 
         // Set kernel parameters.
-        add.setArg(0, static_cast<cl_ulong>(N));
-        add.setArg(1, A);
-        add.setArg(2, B);
-        add.setArg(3, C);
-
-        // Launch kernel on the compute device.
-        queue.enqueueNDRangeKernel(add, cl::NullRange, N, cl::NullRange);
-        queue.enqueueReadBuffer(C, CL_TRUE, 0, c.size() * sizeof(double), c.data());
-        std::cout << c[42] << std::endl;
+        m_classify.setArg(0, static_cast<cl_ulong>(N));
+        m_classify.setArg(1, m_trImg);
+        m_classify.setArg(2, m_trClf);
+        m_classify.setArg(3, C);
     }
     catch (const cl::Error &err)
     {
-        std::cerr << "OpenCL error: " << err.what() << "(" << err.err() << ")" << std::endl;
+        std::cerr << "init opencl error: " << err.what() << "(" << err.err() << ")" << std::endl;
         return false;
     }
     return true;
@@ -119,7 +113,20 @@ bool OpenCLPerceptron::initTesting(const std::vector<float> &testImg)
 
 void OpenCLPerceptron::trainAll()
 {
+    try
+    {
+        const size_t N = 1 << 20;
+        std::vector<double> c(N);
 
+        cl::CommandQueue queue(m_context, m_device[0]);
+        queue.enqueueNDRangeKernel(m_classify, cl::NullRange, N, cl::NullRange);
+        queue.enqueueReadBuffer(C, CL_TRUE, 0, c.size() * sizeof(double), c.data());
+        std::cout << c[42] << std::endl;
+    }
+    catch( const cl::Error &err)
+    {
+        std::cerr << "trainall opencl error: " << err.what() << "(" << err.err() << ")" << std::endl;
+    }
 }
 
 float** OpenCLPerceptron::testAll()
