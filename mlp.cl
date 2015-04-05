@@ -1,4 +1,4 @@
-kernel void add(
+kernel void classify(
     ulong n,
     global const double *a,
     global const double *b,
@@ -9,4 +9,14 @@ kernel void add(
     {
         c[i] = a[i] + b[i];
     }
+}
+
+kernel void calcDelta()
+{
+
+}
+
+kernel void backprop()
+{
+
 }
