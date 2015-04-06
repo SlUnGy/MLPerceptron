@@ -2,16 +2,42 @@
 
 #include <iostream>
 #include <fstream>
+#include <ctime>
+#include <random>
 
-OpenCLPerceptron::OpenCLPerceptron()
-:m_foundDevice{false},m_sourceFile{"mlp.cl"}
+OpenCLPerceptron::OpenCLPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
+    :m_foundDevice{false}, m_sourceFile{"mlp.cl"}, m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons},
+     m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons},
+     m_hidOutput(m_hidPerceptrons),m_hidWeights((m_hidPerceptrons)*(m_inpPerceptrons+1)),
+     m_outWeights(m_outPerceptrons*(m_hidPerceptrons+1))
 {
-
+    randomizeWeights();
 }
 
 OpenCLPerceptron::~OpenCLPerceptron()
 {
 
+}
+
+
+void OpenCLPerceptron::randomizeWeights()
+{
+	/*
+        doesn't work on mingw&windows....
+        std::random_device rd;
+    */
+	std::mt19937 mt(time(NULL));
+	std::uniform_real_distribution<> distribution(-1, 1);
+
+    for (int i=0;i<m_hidPerceptrons*(m_inpPerceptrons+1);i++)
+    {
+		m_hidWeights[i] = distribution(mt);
+    }
+
+    for (int i=0;i<m_outPerceptrons*(m_hidPerceptrons+1);i++)
+    {
+		m_outWeights[i] = distribution(mt);
+	}
 }
 
 bool OpenCLPerceptron::initOpenCL()
@@ -31,7 +57,7 @@ bool OpenCLPerceptron::initOpenCL()
             currentPlatform++)
         {
             std::vector<cl::Device> allDevices;
-            currentPlatform->getDevices(CL_DEVICE_TYPE_ALL, &allDevices);
+            currentPlatform->getDevices(CL_DEVICE_TYPE_CPU, &allDevices);
 
             for(auto currentDevice = allDevices.begin();
                 !m_foundDevice && currentDevice != allDevices.end();
@@ -68,7 +94,8 @@ bool OpenCLPerceptron::initOpenCL()
             return false;
         }
 
-        m_classify          = cl::Kernel(m_program, "classify");
+        m_calcHiddenOutput  = cl::Kernel(m_program, "calcHidden");
+        m_classify          = cl::Kernel(m_program, "calcOut");
         m_calculateDelta    = cl::Kernel(m_program, "calcDelta");
         m_backpropagation   = cl::Kernel(m_program, "backprop");
     }
@@ -80,48 +107,60 @@ bool OpenCLPerceptron::initOpenCL()
     return true;
 }
 
-bool OpenCLPerceptron::initTraining(const std::vector<float> &trainImg, const std::vector<float> &trainClf)
+bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<float> *trainClf)
 {
-    try {
-        const size_t N = 1 << 20;
-        std::vector<double> a(N, 1);
-        std::vector<double> b(N, 41);
-
-        // Allocate device buffers and transfer input data to device.
-        m_trImg = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, a.size() * sizeof(double), a.data());
-        m_trClf = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, b.size() * sizeof(double), b.data());
-        C = cl::Buffer(m_context, CL_MEM_READ_WRITE, N * sizeof(double));
-
-        // Set kernel parameters.
-        m_classify.setArg(0, static_cast<cl_ulong>(N));
-        m_classify.setArg(1, m_trImg);
-        m_classify.setArg(2, m_trClf);
-        m_classify.setArg(3, C);
-    }
-    catch (const cl::Error &err)
+    if(trainImg != nullptr && trainClf != nullptr)
     {
-        std::cerr << "init opencl error: " << err.what() << "(" << err.err() << ")" << std::endl;
+        try {
+            m_trImg     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainImg->size() * sizeof(float), trainImg->data());
+            m_hWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_hidWeights.size() *sizeof(float), m_hidWeights.data());
+            m_tmp       = cl::Buffer(m_context, CL_MEM_WRITE_ONLY| CL_MEM_USE_HOST_PTR, m_hidPerceptrons*sizeof(float), m_hidOutput.data());
+
+            m_calcHiddenOutput.setArg(0, m_eta);
+            m_calcHiddenOutput.setArg(1, m_inpPerceptrons);
+            m_calcHiddenOutput.setArg(2, m_hidPerceptrons);
+            m_calcHiddenOutput.setArg(3, m_hWeights);
+            m_calcHiddenOutput.setArg(4, m_trImg);
+            m_calcHiddenOutput.setArg(5, m_tmp);
+        }
+        catch (const cl::Error &err)
+        {
+            std::cerr << "init opencl error: " << err.what() << "(" << err.err() << ")" << std::endl;
+            return false;
+        }
+        return true;
+    }
+    else
+    {
         return false;
     }
-    return true;
 }
 
-bool OpenCLPerceptron::initTesting(const std::vector<float> &testImg)
+bool OpenCLPerceptron::initTesting(std::vector<float> *testImg)
 {
-    return true;
+    if(testImg != nullptr)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void OpenCLPerceptron::trainAll()
 {
     try
     {
-        const size_t N = 1 << 20;
-        std::vector<double> c(N);
-
         cl::CommandQueue queue(m_context, m_device[0]);
-        queue.enqueueNDRangeKernel(m_classify, cl::NullRange, N, cl::NullRange);
-        queue.enqueueReadBuffer(C, CL_TRUE, 0, c.size() * sizeof(double), c.data());
-        std::cout << c[42] << std::endl;
+        queue.enqueueNDRangeKernel(m_calcHiddenOutput, cl::NullRange, m_hidPerceptrons, cl::NullRange);
+        queue.enqueueReadBuffer(m_tmp, CL_TRUE, 0, m_hidOutput.size() * sizeof(float), m_hidOutput.data());
+        std::cout << "values: ";
+        for(int i=0; i< m_hidPerceptrons; ++i)
+        {
+            std::cout << m_hidOutput[i] << " ";
+        }
+        std::cout << std::endl;
     }
     catch( const cl::Error &err)
     {
@@ -129,7 +168,7 @@ void OpenCLPerceptron::trainAll()
     }
 }
 
-float** OpenCLPerceptron::testAll()
+std::vector<float>* OpenCLPerceptron::testAll()
 {
     return nullptr;
 }
