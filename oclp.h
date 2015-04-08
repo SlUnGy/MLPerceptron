@@ -17,8 +17,7 @@ public:
     bool hasFoundDevice(){return m_foundDevice;}
 
     bool initOpenCL();
-    bool initTraining(std::vector<float>*, std::vector<float>*);
-    bool initTesting(std::vector<float>*);
+    bool initTraining(std::vector<float>*, std::vector<float>*, std::vector<float>*);
 
     void trainAll();
     //will only do classification
@@ -31,11 +30,11 @@ protected:
 
     const float m_eta;
 
-    const int m_hidPerceptrons;
     const int m_inpPerceptrons;
+    const int m_hidPerceptrons;
     const int m_outPerceptrons;
 
-    std::vector<float> m_hidOutput;
+    std::vector<float> m_outputBuffer;
     std::vector<float> m_hidWeights;
     std::vector<float> m_outWeights;
 private:
@@ -43,12 +42,12 @@ private:
     cl::Context m_context;
     cl::Program m_program;
 
-    cl::Kernel m_calcHiddenOutput, m_classify, m_calculateDelta, m_backpropagation;
+    cl::Kernel m_calcLayerOutput, m_calcLayerDelta, m_calcOutputDelta, m_applyDelta;
 
-    cl::Buffer m_trImg;
-    cl::Buffer m_trClf;
-    cl::Buffer m_tmp;
-    cl::Buffer m_hWeights;
+    cl::Buffer m_bTrImg;
+    cl::Buffer m_bTrClf;
+    cl::Buffer m_bHOut, m_bOOut;
+    cl::Buffer m_bHWeights, m_bOWeights;
 };
 
 #endif // OCLP_H_INCLUDED

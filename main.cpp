@@ -177,7 +177,7 @@ int OCLTest() {
     if(oclp.initOpenCL() && loadData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications))
     {
         std::cout << "initialising opencl buffers." << std::endl;
-        if(oclp.initTraining(trainingImages,trainingClassifications) && oclp.initTesting(testingImages))
+        if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
         {
             float correctPercentage = 0.0f;
             const float target      = 0.5f;
