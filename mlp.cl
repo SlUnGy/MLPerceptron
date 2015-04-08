@@ -7,44 +7,79 @@ float sigmoid( const float pNum )
     Weights should be stored in rows, not columns
 */
 
-kernel void calcHidden(
-    const float eta,
-    const int inpP,
-    const int hidP,
-    global const float *hidWeight,
-    global const float *image,
-    global float *hidOutput
+kernel void calcLayer(
+    const int preP,
+    const int curP,
+    global const float *curWeight,
+    global const float *curInp,
+    global float *curOutput
     )
 {
     size_t i = get_global_id(0);
-    if(i < hidP)
+    if(i < curP)
     {
         //add constant
-        hidOutput[i] = 1*hidWeight[i*inpP];
+        curOutput[i] = 1*curWeight[i*preP];
         //sum up all inputs*weightings
-        for(int j=1; j<inpP+1; ++j)
+        for(int j=0; j<preP; ++j)
         {
-            hidOutput[i] += image[j-1] * hidWeight[j+i*inpP];
+            curOutput[i] += curInp[j] * curWeight[j+1+i*preP];
         }
-        hidOutput[i] = sigmoid(hidOutput[i]);
+        curOutput[i] = sigmoid(curOutput[i]);
     }
 }
 
-kernel void calcOut()
+kernel void calcLayerDelta(
+    const int curP,
+    const int nexP,
+    global const float *curOutput,
+    global const float *nexWeights,
+    global const float *nexDelta,
+    global float *curDelta
+    )
 {
     size_t i = get_global_id(0);
-    /*if (i < n)
+    if(i < curP)
     {
-        c[i] = a[i] + b[i];
-    }*/
+        curDelta[i] = curOutput[i]*(1-curOutput[i]);
+        float tmpSum = 0;
+        for(int j=0; j<nexP; ++j)
+        {
+            tmpSum += nexWeights[j+1+i*nexP]*nexDelta[j];
+        }
+        curDelta[i] *= tmpSum;
+    }
 }
 
-kernel void calcDelta()
+kernel void calcOutputDelta(
+    const int outP,
+    global const float *outOutput,
+    global const float *target,
+    global float *outDelta
+    )
 {
-
+    size_t i = get_global_id(0);
+    if(i < outP)
+    {
+        outDelta[i] = outOutput[i]*(1-outOutput[i])*(target[i]-outOutput[i]);
+    }
 }
 
-kernel void backprop()
+kernel void applyDelta(
+    const int curP,
+    const float eta,
+    global const float *curDelta,
+    global const float *curOutput,
+    global float *curWeight
+    )
 {
-
+    size_t i = get_global_id(0);
+    if(i < curP)
+    {
+        curWeight[i] += eta*1*curDelta[i];
+        for(int j=0; j<curP; ++j)
+        {
+            curWeight[j+1+i*curP] += eta*curOutput[j]*curDelta[i];
+        }
+    }
 }
