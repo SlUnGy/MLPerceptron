@@ -48,6 +48,7 @@ private:
     cl::Buffer m_bTrClf;
     cl::Buffer m_bHOut, m_bOOut;
     cl::Buffer m_bHWeights, m_bOWeights;
+    cl::Buffer m_bHDelta, m_bODelta;
 };
 
 #endif // OCLP_H_INCLUDED
