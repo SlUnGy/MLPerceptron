@@ -8,8 +8,9 @@
 OpenCLPerceptron::OpenCLPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
     :m_foundDevice{false}, m_sourceFile{"mlp.cl"}, m_eta{pEta},
      m_inpPerceptrons{pInputPerceptrons}, m_hidPerceptrons{pHiddenPerceptrons}, m_outPerceptrons{pOutputPerceptrons},
-     m_outputBuffer(m_hidPerceptrons),m_hidWeights((m_hidPerceptrons)*(m_inpPerceptrons+1)),
-     m_outWeights(m_outPerceptrons*(m_hidPerceptrons+1))
+     m_hidWeights((m_hidPerceptrons)*(m_inpPerceptrons+1)),
+     m_outWeights(m_outPerceptrons*(m_hidPerceptrons+1)),
+     m_trainingDataSets{0}
 {
     randomizeWeights();
 }
@@ -120,6 +121,17 @@ bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<fl
             m_bOWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_outWeights.size()*sizeof(float), m_outWeights.data());
             m_bOOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
             m_bODelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
+
+            m_trainingDataSets = trainImg->size()/m_inpPerceptrons;
+            int classificationDataSets = trainClf->size()/m_outPerceptrons;
+
+            if(m_trainingDataSets != classificationDataSets)
+            {
+                std::cerr << "training data set amount (" << m_trainingDataSets <<
+                 ") and training classification set amount(" << classificationDataSets << ") don't match " << std::endl;
+                 m_trainingDataSets = 0;
+                 return false;
+            }
         }
         catch (const cl::Error &err)
         {
@@ -140,43 +152,66 @@ void OpenCLPerceptron::trainAll()
     {
         cl::CommandQueue queue(m_context, m_device[0]);
 
-        m_calcLayerOutput.setArg(0, m_inpPerceptrons);
-        m_calcLayerOutput.setArg(1, m_hidPerceptrons);
-        m_calcLayerOutput.setArg(2, m_bHWeights);
-        m_calcLayerOutput.setArg(3, m_bTrImg);
-        m_calcLayerOutput.setArg(4, m_bHOut);
-        queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_hidPerceptrons, cl::NullRange);
-
-        m_calcLayerOutput.setArg(0, m_hidPerceptrons);
-        m_calcLayerOutput.setArg(1, m_outPerceptrons);
-        m_calcLayerOutput.setArg(2, m_bOWeights);
-        m_calcLayerOutput.setArg(3, m_bHOut);
-        m_calcLayerOutput.setArg(4, m_bOOut);
-        queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_outPerceptrons, cl::NullRange);
-
-        m_calcOutputDelta.setArg(0, m_outPerceptrons);
-        m_calcOutputDelta.setArg(1, m_bOOut);
-        m_calcOutputDelta.setArg(2, m_bTrClf);
-        m_calcOutputDelta.setArg(3, m_bODelta);
-        queue.enqueueNDRangeKernel(m_calcOutputDelta, cl::NullRange, m_outPerceptrons, cl::NullRange);
-
-        m_calcLayerDelta.setArg(0, m_hidPerceptrons);
-        m_calcLayerDelta.setArg(1, m_outPerceptrons);
-        m_calcLayerDelta.setArg(2, m_bHOut);
-        m_calcLayerDelta.setArg(3, m_bOWeights);
-        m_calcLayerDelta.setArg(4, m_bODelta);
-        m_calcLayerDelta.setArg(5, m_bHDelta);
-        queue.enqueueNDRangeKernel(m_calcLayerDelta, cl::NullRange, m_hidPerceptrons, cl::NullRange);
-
-        queue.enqueueReadBuffer(m_bHDelta, CL_TRUE, 0, m_outputBuffer.size() * sizeof(float), m_outputBuffer.data());
-
-
-        std::cout << "values: ";
-        for(int i=0; i< m_hidPerceptrons; ++i)
+        for(int i = 0; i < m_trainingDataSets; ++i)
         {
-            std::cout << m_outputBuffer[i] << " ";
+            const int imageOffset = i * m_inpPerceptrons;
+            const int classOffset = i * m_outPerceptrons;
+
+            m_calcLayerOutput.setArg(0, m_inpPerceptrons);
+            m_calcLayerOutput.setArg(1, m_hidPerceptrons);
+            m_calcLayerOutput.setArg(2, m_bHWeights);
+            m_calcLayerOutput.setArg(3, m_bTrImg);
+            m_calcLayerOutput.setArg(4, imageOffset);
+            m_calcLayerOutput.setArg(5, m_bHOut);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_hidPerceptrons);
+
+            m_calcLayerOutput.setArg(0, m_hidPerceptrons);
+            m_calcLayerOutput.setArg(1, m_outPerceptrons);
+            m_calcLayerOutput.setArg(2, m_bOWeights);
+            m_calcLayerOutput.setArg(3, m_bHOut);
+            m_calcLayerOutput.setArg(4, imageOffset);
+            m_calcLayerOutput.setArg(5, m_bOOut);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_outPerceptrons);
+
+            m_calcOutputDelta.setArg(0, m_outPerceptrons);
+            m_calcOutputDelta.setArg(1, m_bOOut);
+            m_calcOutputDelta.setArg(2, m_bTrClf);
+            m_calcOutputDelta.setArg(3, classOffset);
+            m_calcOutputDelta.setArg(4, m_bODelta);
+            queue.enqueueNDRangeKernel(m_calcOutputDelta, cl::NullRange, m_outPerceptrons);
+
+            m_calcLayerDelta.setArg(0, m_hidPerceptrons);
+            m_calcLayerDelta.setArg(1, m_outPerceptrons);
+            m_calcLayerDelta.setArg(2, m_bHOut);
+            m_calcLayerDelta.setArg(3, m_bOWeights);
+            m_calcLayerDelta.setArg(4, m_bODelta);
+            m_calcLayerDelta.setArg(5, m_bHDelta);
+            queue.enqueueNDRangeKernel(m_calcLayerDelta, cl::NullRange, m_hidPerceptrons);
+
+            m_applyDelta.setArg(0, m_outPerceptrons);
+            m_applyDelta.setArg(1, m_eta);
+            m_applyDelta.setArg(2, m_bODelta);
+            m_applyDelta.setArg(3, m_bOOut);
+            m_applyDelta.setArg(4, m_bOWeights);
+            queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_outPerceptrons);
+
+            m_applyDelta.setArg(0, m_hidPerceptrons);
+            m_applyDelta.setArg(1, m_eta);
+            m_applyDelta.setArg(2, m_bHDelta);
+            m_applyDelta.setArg(3, m_bHOut);
+            m_applyDelta.setArg(4, m_bHWeights);
+            queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_hidPerceptrons);
+
+            std::vector<float> outputBuffer(m_outPerceptrons);
+            queue.enqueueReadBuffer(m_bOOut, CL_TRUE, 0, outputBuffer.size() * sizeof(float), outputBuffer.data());
+
+            std::cout << "values: ";
+            for(int i=0; i< m_hidPerceptrons; ++i)
+            {
+                std::cout << outputBuffer[i] << " ";
+            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
     }
     catch( const cl::Error &err)
     {

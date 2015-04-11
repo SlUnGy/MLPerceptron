@@ -34,9 +34,10 @@ protected:
     const int m_hidPerceptrons;
     const int m_outPerceptrons;
 
-    std::vector<float> m_outputBuffer;
     std::vector<float> m_hidWeights;
     std::vector<float> m_outWeights;
+
+    int m_trainingDataSets;
 private:
     std::vector<cl::Device> m_device;
     cl::Context m_context;
