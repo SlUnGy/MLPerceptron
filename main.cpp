@@ -155,23 +155,29 @@ bool loadData(std::vector<float> **trainImg, std::vector<float> **trainClf, std:
 {
     *trainImg    = new std::vector<float>{0.f,0.f, 0.f,1.f, 1.f,0.f, 1.f,1.f};
     *trainClf    = new std::vector<float>{    0.f,     1.f,     1.f,     0.f};
-    *testImg     = new std::vector<float>{0.f,1.f, 1.f,1.f};
-    *testClf     = new std::vector<float>{    1.,      0.f};
+    *testImg     = new std::vector<float>{0.f,0.f, 0.f,1.f, 1.f,0.f, 1.f,1.f};
+    *testClf     = new std::vector<float>{    0.f,     1.f,     1.f,     0.f};
     return true;
 }
 
-float calcCorrectPerc(std::vector<float> *pClassifications,const std::vector<float> *pTargets)
+float calcCorrect(const float * pClassifications, const std::vector<float> *pTargets, const unsigned int pSize)
 {
-    return 1.0f;
+    if( pTargets != nullptr )
+    {
+        return 1.0f;//calcMeanSquaredError(pSize, pTargets->data(), pClassifications);
+    }
+    return 0.5f;
 }
 
 int OCLTest() {
-    OpenCLPerceptron oclp(0.25f,2,1,1);
+    OpenCLPerceptron oclp(0.25f,2,16,1);
 
     std::vector<float> *trainingImages          = nullptr;
     std::vector<float> *trainingClassifications = nullptr;
     std::vector<float> *testingImages           = nullptr;
     std::vector<float> *testingClassifications  = nullptr;
+
+    float outputBuffer[4];
 
     std::cout << "initialising opencl and images." << std::endl;
     if(oclp.initOpenCL() && loadData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications))
@@ -179,15 +185,16 @@ int OCLTest() {
         std::cout << "initialising opencl buffers." << std::endl;
         if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
         {
-            float correctPercentage = 0.0f;
-            const float target      = 0.5f;
-            while(correctPercentage<target)
+            float correct       = 0.0f;
+            const float target  = 1.5f;
+            while(correct<target)
             {
-                std::cout << "training." << std::endl;
                 oclp.trainAll();
-                std::cout << "testing: ";
-                correctPercentage = calcCorrectPerc(oclp.testAll(),testingClassifications);
-                std::cout << correctPercentage << " correct." << std::endl;
+                oclp.testAll(outputBuffer);
+                correct = calcCorrect(outputBuffer, testingClassifications,1);
+                std::cout <<
+                "[" << outputBuffer[0] << "," << outputBuffer[1] << "," << outputBuffer[2] << "," << outputBuffer[3] << "] : "  <<
+                correct << " mse." << std::endl;
             }
             return 0;
         }

@@ -8,9 +8,9 @@
 OpenCLPerceptron::OpenCLPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
     :m_foundDevice{false}, m_sourceFile{"mlp.cl"}, m_eta{pEta},
      m_inpPerceptrons{pInputPerceptrons}, m_hidPerceptrons{pHiddenPerceptrons}, m_outPerceptrons{pOutputPerceptrons},
-     m_hidWeights((m_hidPerceptrons)*(m_inpPerceptrons+1)),
+     m_hidWeights(m_hidPerceptrons*(m_inpPerceptrons+1)),
      m_outWeights(m_outPerceptrons*(m_hidPerceptrons+1)),
-     m_trainingDataSets{0}
+     m_trainingDataSets{0}, m_testDataSets{0}
 {
     randomizeWeights();
 }
@@ -110,7 +110,7 @@ bool OpenCLPerceptron::initOpenCL()
 
 bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<float> *trainClf, std::vector<float> *testImg)
 {
-    if(trainImg != nullptr && trainClf != nullptr)
+    if(trainImg != nullptr && trainClf != nullptr && testImg != nullptr)
     {
         try {
             m_bTrImg     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainImg->size()*sizeof(float), trainImg->data());
@@ -122,8 +122,13 @@ bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<fl
             m_bOOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
             m_bODelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
 
-            m_trainingDataSets = trainImg->size()/m_inpPerceptrons;
-            int classificationDataSets = trainClf->size()/m_outPerceptrons;
+            m_bTeImg     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, testImg->size()*sizeof(float), testImg->data());
+
+            m_trainingDataSets  = trainImg->size()/m_inpPerceptrons;
+            m_testDataSets      = testImg->size()/m_inpPerceptrons;
+
+            const int classificationDataSets = trainClf->size()/m_outPerceptrons;
+
 
             if(m_trainingDataSets != classificationDataSets)
             {
@@ -169,7 +174,7 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerOutput.setArg(1, m_outPerceptrons);
             m_calcLayerOutput.setArg(2, m_bOWeights);
             m_calcLayerOutput.setArg(3, m_bHOut);
-            m_calcLayerOutput.setArg(4, imageOffset);
+            m_calcLayerOutput.setArg(4, 0);
             m_calcLayerOutput.setArg(5, m_bOOut);
             queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_outPerceptrons);
 
@@ -201,16 +206,6 @@ void OpenCLPerceptron::trainAll()
             m_applyDelta.setArg(3, m_bHOut);
             m_applyDelta.setArg(4, m_bHWeights);
             queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_hidPerceptrons);
-
-            std::vector<float> outputBuffer(m_outPerceptrons);
-            queue.enqueueReadBuffer(m_bOOut, CL_TRUE, 0, outputBuffer.size() * sizeof(float), outputBuffer.data());
-
-            std::cout << "values: ";
-            for(int i=0; i< m_hidPerceptrons; ++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
         }
     }
     catch( const cl::Error &err)
@@ -219,7 +214,37 @@ void OpenCLPerceptron::trainAll()
     }
 }
 
-std::vector<float>* OpenCLPerceptron::testAll()
+void OpenCLPerceptron::testAll(float *pOutputBuffer)
 {
-    return nullptr;
+    try
+    {
+        cl::CommandQueue queue(m_context, m_device[0]);
+        for(int i=0; i<m_testDataSets; ++i)
+        {
+            const int imageOffset = i * m_inpPerceptrons;
+            const int outOffset   = i * m_outPerceptrons;
+
+            m_calcLayerOutput.setArg(0, m_inpPerceptrons);
+            m_calcLayerOutput.setArg(1, m_hidPerceptrons);
+            m_calcLayerOutput.setArg(2, m_bHWeights);
+            m_calcLayerOutput.setArg(3, m_bTeImg);
+            m_calcLayerOutput.setArg(4, imageOffset);
+            m_calcLayerOutput.setArg(5, m_bHOut);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_hidPerceptrons);
+
+            m_calcLayerOutput.setArg(0, m_hidPerceptrons);
+            m_calcLayerOutput.setArg(1, m_outPerceptrons);
+            m_calcLayerOutput.setArg(2, m_bOWeights);
+            m_calcLayerOutput.setArg(3, m_bHOut);
+            m_calcLayerOutput.setArg(4, imageOffset);
+            m_calcLayerOutput.setArg(5, m_bOOut);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_outPerceptrons);
+
+            queue.enqueueReadBuffer(m_bOOut, CL_TRUE, 0, m_outPerceptrons * sizeof(float), pOutputBuffer+outOffset);
+        }
+    }
+    catch( const cl::Error &err )
+    {
+        std::cerr << "testall opencl error: " << err.what() << "(" << err.err() << ")" << std::endl;
+    }
 }

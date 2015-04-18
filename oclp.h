@@ -21,7 +21,7 @@ public:
 
     void trainAll();
     //will only do classification
-    std::vector<float>* testAll();
+    void testAll(float*);
 
     void randomizeWeights();
 protected:
@@ -38,6 +38,7 @@ protected:
     std::vector<float> m_outWeights;
 
     int m_trainingDataSets;
+    int m_testDataSets;
 private:
     std::vector<cl::Device> m_device;
     cl::Context m_context;
@@ -45,8 +46,8 @@ private:
 
     cl::Kernel m_calcLayerOutput, m_calcLayerDelta, m_calcOutputDelta, m_applyDelta;
 
-    cl::Buffer m_bTrImg;
-    cl::Buffer m_bTrClf;
+    cl::Buffer m_bTrImg, m_bTrClf;
+    cl::Buffer m_bTeImg;
     cl::Buffer m_bHOut, m_bOOut;
     cl::Buffer m_bHWeights, m_bOWeights;
     cl::Buffer m_bHDelta, m_bODelta;
