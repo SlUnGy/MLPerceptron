@@ -81,7 +81,7 @@ kernel void applyDelta(
         curWeight[i] += eta*1*curDelta[i];
         for(int j=0; j<curP; ++j)
         {
-            curWeight[j+1+i*curP] += eta*curOutput[j]*curDelta[i];
+            curWeight[j+1+i] += eta*curOutput[j]*curDelta[i];
         }
     }
 }

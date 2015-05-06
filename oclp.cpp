@@ -236,7 +236,7 @@ void OpenCLPerceptron::testAll(float *pOutputBuffer)
             m_calcLayerOutput.setArg(1, m_outPerceptrons);
             m_calcLayerOutput.setArg(2, m_bOWeights);
             m_calcLayerOutput.setArg(3, m_bHOut);
-            m_calcLayerOutput.setArg(4, imageOffset);
+            m_calcLayerOutput.setArg(4, 0);
             m_calcLayerOutput.setArg(5, m_bOOut);
             queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_outPerceptrons);
 
