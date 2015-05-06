@@ -18,6 +18,13 @@ IDXFile::IDXFile(const std::string& pFile)
     readFile(pFile);
 }
 
+IDXFile::IDXFile( const IDXFile& pCpy )
+    :m_error{pCpy.hasError()},m_magicNumber{pCpy.getMagicNumber()},m_dimensionNumber{pCpy.getDimensionNumber()},
+    m_dimension{pCpy.getDimensions()},m_data{pCpy.getDataPointer()}
+{
+
+}
+
 bool IDXFile::readFile(const std::string& pFile)
 {
     std::ifstream file(pFile, std::ios::in | std::ios::binary);
@@ -111,9 +118,5 @@ bool IDXFile::readFile(const std::string& pFile)
 
 IDXFile::~IDXFile()
 {
-    if(m_dimension != nullptr)
-    {
-        delete [] m_dimension;
-    }
     deleteData();
 }
