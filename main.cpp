@@ -5,9 +5,6 @@
 #include <string>
 #include <iterator>
 
-#define __CL_ENABLE_EXCEPTIONS
-#include <CL/cl.hpp>
-
 #include "nlp.h"
 #include "olp.h"
 #include "oclp.h"
@@ -164,13 +161,13 @@ float calcCorrect(const float * pClassifications, const std::vector<float> *pTar
 {
     if( pTargets != nullptr )
     {
-        return 1.0f;//calcMeanSquaredError(pSize, pTargets->data(), pClassifications);
+        return calcMeanSquaredError(pSize, pTargets->data(), pClassifications);
     }
-    return 0.5f;
+    return 1.0f;
 }
 
 int OCLTest() {
-    OpenCLPerceptron oclp(0.25f,2,16,1);
+    OpenCLPerceptron oclp(0.25f,2,30,1);
 
     std::vector<float> *trainingImages          = nullptr;
     std::vector<float> *trainingClassifications = nullptr;
@@ -185,16 +182,20 @@ int OCLTest() {
         std::cout << "initialising opencl buffers." << std::endl;
         if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
         {
-            float correct       = 0.0f;
-            const float target  = 1.5f;
-            while(correct<target)
+            std::cout << "training." << std::endl;
+            unsigned int epoch  = 0;
+            float correctness   = 1.0f;
+            const float target  = 0.05f;
+            while(correctness>target)
             {
+                ++epoch;
                 oclp.trainAll();
                 oclp.testAll(outputBuffer);
-                correct = calcCorrect(outputBuffer, testingClassifications,1);
+                correctness = calcCorrect(outputBuffer, testingClassifications,1);
+
                 std::cout <<
-                "[" << outputBuffer[0] << "," << outputBuffer[1] << "," << outputBuffer[2] << "," << outputBuffer[3] << "] : "  <<
-                correct << " mse." << std::endl;
+                "[" << outputBuffer[0] << "," << outputBuffer[1] << "," << outputBuffer[2] << ","
+                << outputBuffer[3] << "] : "  << correctness << "/" << epoch << std::endl;
             }
             return 0;
         }
