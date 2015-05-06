@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-//read a 32bit bigendian number from a istream
+//read a 32bit bigendian number from an istream
 uint32_t read32_be(std::istream& pIn)
 {
     char b[4];
