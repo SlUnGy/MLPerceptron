@@ -4,8 +4,17 @@
 #include <string>
 #include <vector>
 
+//the amount of opencl header warnings is too damn high
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wall"
+#pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic ignored "-pedantic"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 #define __CL_ENABLE_EXCEPTIONS
 #include <CL/cl.hpp>
+
+#pragma GCC diagnostic pop
 
 class OpenCLPerceptron
 {
