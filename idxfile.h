@@ -17,6 +17,8 @@ public:
     uint8_t* getDataPointer() const { return m_data; }
     uint32_t* getDimensions() const { return m_dimension; }
 
+    unsigned int getTotalSize() const { return m_totalSize; }
+
     bool readFile(const std::string& );
 
     void deleteData()
@@ -31,6 +33,7 @@ public:
             delete [] m_dimension;
             m_dimension = nullptr;
         }
+        m_totalSize = 0;
     }
 
     IDXFile& operator= ( const IDXFile &pCpy )
@@ -55,6 +58,7 @@ private:
     uint32_t* m_dimension;
 
     uint8_t* m_data;
+    unsigned int m_totalSize;
 };
 
 #endif // IDXFILE_H
