@@ -160,8 +160,8 @@ void OpenCLPerceptron::trainAll()
 
         for(int i = 0; i < m_trainingDataSets; ++i)
         {
-            const int imageOffset = i * m_inpPerceptrons;
-            const int classOffset = i * m_outPerceptrons;
+            const unsigned int imageOffset = i * m_inpPerceptrons;
+            const unsigned int classOffset = i * m_outPerceptrons;
 
             m_calcLayerOutput.setArg(0, m_inpPerceptrons);
             m_calcLayerOutput.setArg(1, m_hidPerceptrons);
@@ -169,7 +169,6 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerOutput.setArg(3, m_bTrImg);
             m_calcLayerOutput.setArg(4, imageOffset);
             m_calcLayerOutput.setArg(5, m_bHOut);
-            std::cout << i << " " << imageOffset << std::endl;
             queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
 
             m_calcLayerOutput.setArg(0, m_hidPerceptrons);
@@ -178,14 +177,14 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerOutput.setArg(3, m_bHOut);
             m_calcLayerOutput.setArg(4, 0);
             m_calcLayerOutput.setArg(5, m_bOOut);
-            //queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
 
             m_calcOutputDelta.setArg(0, m_outPerceptrons);
             m_calcOutputDelta.setArg(1, m_bOOut);
             m_calcOutputDelta.setArg(2, m_bTrClf);
             m_calcOutputDelta.setArg(3, classOffset);
             m_calcOutputDelta.setArg(4, m_bODelta);
-            //queue.enqueueNDRangeKernel(m_calcOutputDelta, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_calcOutputDelta, cl::NullRange, m_ndGlobal);
 
             m_calcLayerDelta.setArg(0, m_hidPerceptrons);
             m_calcLayerDelta.setArg(1, m_outPerceptrons);
@@ -193,21 +192,21 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerDelta.setArg(3, m_bOWeights);
             m_calcLayerDelta.setArg(4, m_bODelta);
             m_calcLayerDelta.setArg(5, m_bHDelta);
-            //queue.enqueueNDRangeKernel(m_calcLayerDelta, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_calcLayerDelta, cl::NullRange, m_ndGlobal);
 
             m_applyDelta.setArg(0, m_outPerceptrons);
             m_applyDelta.setArg(1, m_eta);
             m_applyDelta.setArg(2, m_bODelta);
             m_applyDelta.setArg(3, m_bOOut);
             m_applyDelta.setArg(4, m_bOWeights);
-            //queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_ndGlobal);
 
             m_applyDelta.setArg(0, m_hidPerceptrons);
             m_applyDelta.setArg(1, m_eta);
             m_applyDelta.setArg(2, m_bHDelta);
             m_applyDelta.setArg(3, m_bHOut);
             m_applyDelta.setArg(4, m_bHWeights);
-            //queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_ndGlobal);
         }
     }
     catch( const cl::Error &err)
@@ -232,7 +231,7 @@ void OpenCLPerceptron::testAll(float *pOutputBuffer)
             m_calcLayerOutput.setArg(3, m_bTeImg);
             m_calcLayerOutput.setArg(4, imageOffset);
             m_calcLayerOutput.setArg(5, m_bHOut);
-            //queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
 
             m_calcLayerOutput.setArg(0, m_hidPerceptrons);
             m_calcLayerOutput.setArg(1, m_outPerceptrons);
@@ -240,7 +239,7 @@ void OpenCLPerceptron::testAll(float *pOutputBuffer)
             m_calcLayerOutput.setArg(3, m_bHOut);
             m_calcLayerOutput.setArg(4, 0);
             m_calcLayerOutput.setArg(5, m_bOOut);
-            //queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
+            queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_ndGlobal);
 
             queue.enqueueReadBuffer(m_bOOut, CL_TRUE, 0, m_outPerceptrons * sizeof(float), pOutputBuffer+outOffset);
         }

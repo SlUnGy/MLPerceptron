@@ -40,18 +40,18 @@ float calcCorrect(const float * pClassifications, const std::vector<float> *pTar
 }
 
 int OCLTest() {
-    OpenCLPerceptron oclp(0.25f,28*28,300,10);
+    OpenCLPerceptron oclp(0.25f,28*28,28*14,1);
 
     std::vector<float> *trainingImages          = nullptr;
     std::vector<float> *trainingClassifications = nullptr;
     std::vector<float> *testingImages           = nullptr;
     std::vector<float> *testingClassifications  = nullptr;
 
-    float outputBuffer[10];
-
     std::cout << "initialising opencl and images." << std::endl;
     if(oclp.initOpenCL() && loadData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications))
     {
+        float outputBuffer[testingClassifications->size()];
+
         std::cout << "initialising opencl buffers." << std::endl;
         if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
         {
@@ -66,12 +66,13 @@ int OCLTest() {
                 oclp.testAll(outputBuffer);
                 correctness = calcCorrect(outputBuffer, testingClassifications,1);
 
-                std::cout << "[";
-                for(int i=0; i<9; ++i)
-                {
-                    std::cout << outputBuffer[i] << ",";
-                }
-                std::cout << outputBuffer[9] << "] - c:" << correctness << " - e:" << epoch << std::endl;
+//                std::cout << "[";
+//                for(int i=0; i<bufferSize-1; ++i)
+//                {
+//                    std::cout << outputBuffer[i] << ",";
+//                }
+//                std::cout << outputBuffer[bufferSize-1] << "] - ";
+                std::cout << "c:" << correctness << " - e:" << epoch << std::endl;
             }
             return 0;
         }

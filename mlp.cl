@@ -12,19 +12,23 @@ kernel void calcLayer(
     const int curP,
     global const float *curWeight,
     global const float *curInp,
-    const int inpOffset,
+    const unsigned int inpOffset,
     global float *curOutput
     )
 {
     size_t i = get_global_id(0);
     if(i < curP)
     {
+        //offset for weights
+        const int weightOffset = i*(preP+1);
+
         //add constant
-        curOutput[i] = 1*curWeight[i*preP];
+        curOutput[i] = 1*curWeight[weightOffset];
+
         //sum up all inputs*weightings
         for(int j=0; j<preP; ++j)
         {
-            curOutput[i] += curInp[j+inpOffset] * curWeight[j+1+i*preP];
+            curOutput[i] += curInp[j+inpOffset] * curWeight[j+1+weightOffset];
         }
         curOutput[i] = sigmoid(curOutput[i]);
     }
@@ -43,10 +47,12 @@ kernel void calcLayerDelta(
     if(i < curP)
     {
         curDelta[i] = curOutput[i]*(1-curOutput[i]);
+
         float tmpSum = 0;
+        const int weightOffset = i*nexP;
         for(int j=0; j<nexP; ++j)
         {
-            tmpSum += nexWeights[j+1+i*nexP]*nexDelta[j];
+            tmpSum += nexWeights[j+1+weightOffset]*nexDelta[j];
         }
         curDelta[i] *= tmpSum;
     }
@@ -56,7 +62,7 @@ kernel void calcOutputDelta(
     const int outP,
     global const float *outOutput,
     global const float *target,
-    const int targetOffset,
+    const unsigned int targetOffset,
     global float *outDelta
     )
 {

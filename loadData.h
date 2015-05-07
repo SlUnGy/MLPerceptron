@@ -47,7 +47,7 @@ bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTraini
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
                            (*pTrainingImages)->data(), copyU8T2F);
             idxTrainImages.deleteData();
-
+//padding could be done in both classifications, to make classification easier
             *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize());
             std::transform(idxTrainLabels.getDataPointer(), idxTrainLabels.getDataPointer()+idxTrainLabels.getTotalSize(),
                            (*pTrainingClassifications)->data(), copyU8T2F);
