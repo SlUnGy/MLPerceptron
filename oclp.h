@@ -43,6 +43,8 @@ protected:
     const int m_hidPerceptrons;
     const int m_outPerceptrons;
 
+    const int m_ndGlobal;
+
     std::vector<float> m_hidWeights;
     std::vector<float> m_outWeights;
 
