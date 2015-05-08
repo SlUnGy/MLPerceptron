@@ -118,10 +118,10 @@ bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<fl
             m_bTrClf     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainClf->size()*sizeof(float), trainClf->data());
             m_bHWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_hidWeights.size()*sizeof(float), m_hidWeights.data());
             m_bHOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidPerceptrons*sizeof(float));
-            m_bHDelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidWeights.size()*sizeof(float));
+            m_bHDelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidPerceptrons*sizeof(float));
             m_bOWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_outWeights.size()*sizeof(float), m_outWeights.data());
             m_bOOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
-            m_bODelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outWeights.size()*sizeof(float));
+            m_bODelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
 
             m_bTeImg     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, testImg->size()*sizeof(float), testImg->data());
 
@@ -194,18 +194,20 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerDelta.setArg(5, m_bHDelta);
             queue.enqueueNDRangeKernel(m_calcLayerDelta, cl::NullRange, m_hidPerceptrons);
 
-            m_applyDelta.setArg(0, m_outPerceptrons);
-            m_applyDelta.setArg(1, m_eta);
-            m_applyDelta.setArg(2, m_bODelta);
-            m_applyDelta.setArg(3, m_bOOut);
-            m_applyDelta.setArg(4, m_bOWeights);
+            m_applyDelta.setArg(0, m_hidPerceptrons);
+            m_applyDelta.setArg(1, m_outPerceptrons);
+            m_applyDelta.setArg(2, m_eta);
+            m_applyDelta.setArg(3, m_bODelta);
+            m_applyDelta.setArg(4, m_bOOut);
+            m_applyDelta.setArg(5, m_bOWeights);
             queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_outPerceptrons);
 
-            m_applyDelta.setArg(0, m_hidPerceptrons);
-            m_applyDelta.setArg(1, m_eta);
-            m_applyDelta.setArg(2, m_bHDelta);
-            m_applyDelta.setArg(3, m_bHOut);
-            m_applyDelta.setArg(4, m_bHWeights);
+            m_applyDelta.setArg(0, m_inpPerceptrons);
+            m_applyDelta.setArg(1, m_hidPerceptrons);
+            m_applyDelta.setArg(2, m_eta);
+            m_applyDelta.setArg(3, m_bHDelta);
+            m_applyDelta.setArg(4, m_bHOut);
+            m_applyDelta.setArg(5, m_bHWeights);
             queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_hidPerceptrons);
         }
     }

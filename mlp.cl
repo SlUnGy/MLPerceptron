@@ -49,7 +49,7 @@ kernel void calcLayerDelta(
         curDelta[i] = curOutput[i]*(1-curOutput[i]);
 
         float tmpSum = 0;
-        const int weightOffset = i*nexP;
+        const int weightOffset = i*(curP+1);
         for(int j=0; j<nexP; ++j)
         {
             tmpSum += nexWeights[j+1+weightOffset]*nexDelta[j];
@@ -74,6 +74,7 @@ kernel void calcOutputDelta(
 }
 
 kernel void applyDelta(
+    const int preP,
     const int curP,
     const float eta,
     global const float *curDelta,
@@ -84,10 +85,13 @@ kernel void applyDelta(
     size_t i = get_global_id(0);
     if(i < curP)
     {
-        curWeight[i] += eta*1*curDelta[i];
-        for(int j=0; j<curP; ++j)
+        //offset for weights
+        const int weightOffset = i*(preP+1);
+
+        curWeight[weightOffset] += eta*1*curDelta[i];
+        for(int j=0; j<preP; ++j)
         {
-            curWeight[j+1+i] += eta*curOutput[j]*curDelta[i];
+            curWeight[j+1+weightOffset] += eta*curOutput[j]*curDelta[i];
         }
     }
 }
