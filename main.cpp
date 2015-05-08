@@ -40,50 +40,64 @@ float calcCorrect(const float * pClassifications, const std::vector<float> *pTar
 }
 
 int OCLTest() {
-    OpenCLPerceptron oclp(0.25f,28*28,28*14,1);
-
     std::vector<float> *trainingImages          = nullptr;
     std::vector<float> *trainingClassifications = nullptr;
     std::vector<float> *testingImages           = nullptr;
     std::vector<float> *testingClassifications  = nullptr;
 
-    std::cout << "initialising opencl and images." << std::endl;
-    if(oclp.initOpenCL() && loadData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications))
+    int inputWidth  = 0;
+    int outputWidth = 0;
+
+    std::cout << "loading and initialising images." << std::endl;
+    if(loadXORData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications,inputWidth,outputWidth))
     {
-        float outputBuffer[testingClassifications->size()];
+        std::cout << "constructing opencl perceptron." << std::endl;
+        OpenCLPerceptron oclp(1.0f, inputWidth, 30, outputWidth);
+        float *outputBuffer = new float[testingClassifications->size()]{0.0f};
 
-        std::cout << "initialising opencl buffers." << std::endl;
-        if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
+        std::cout << "setting up opencl." << std::endl;
+        if(oclp.initOpenCL())
         {
-            std::cout << "training." << std::endl;
-            unsigned int epoch  = 0;
-            float correctness   = 1.0f;
-            const float target  = 0.05f;
-            while(correctness>target)
+            std::cout << "initialising opencl buffers." << std::endl;
+            if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
             {
-                ++epoch;
-                oclp.trainAll();
-                oclp.testAll(outputBuffer);
-                correctness = calcCorrect(outputBuffer, testingClassifications,1);
+                std::cout << "training." << std::endl;
+                unsigned int epoch  = 0;
+                float correctness   = 1.0f;
+                const float target  = 0.05f;
+                while(correctness>target)
+                {
+                    ++epoch;
+                    oclp.trainAll();
+                    oclp.testAll(outputBuffer);
+                    correctness = calcCorrect(outputBuffer, testingClassifications,1);
 
-//                std::cout << "[";
-//                for(int i=0; i<bufferSize-1; ++i)
-//                {
-//                    std::cout << outputBuffer[i] << ",";
-//                }
-//                std::cout << outputBuffer[bufferSize-1] << "] - ";
-                std::cout << "c:" << correctness << " - e:" << epoch << std::endl;
+                    std::cout << "[";
+                    for(unsigned int i=0; i<testingClassifications->size()-1; ++i)
+                    {
+                        std::cout << outputBuffer[i] << ",";
+                    }
+                    std::cout << outputBuffer[testingClassifications->size()-1] << "] - ";
+                    std::cout << "c:" << correctness << " - e:" << epoch << std::endl;
+                }
+                delete [] outputBuffer;
+                return 0;
             }
-            return 0;
+            else
+            {
+                delete [] outputBuffer;
+                return 1;
+            }
         }
         else
         {
-            return 1;
+            delete [] outputBuffer;
+            return 2;
         }
     }
     else
     {
-        return 2;
+        return 3;
     }
 }
 

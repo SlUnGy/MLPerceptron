@@ -13,17 +13,21 @@ float copyU8T2F(uint8_t pVal)
 }
 
 bool loadXORData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
-                 std::vector<float> **pTestImages, std::vector<float> **pTestClassifications)
+                 std::vector<float> **pTestImages, std::vector<float> **pTestClassifications,
+                 int &pInputwidth, int &pOutputwidth )
 {
     *pTrainingImages            = new std::vector<float>{0.f,0.f, 0.f,1.f, 1.f,0.f, 1.f,1.f};
     *pTrainingClassifications   = new std::vector<float>{    0.f,     1.f,     1.f,     0.f};
     *pTestImages                = new std::vector<float>{0.f,0.f, 0.f,1.f, 1.f,0.f, 1.f,1.f};
     *pTestClassifications       = new std::vector<float>{    0.f,     1.f,     1.f,     0.f};
+    pInputwidth     = 2;
+    pOutputwidth    = 1;
     return true;
 }
 
 bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
-              std::vector<float> **pTestImages, std::vector<float> **pTestClassifications)
+              std::vector<float> **pTestImages, std::vector<float> **pTestClassifications,
+              int &pInputwidth, int &pOutputwidth )
 {
     IDXFile idxTrainLabels("./data/train-labels.idx1-ubyte" );
     IDXFile idxTrainImages("./data/train-images.idx3-ubyte" );
@@ -32,7 +36,7 @@ bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTraini
     IDXFile idxTestImages("./data/t10k-images.idx3-ubyte" );
 
     //test if all files have been correctly read and have the right sizes
-    //dimensions==3 on images is needed due to dim[0] being the number of images and dim[0,1] being width and height
+    //dimensions==3 on images is needed due to dim[0] being the number of images and dim[1,2] being width and height
     if(!idxTrainLabels.hasError() && idxTrainLabels.getDimensionNumber() == 1 &&
        !idxTrainImages.hasError() && idxTrainImages.getDimensionNumber() == 3 &&
        !idxTestLabels.hasError()  && idxTestLabels.getDimensionNumber()  == 1 &&
@@ -43,6 +47,9 @@ bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTraini
 
         if(trainImageSize == testImageSize)
         {
+            pInputwidth  = trainImageSize;
+            pOutputwidth = 1;
+
             *pTrainingImages = new std::vector<float>(idxTrainImages.getTotalSize());
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
                            (*pTrainingImages)->data(), copyU8T2F);
