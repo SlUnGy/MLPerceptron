@@ -44,7 +44,8 @@ void OpenCLPerceptron::randomizeWeights()
 
 bool OpenCLPerceptron::initOpenCL()
 {
-    try{
+    try
+    {
         std::vector<cl::Platform> allPlatforms;
         cl::Platform::get(&allPlatforms);
 
@@ -59,7 +60,14 @@ bool OpenCLPerceptron::initOpenCL()
             currentPlatform++)
         {
             std::vector<cl::Device> allDevices;
-            currentPlatform->getDevices(CL_DEVICE_TYPE_CPU, &allDevices);
+            try
+            {
+                currentPlatform->getDevices(CL_DEVICE_TYPE_CPU, &allDevices);
+            }
+            catch (const cl::Error &err)
+            {
+                std::cerr << "no cpu found, trying next" << std::endl;
+            }
 
             for(auto currentDevice = allDevices.begin();
                 !m_foundDevice && currentDevice != allDevices.end();
