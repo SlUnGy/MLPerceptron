@@ -30,36 +30,54 @@ int findHighestIndex(const float* pResults, const int pSize)
     return highestIndex;
 }
 
-float calcCorrect(const float * pClassifications, const std::vector<float> *pTargets, const unsigned int pSize)
+float calcCorrect(const float * pClassifications, const std::vector<float> *pTargets, const unsigned int pSampleSize)
 {
     if( pTargets != nullptr )
     {
-        return calcMeanSquaredError(pSize, pTargets->data(), pClassifications);
+        return calcMeanSquaredError(pSampleSize, pTargets->data(), pClassifications);
+    }
+    return -1.0f;
+}
+
+float calcCorrect(const float * pClassifications, const std::vector<int> *pTargets, const unsigned int pSampleSize)
+{
+    if( pTargets != nullptr )
+    {
+        const unsigned int classifications = pTargets->size()/pSampleSize;
+        unsigned int correct = 0;
+        for(unsigned int i=0; i<classifications; ++i)
+        {
+            if(findHighestIndex(pClassifications+(i*pSampleSize),pSampleSize) == pTargets->data()[i])
+            {
+                ++correct;
+            }
+        }
+        return correct/(float)classifications;
     }
     return -1.0f;
 }
 
 int OCLTest() {
-    std::vector<float> *trainingImages          = nullptr;
+    std::vector<float> *trainingData            = nullptr;
     std::vector<float> *trainingClassifications = nullptr;
-    std::vector<float> *testingImages           = nullptr;
-    std::vector<float> *testingClassifications  = nullptr;
+    std::vector<float> *testingData             = nullptr;
+    std::vector<int>   *testingClassifications  = nullptr;
 
     int inputWidth  = 0;
     int outputWidth = 0;
 
     std::cout << "loading and initialising images." << std::endl;
-    if(loadXORData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications,inputWidth,outputWidth))
+    if(loadImageData(&trainingData,&trainingClassifications,&testingData,&testingClassifications,inputWidth,outputWidth))
     {
         std::cout << "constructing opencl perceptron." << std::endl;
-        OpenCLPerceptron oclp(0.15f, inputWidth, 50, outputWidth);
-        float *outputBuffer = new float[testingClassifications->size()]{0.0f};
+        OpenCLPerceptron oclp(0.05f, inputWidth, 5, outputWidth);
+        float *outputBuffer = new float[trainingClassifications->size()];
 
         std::cout << "setting up opencl." << std::endl;
         if(oclp.initOpenCL())
         {
             std::cout << "initialising opencl buffers." << std::endl;
-            if(oclp.initTraining(trainingImages,trainingClassifications, testingImages))
+            if(oclp.initTraining(trainingData,trainingClassifications, testingData))
             {
                 std::cout << "training." << std::endl;
                 unsigned int epoch  = 0;
@@ -70,17 +88,16 @@ int OCLTest() {
                     ++epoch;
                     oclp.trainAll();
                     oclp.testAll(outputBuffer);
-                    correctness = calcCorrect(outputBuffer, testingClassifications, testingClassifications->size());
+                    correctness = calcCorrect(outputBuffer, testingClassifications, outputWidth);
 
-                    std::cout << "[";
-                    for(unsigned int i=0; i<testingClassifications->size()-1; ++i)
-                    {
-                        std::cout << outputBuffer[i] << ",";
-                    }
-                    std::cout << outputBuffer[testingClassifications->size()-1] << "] - ";
+                    std::cout << "[" << outputBuffer[testingClassifications->size()-1] << "] - ";
                     std::cout << "c:" << correctness << " - e:" << epoch << std::endl;
                 }
                 delete [] outputBuffer;
+                trainingData->clear();
+                trainingClassifications->clear();
+                testingData->clear();
+                testingClassifications->clear();
                 return 0;
             }
             else

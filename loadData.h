@@ -12,6 +12,11 @@ float copyU8T2F(uint8_t pVal)
     return pVal;//reducing the interval from [0,255] to [0.0f,1.0f] might be useful?
 }
 
+int copyU8T2I(uint8_t pVal)
+{
+    return pVal;
+}
+
 bool loadXORData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
                  std::vector<float> **pTestImages, std::vector<float> **pTestClassifications,
                  int &pInputwidth, int &pOutputwidth )
@@ -25,8 +30,8 @@ bool loadXORData(std::vector<float> **pTrainingImages, std::vector<float> **pTra
     return true;
 }
 
-bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
-              std::vector<float> **pTestImages, std::vector<float> **pTestClassifications,
+bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
+              std::vector<float> **pTestImages, std::vector<int> **pTestClassifications,
               int &pInputwidth, int &pOutputwidth )
 {
     IDXFile idxTrainLabels("./data/train-labels.idx1-ubyte" );
@@ -48,16 +53,19 @@ bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTraini
         if(trainImageSize == testImageSize)
         {
             pInputwidth  = trainImageSize;
-            pOutputwidth = 1;
+            pOutputwidth = 10;
 
             *pTrainingImages = new std::vector<float>(idxTrainImages.getTotalSize());
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
                            (*pTrainingImages)->data(), copyU8T2F);
             idxTrainImages.deleteData();
-//padding could be done in both classifications, to make classification easier
-            *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize());
-            std::transform(idxTrainLabels.getDataPointer(), idxTrainLabels.getDataPointer()+idxTrainLabels.getTotalSize(),
-                           (*pTrainingClassifications)->data(), copyU8T2F);
+
+            *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize()*10);
+            for(unsigned int i=0; i<idxTrainLabels.getTotalSize(); ++i)
+            {
+                unsigned int index = *(idxTrainLabels.getDataPointer()+i);
+                (*pTrainingClassifications)->data()[i*10+index] = 1.0f;
+            }
             idxTrainLabels.deleteData();
 
             *pTestImages = new std::vector<float>(idxTestImages.getTotalSize());
@@ -65,9 +73,15 @@ bool loadData(std::vector<float> **pTrainingImages, std::vector<float> **pTraini
                            (*pTestImages)->data(), copyU8T2F);
             idxTestImages.deleteData();
 
-            *pTestClassifications = new std::vector<float>(idxTestLabels.getTotalSize());
+            *pTestClassifications = new std::vector<int>(idxTestLabels.getTotalSize());
             std::transform(idxTestLabels.getDataPointer(), idxTestLabels.getDataPointer()+idxTestLabels.getTotalSize(),
-                           (*pTestClassifications)->data(), copyU8T2F);
+                           (*pTestClassifications)->data(), copyU8T2I);
+//            *pTestClassifications = new std::vector<float>(idxTestLabels.getTotalSize()*10);
+//            for(unsigned int i=0; i<idxTestLabels.getTotalSize(); ++i)
+//            {
+//                unsigned int index = *(idxTestLabels.getDataPointer()+i);
+//                (*pTestClassifications)->data()[i*10+index] = 1.0f;
+//            }
             idxTestLabels.deleteData();
 
             return true;
