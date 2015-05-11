@@ -52,7 +52,7 @@ int OCLTest() {
     if(loadXORData(&trainingImages,&trainingClassifications,&testingImages,&testingClassifications,inputWidth,outputWidth))
     {
         std::cout << "constructing opencl perceptron." << std::endl;
-        OpenCLPerceptron oclp(1.0f, inputWidth, 30, outputWidth);
+        OpenCLPerceptron oclp(0.15f, inputWidth, 50, outputWidth);
         float *outputBuffer = new float[testingClassifications->size()]{0.0f};
 
         std::cout << "setting up opencl." << std::endl;
@@ -70,7 +70,7 @@ int OCLTest() {
                     ++epoch;
                     oclp.trainAll();
                     oclp.testAll(outputBuffer);
-                    correctness = calcCorrect(outputBuffer, testingClassifications,1);
+                    correctness = calcCorrect(outputBuffer, testingClassifications, testingClassifications->size());
 
                     std::cout << "[";
                     for(unsigned int i=0; i<testingClassifications->size()-1; ++i)
