@@ -88,7 +88,7 @@ bool OpenCLPerceptron::initOpenCL()
             return false;
         }
 
-        std::cout << "using:" << m_device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
+        std::cout << "using: " << m_device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 
         std::ifstream file(m_sourceFile);
         std::string prog(std::istreambuf_iterator<char>(file),(std::istreambuf_iterator<char>()));
