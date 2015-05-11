@@ -16,7 +16,7 @@ kernel void calcLayer(
     global float *curOutput
     )
 {
-    size_t i = get_global_id(0);
+    const size_t i = get_global_id(0);
     if(i < curP)
     {
         //offset for weights
@@ -43,15 +43,15 @@ kernel void calcLayerDelta(
     global float *curDelta
     )
 {
-    size_t i = get_global_id(0);
+    const size_t i = get_global_id(0);
     if(i < curP)
     {
         curDelta[i] = curOutput[i]*(1-curOutput[i]);
 
         float tmpSum = 0;
-        const int weightOffset = i*(curP+1);
         for(int j=0; j<nexP; ++j)
         {
+            const int weightOffset = j*(curP+1);
             tmpSum += nexWeights[j+1+weightOffset]*nexDelta[j];
         }
         curDelta[i] *= tmpSum;
@@ -66,7 +66,7 @@ kernel void calcOutputDelta(
     global float *outDelta
     )
 {
-    size_t i = get_global_id(0);
+    const size_t i = get_global_id(0);
     if(i < outP)
     {
         outDelta[i] = outOutput[i]*(1-outOutput[i])*(target[i+targetOffset]-outOutput[i]);
@@ -82,7 +82,7 @@ kernel void applyDelta(
     global float *curWeight
     )
 {
-    size_t i = get_global_id(0);
+    const size_t i = get_global_id(0);
     if(i < curP)
     {
         //offset for weights
