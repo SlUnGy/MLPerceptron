@@ -70,7 +70,7 @@ int OCLTest() {
     if(loadImageData(&trainingData,&trainingClassifications,&testingData,&testingClassifications,inputWidth,outputWidth))
     {
         std::cout << "constructing opencl perceptron." << std::endl;
-        OpenCLPerceptron oclp(0.05f, inputWidth, 5, outputWidth);
+        OpenCLPerceptron oclp(0.05f, inputWidth, 300, outputWidth);
         float *outputBuffer = new float[trainingClassifications->size()];
 
         std::cout << "setting up opencl." << std::endl;

@@ -9,6 +9,16 @@
 //used in loadData to convert the IDXFile data to floats
 float copyU8T2F(uint8_t pVal)
 {
+//    static int i=0;
+//    if(i<28*28*3)
+//    {
+//         ++i;
+//        std::cout << pVal << " ";
+//        if(!(i%28))
+//        {
+//            std::cout << std::endl;
+//        }
+//    }
     return pVal;//reducing the interval from [0,255] to [0.0f,1.0f] might be useful?
 }
 
@@ -59,6 +69,20 @@ bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pT
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
                            (*pTrainingImages)->data(), copyU8T2F);
             idxTrainImages.deleteData();
+//            std::for_each((*pTrainingImages)->begin(),(*pTrainingImages)->end(),[](float pVal) -> void
+//            {
+//                static int i=0;
+//                if(i<10*28*28)
+//                {
+//                     ++i;
+//                    std::cout << pVal << " ";
+//                    if(!(i%28))
+//                    {
+//                        std::cout << std::endl;
+//                    }
+//                }
+//            });
+
 
             *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize()*10);
             for(unsigned int i=0; i<idxTrainLabels.getTotalSize(); ++i)

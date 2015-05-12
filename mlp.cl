@@ -1,6 +1,6 @@
 float sigmoid( const float pNum )
 {
-    return (1.0f/(1.0f+exp(-pNum)));
+    return (1.0f/(1.0f+exp(-pNum)));//maybe switch to native_exp for performance gain?
 }
 
 /*
