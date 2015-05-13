@@ -204,13 +204,13 @@ void OpenCLPerceptron::trainAll()
 //                }
 //            });
 
-            queue.enqueueReadBuffer(m_bHWeights, CL_TRUE, 0, m_hidWeights.size() * sizeof(float), outputBuffer);
-            std::cout << "m_bHWeights (" << i << ")";
-            for(int i=0;i<m_hidWeights.size() && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bHWeights, CL_TRUE, 0, m_hidWeights.size() * sizeof(float), outputBuffer);
+//            std::cout << "m_bHWeights (" << i << ")";
+//            for(int i=0;i<m_hidWeights.size() && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
             m_calcLayerOutput.setArg(0, m_inpPerceptrons);
             m_calcLayerOutput.setArg(1, m_hidPerceptrons);
@@ -220,13 +220,13 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerOutput.setArg(5, m_bHOut);
             queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_hidPerceptrons);
 
-            queue.enqueueReadBuffer(m_bHOut, CL_TRUE, 0, m_hidPerceptrons * sizeof(float), outputBuffer);
-            std::cout << "m_bHOut (" << i << ")";
-            for(int i=0;i<m_hidPerceptrons && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bHOut, CL_TRUE, 0, m_hidPerceptrons * sizeof(float), outputBuffer);
+//            std::cout << "m_bHOut (" << i << ")";
+//            for(int i=0;i<m_hidPerceptrons && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
             m_calcLayerOutput.setArg(0, m_hidPerceptrons);
             m_calcLayerOutput.setArg(1, m_outPerceptrons);
@@ -236,13 +236,13 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerOutput.setArg(5, m_bOOut);
             queue.enqueueNDRangeKernel(m_calcLayerOutput, cl::NullRange, m_outPerceptrons);
 
-            queue.enqueueReadBuffer(m_bOOut, CL_TRUE, 0, m_outPerceptrons * sizeof(float), outputBuffer);
-            std::cout << "m_bOOut (" << i << ")";
-            for(int i=0;i<m_outPerceptrons && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bOOut, CL_TRUE, 0, m_outPerceptrons * sizeof(float), outputBuffer);
+//            std::cout << "m_bOOut (" << i << ")";
+//            for(int i=0;i<m_outPerceptrons && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
             m_calcOutputDelta.setArg(0, m_outPerceptrons);
             m_calcOutputDelta.setArg(1, m_bOOut);
@@ -251,13 +251,13 @@ void OpenCLPerceptron::trainAll()
             m_calcOutputDelta.setArg(4, m_bODelta);
             queue.enqueueNDRangeKernel(m_calcOutputDelta, cl::NullRange, m_outPerceptrons);
 
-            queue.enqueueReadBuffer(m_bODelta, CL_TRUE, 0, m_outPerceptrons * sizeof(float), outputBuffer);
-            std::cout << "m_bODelta (" << i << ")";
-            for(int i=0;i<m_outPerceptrons && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bODelta, CL_TRUE, 0, m_outPerceptrons * sizeof(float), outputBuffer);
+//            std::cout << "m_bODelta (" << i << ")";
+//            for(int i=0;i<m_outPerceptrons && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
             m_calcLayerDelta.setArg(0, m_hidPerceptrons);
             m_calcLayerDelta.setArg(1, m_outPerceptrons);
@@ -267,45 +267,47 @@ void OpenCLPerceptron::trainAll()
             m_calcLayerDelta.setArg(5, m_bHDelta);
             queue.enqueueNDRangeKernel(m_calcLayerDelta, cl::NullRange, m_hidPerceptrons);
 
-            queue.enqueueReadBuffer(m_bHDelta, CL_TRUE, 0, m_hidPerceptrons * sizeof(float), outputBuffer);
-            std::cout << "m_bHDelta (" << i << ")";
-            for(int i=0;i<m_hidPerceptrons && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bHDelta, CL_TRUE, 0, m_hidPerceptrons * sizeof(float), outputBuffer);
+//            std::cout << "m_bHDelta (" << i << ")";
+//            for(int i=0;i<m_hidPerceptrons && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
             m_applyDelta.setArg(0, m_hidPerceptrons);
             m_applyDelta.setArg(1, m_outPerceptrons);
             m_applyDelta.setArg(2, m_eta);
             m_applyDelta.setArg(3, m_bODelta);
-            m_applyDelta.setArg(4, m_bOOut);
-            m_applyDelta.setArg(5, m_bOWeights);
+            m_applyDelta.setArg(4, m_bHOut);
+            m_applyDelta.setArg(5, 0);
+            m_applyDelta.setArg(6, m_bOWeights);
             queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_outPerceptrons);
 
-            queue.enqueueReadBuffer(m_bOWeights, CL_TRUE, 0, m_outWeights.size() * sizeof(float), outputBuffer);
-            std::cout << "m_bOWeights (" << i << ")";
-            for(int i=0;i<m_outWeights.size() && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bOWeights, CL_TRUE, 0, m_outWeights.size() * sizeof(float), outputBuffer);
+//            std::cout << "m_bOWeights (" << i << ")";
+//            for(int i=0;i<m_outWeights.size() && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
             m_applyDelta.setArg(0, m_inpPerceptrons);
             m_applyDelta.setArg(1, m_hidPerceptrons);
             m_applyDelta.setArg(2, m_eta);
             m_applyDelta.setArg(3, m_bHDelta);
-            m_applyDelta.setArg(4, m_bHOut);
-            m_applyDelta.setArg(5, m_bHWeights);
+            m_applyDelta.setArg(4, m_bTrImg);
+            m_applyDelta.setArg(5, imageOffset);
+            m_applyDelta.setArg(6, m_bHWeights);
             queue.enqueueNDRangeKernel(m_applyDelta, cl::NullRange, m_hidPerceptrons);
 
-            queue.enqueueReadBuffer(m_bHWeights, CL_TRUE, 0, m_hidWeights.size() * sizeof(float), outputBuffer);
-            std::cout << "m_bHWeights (" << i << ")";
-            for(int i=0;i<m_hidWeights.size() && i<15;++i)
-            {
-                std::cout << outputBuffer[i] << " ";
-            }
-            std::cout << std::endl;
+//            queue.enqueueReadBuffer(m_bHWeights, CL_TRUE, 0, m_hidWeights.size() * sizeof(float), outputBuffer);
+//            std::cout << "m_bHWeights (" << i << ")";
+//            for(int i=0;i<m_hidWeights.size() && i<15;++i)
+//            {
+//                std::cout << outputBuffer[i] << " ";
+//            }
+//            std::cout << std::endl;
 
         }
     }

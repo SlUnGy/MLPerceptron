@@ -81,17 +81,16 @@ int OCLTest() {
             {
                 std::cout << "training." << std::endl;
                 unsigned int epoch  = 0;
-                float correctness   = 1.0f;
-                const float target  = 0.05f;
-                while(correctness>target)
+                float correctness   = 0.0f;
+                const float target  = 0.95f;
+                while(correctness<target)
                 {
                     ++epoch;
                     oclp.trainAll();
                     oclp.testAll(outputBuffer);
                     correctness = calcCorrect(outputBuffer, testingClassifications, outputWidth);
 
-                    std::cout << "[" << outputBuffer[testingClassifications->size()-1] << "] - ";
-                    std::cout << "c:" << correctness << " - e:" << epoch << std::endl;
+                    std::cout << "correct: " << correctness << " - epoch: " << epoch << std::endl;
                 }
                 delete [] outputBuffer;
                 trainingData->clear();
