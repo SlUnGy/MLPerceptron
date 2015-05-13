@@ -69,20 +69,6 @@ bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pT
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
                            (*pTrainingImages)->data(), copyU8T2F);
             idxTrainImages.deleteData();
-//            std::for_each((*pTrainingImages)->begin(),(*pTrainingImages)->end(),[](float pVal) -> void
-//            {
-//                static int i=0;
-//                if(i<10*28*28)
-//                {
-//                     ++i;
-//                    std::cout << pVal << " ";
-//                    if(!(i%28))
-//                    {
-//                        std::cout << std::endl;
-//                    }
-//                }
-//            });
-
 
             *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize()*10);
             for(unsigned int i=0; i<idxTrainLabels.getTotalSize(); ++i)
@@ -100,12 +86,6 @@ bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pT
             *pTestClassifications = new std::vector<int>(idxTestLabels.getTotalSize());
             std::transform(idxTestLabels.getDataPointer(), idxTestLabels.getDataPointer()+idxTestLabels.getTotalSize(),
                            (*pTestClassifications)->data(), copyU8T2I);
-//            *pTestClassifications = new std::vector<float>(idxTestLabels.getTotalSize()*10);
-//            for(unsigned int i=0; i<idxTestLabels.getTotalSize(); ++i)
-//            {
-//                unsigned int index = *(idxTestLabels.getDataPointer()+i);
-//                (*pTestClassifications)->data()[i*10+index] = 1.0f;
-//            }
             idxTestLabels.deleteData();
 
             return true;

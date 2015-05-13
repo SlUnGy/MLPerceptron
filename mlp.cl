@@ -1,36 +1,10 @@
 float sigmoid( const float pNum )
 {
-    return (1.0f/(1.0f+exp(-pNum)));//maybe switch to native_exp for performance gain?
+    return (1.0f/(1.0f+native_exp(-pNum)));//native_exp might be less accurate but faster than exp
 }
 
 /*
     Weights should be stored in rows, not columns
-*/
-
-
-/*
-    float hidOutput[m_hidPerceptrons];
-    for(int i=0; i<m_hidPerceptrons; ++i)
-    {
-        //add constant
-        hidOutput[i] = 1*m_hidWeights[0][i];
-        //sum up all inputs*weightings
-        for(int j=1; j<m_inpPerceptrons+1; ++j)
-        {
-            hidOutput[i] += pIn[j-1] * m_hidWeights[j][i];
-        }
-        hidOutput[i] = sigmoid(hidOutput[i]);
-    }
-    --> (still column based weights)
-    for(int i=0; i<curP; ++i)
-    {
-        curOutput[i] = 1*curWeights[0][i];
-        for(int j=0; j<preP; ++j)
-        {
-            curOutput[i] += curInp[j] * curWeights[j+1][i];
-        }
-        curOutput[i] = sigmoid(hidOutput[i]);
-    }
 */
 
 kernel void calcLayer(
@@ -60,32 +34,6 @@ kernel void calcLayer(
     }
 }
 
-/*
-    float hidDelta[m_hidPerceptrons];
-    for(int i=0; i<m_hidPerceptrons; ++i)
-    {
-        //m_outWeights[i+1][] -> skip the constant coeffecient
-        hidDelta[i] = hidOutput[i]*(1-hidOutput[i]);
-        float tmpSum = 0;
-        for(int j=0; j<m_outPerceptrons; ++j)
-        {
-            tmpSum += m_outWeights[i+1][j]*outDelta[j];
-        }
-        hidDelta[i] *= tmpSum;
-    }
-    -->
-    for(int i=0; i<curP; ++i)
-    {
-        curDelta[i] = curOutput[i]*(1-curOutput[i]);
-        float tmpSum = 0;
-        for(int j=0; j<nexP; ++j)
-        {
-            tmpSum += nexWeights[i+1][j]*nexDelta[j]
-        }
-        nextDelta[j] *= tmpSum;
-    }
-*/
-
 kernel void calcLayerDelta(
     const int curP,
     const int nexP,
@@ -110,14 +58,6 @@ kernel void calcLayerDelta(
     }
 }
 
-/*
-    float outDelta[m_outPerceptrons];
-    for(int i=0; i<m_outPerceptrons; ++i)
-    {
-        outDelta[i] = output[i]*(1-output[i])*(pTarget[i]-output[i]);
-    }
-*/
-
 kernel void calcOutputDelta(
     const int outP,
     global const float *outOutput,
@@ -132,27 +72,6 @@ kernel void calcOutputDelta(
         outDelta[i] = outOutput[i]*(1-outOutput[i])*(target[i+targetOffset]-outOutput[i]);
     }
 }
-
-
-/*
-    for(int i=0; i<m_outPerceptrons; ++i)
-    {
-        m_outWeights[0][i] += m_eta*1*outDelta[i];
-        for(int j=0; j<m_hidPerceptrons; ++j)
-        {
-            m_outWeights[j+1][i] += m_eta*hidOutput[j]*outDelta[i];
-        }
-    }
-    -->
-    for(int i=0; i<curP;; ++i)
-    {
-        curWeight[0][i] += eta*1*curDelta[i];
-        for(int j=0; j<preP; ++j)
-        {
-            curWeight[j+1][i] += eta*preOutput[j]*curDelta[i];
-        }
-    }
-*/
 
 kernel void applyDelta(
     const int preP,
