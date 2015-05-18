@@ -118,7 +118,7 @@ void OneLayerPerceptron::train(const float* pIn,const float* pTarget)
     }
 }
 
-float* OneLayerPerceptron::classify(const float *pIn)
+void OneLayerPerceptron::classify(const float *pIn, float *pOutput)
 {
     float hidOutput[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
@@ -133,16 +133,13 @@ float* OneLayerPerceptron::classify(const float *pIn)
         hidOutput[i] = sigmoid(hidOutput[i]);
     }
 
-    float* output = new float[m_outPerceptrons]();
     for(int i=0; i<m_outPerceptrons; ++i)
     {
-        output[i] = 1*m_outWeights[0][i];
+        pOutput[i] = 1*m_outWeights[0][i];
         for(int j=1; j<m_hidPerceptrons+1; ++j)
         {
-            output[i] += hidOutput[j-1] * m_outWeights[j][i];
+            pOutput[i] += hidOutput[j-1] * m_outWeights[j][i];
         }
-        output[i] = sigmoid(output[i]);
+        pOutput[i] = sigmoid(pOutput[i]);
     }
-
-    return output;
 }
