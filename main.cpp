@@ -137,6 +137,12 @@ int sequentialOCR(std::vector<float> *pTrainingImages, std::vector<float> *pTrai
     return 0;
 }
 
+enum TrainingType
+{
+    parallel,
+    sequential
+};
+
 int main(int argc, char* argv[])
 {
     std::vector<float> *trainingData            = nullptr;
