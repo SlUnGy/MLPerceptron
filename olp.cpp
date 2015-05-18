@@ -5,16 +5,16 @@
 #include <random>
 
 OneLayerPerceptron::OneLayerPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
-    : m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons}, m_outPerceptrons{pOutputPerceptrons}
+    : m_eta{pEta}, m_hidPerceptrons{pHiddenPerceptrons}, m_inpPerceptrons{pInputPerceptrons},
+    m_outPerceptrons{pOutputPerceptrons}, m_hidWeights{new float*[m_inpPerceptrons+1]},
+	m_outWeights{new float*[m_hidPerceptrons+1]}
 {
     //+1 due to constant coefficient, i.e. bias
-	m_hidWeights = new float*[m_inpPerceptrons+1];
     for (int i=0;i<m_inpPerceptrons+1;i++)
     {
         m_hidWeights[i] = new float[m_hidPerceptrons];
 	}
 
-	m_outWeights = new float*[m_hidPerceptrons+1];
     for (int i=0;i<m_hidPerceptrons+1;i++)
     {
         m_outWeights[i] = new float[m_outPerceptrons];
@@ -85,7 +85,20 @@ void OneLayerPerceptron::train(const float* pIn,const float* pTarget)
         outDelta[i] = output[i]*(1-output[i])*(pTarget[i]-output[i]);
     }
 
-    //applying delta to reduce error in output layer
+    float hidDelta[m_hidPerceptrons];
+    for(int i=0; i<m_hidPerceptrons; ++i)
+    {
+        //m_outWeights[i+1][] -> skip the constant coeffecient
+        hidDelta[i] = hidOutput[i]*(1-hidOutput[i]);
+        float tmpSum = 0;
+        for(int j=0; j<m_outPerceptrons; ++j)
+        {
+            tmpSum += m_outWeights[i+1][j]*outDelta[j];
+        }
+        hidDelta[i] *= tmpSum;
+    }
+
+    //applying delta to reduce error
     for(int i=0; i<m_outPerceptrons; ++i)
     {
         m_outWeights[0][i] += m_eta*1*outDelta[i];
@@ -95,25 +108,12 @@ void OneLayerPerceptron::train(const float* pIn,const float* pTarget)
         }
     }
 
-    float hidError[m_hidPerceptrons];
     for(int i=0; i<m_hidPerceptrons; ++i)
     {
-        //m_outWeights[i+1][] -> skip the constant coeffecient
-        hidError[i] = hidOutput[i]*(1-hidOutput[i]);
-        float tmpSum = 0;
-        for(int j=0; j<m_outPerceptrons; ++j)
-        {
-            tmpSum += m_outWeights[i+1][j]*outDelta[j];
-        }
-        hidError[i] *= tmpSum;
-    }
-
-    for(int i=0; i<m_hidPerceptrons; ++i)
-    {
-        m_hidWeights[0][i] += m_eta*1*hidError[i];
+        m_hidWeights[0][i] += m_eta*1*hidDelta[i];
         for(int j=0; j<m_inpPerceptrons; ++j)
         {
-            m_hidWeights[j+1][i] += m_eta*pIn[j]*hidError[i];
+            m_hidWeights[j+1][i] += m_eta*pIn[j]*hidDelta[i];
         }
     }
 }

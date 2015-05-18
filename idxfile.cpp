@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-//read a 32bit bigendian number from a istream
+//read a 32bit bigendian number from an istream
 uint32_t read32_be(std::istream& pIn)
 {
     char b[4];
@@ -13,9 +13,16 @@ uint32_t read32_be(std::istream& pIn)
 }
 
 IDXFile::IDXFile(const std::string& pFile)
-    :m_error{false}, m_magicNumber{0}, m_dimensionNumber{0}, m_dimension{nullptr}, m_data{nullptr}
+    :m_error{false}, m_magicNumber{0}, m_dimensionNumber{0}, m_dimension{nullptr}, m_data{nullptr}, m_totalSize{0}
 {
     readFile(pFile);
+}
+
+IDXFile::IDXFile( const IDXFile& pCpy )
+    :m_error{pCpy.hasError()},m_magicNumber{pCpy.getMagicNumber()},m_dimensionNumber{pCpy.getDimensionNumber()},
+    m_dimension{pCpy.getDimensions()},m_data{pCpy.getDataPointer()}
+{
+
 }
 
 bool IDXFile::readFile(const std::string& pFile)
@@ -51,13 +58,13 @@ bool IDXFile::readFile(const std::string& pFile)
                     m_dimensionNumber = ( m_magicNumber >> ( 8 * ( sizeof( uint32_t ) - 4 ) ) ) & 0xFF;
                     m_dimension = new uint32_t[m_dimensionNumber]();
 
-                    uint32_t totalSize = 1;
+                    m_totalSize = 1;
                     for( uint8_t i = 0; i < m_dimensionNumber; ++i )
                     {
                         m_dimension[i] = read32_be( file );
                         if( file )
                         {
-                            totalSize *= m_dimension[i];
+                            m_totalSize *= m_dimension[i];
                         }
                         else
                         {
@@ -66,8 +73,8 @@ bool IDXFile::readFile(const std::string& pFile)
                             return false;
                         }
                     }
-                    m_data = new uint8_t[totalSize]();
-                    file.read((char*)m_data, totalSize );
+                    m_data = new uint8_t[m_totalSize]();
+                    file.read((char*)m_data, m_totalSize );
                     if( file )
                     {
                         file.close();
@@ -111,9 +118,5 @@ bool IDXFile::readFile(const std::string& pFile)
 
 IDXFile::~IDXFile()
 {
-    if(m_dimension != nullptr)
-    {
-        delete [] m_dimension;
-    }
     deleteData();
 }

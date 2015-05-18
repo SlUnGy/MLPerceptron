@@ -26,7 +26,6 @@ class OneLayerPerceptron {
             delete [] m_outWeights;
         }
 
-
 		void train(const float*, const float*);
 		float* classify(const float*);
 
@@ -38,7 +37,6 @@ class OneLayerPerceptron {
         bool writeToFile(const std::string&);
 
         void randomizeWeights();
-
 	protected:
 		const float m_eta;
 
