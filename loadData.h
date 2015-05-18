@@ -7,9 +7,9 @@
 #include "idxfile.h"
 
 //used in loadData to convert the IDXFile data to floats
-float copyU8T2F(uint8_t pVal)
+float normalizeU8(uint8_t pVal)
 {
-    return pVal;//reducing the interval from [0,255] to [0.0f,1.0f] might be useful?
+    return (pVal/255.0f);//reducing the interval from [0,255] to [0.0f,1.0f]
 }
 
 int copyU8T2I(uint8_t pVal)
@@ -57,7 +57,7 @@ bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pT
 
             *pTrainingImages = new std::vector<float>(idxTrainImages.getTotalSize());
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
-                           (*pTrainingImages)->data(), copyU8T2F);
+                           (*pTrainingImages)->data(), normalizeU8);
             idxTrainImages.deleteData();
 
             *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize()*10);
@@ -70,7 +70,7 @@ bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pT
 
             *pTestImages = new std::vector<float>(idxTestImages.getTotalSize());
             std::transform(idxTestImages.getDataPointer(), idxTestImages.getDataPointer()+idxTestImages.getTotalSize(),
-                           (*pTestImages)->data(), copyU8T2F);
+                           (*pTestImages)->data(), normalizeU8);
             idxTestImages.deleteData();
 
             *pTestClassifications = new std::vector<int>(idxTestLabels.getTotalSize());
