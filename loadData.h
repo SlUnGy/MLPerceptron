@@ -9,16 +9,6 @@
 //used in loadData to convert the IDXFile data to floats
 float copyU8T2F(uint8_t pVal)
 {
-//    static int i=0;
-//    if(i<28*28*3)
-//    {
-//         ++i;
-//        std::cout << pVal << " ";
-//        if(!(i%28))
-//        {
-//            std::cout << std::endl;
-//        }
-//    }
     return pVal;//reducing the interval from [0,255] to [0.0f,1.0f] might be useful?
 }
 
@@ -41,8 +31,8 @@ bool loadXORData(std::vector<float> **pTrainingImages, std::vector<float> **pTra
 }
 
 bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
-              std::vector<float> **pTestImages, std::vector<int> **pTestClassifications,
-              int &pInputwidth, int &pOutputwidth )
+                   std::vector<float> **pTestImages, std::vector<int> **pTestClassifications,
+                   int &pInputwidth, int &pOutputwidth )
 {
     IDXFile idxTrainLabels("./data/train-labels.idx1-ubyte" );
     IDXFile idxTrainImages("./data/train-images.idx3-ubyte" );
