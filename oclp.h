@@ -23,8 +23,6 @@ public:
 	OpenCLPerceptron(const float, const int, const int, const int);
     ~OpenCLPerceptron();
 
-    bool hasFoundDevice(){return m_foundDevice;}
-
     bool initOpenCL();
     bool initTraining(std::vector<float>*, std::vector<float>*, std::vector<float>*);
 
@@ -33,8 +31,9 @@ public:
     void testAll(float*);
 
     void randomizeWeights();
+
+    void setOpenCLContext( std::vector<cl::Device> *pDevice, cl::Context *pContext ){ m_device = *pDevice; m_context = *pContext; }
 protected:
-    bool m_foundDevice;
     const std::string m_sourceFile;
 
     const float m_eta;
@@ -51,6 +50,7 @@ protected:
 private:
     std::vector<cl::Device> m_device;
     cl::Context m_context;
+
     cl::Program m_program;
 
     cl::Kernel m_calcLayerOutput, m_calcLayerDelta, m_calcOutputDelta, m_applyDelta;

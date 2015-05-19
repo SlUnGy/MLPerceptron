@@ -8,7 +8,7 @@
 #include <algorithm>
 
 OpenCLPerceptron::OpenCLPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
-    :m_foundDevice{false}, m_sourceFile{"mlp.cl"}, m_eta{pEta},
+    :m_sourceFile{"mlp.cl"}, m_eta{pEta},
      m_inpPerceptrons{pInputPerceptrons}, m_hidPerceptrons{pHiddenPerceptrons},
      m_outPerceptrons{pOutputPerceptrons},
      m_hidWeights(m_hidPerceptrons*(m_inpPerceptrons+1)),
@@ -48,50 +48,6 @@ bool OpenCLPerceptron::initOpenCL()
 {
     try
     {
-        std::vector<cl::Platform> allPlatforms;
-        cl::Platform::get(&allPlatforms);
-
-        if (allPlatforms.empty())
-        {
-            std::cerr << "OpenCL platforms not found." << std::endl;
-            return false;
-        }
-
-        for(auto currentPlatform = allPlatforms.begin();
-            !m_foundDevice && currentPlatform != allPlatforms.end();
-            currentPlatform++)
-        {
-            std::vector<cl::Device> allDevices;
-            try
-            {
-                currentPlatform->getDevices(CL_DEVICE_TYPE_CPU, &allDevices);
-            }
-            catch (const cl::Error &err)
-            {
-                std::cerr << "no cpu found, trying next" << std::endl;
-            }
-
-            for(auto currentDevice = allDevices.begin();
-                !m_foundDevice && currentDevice != allDevices.end();
-                currentDevice++)
-            {
-                if (currentDevice->getInfo<CL_DEVICE_AVAILABLE>())//add other selection criteria here
-                {
-                    m_device.push_back(*currentDevice);
-                    m_context = cl::Context(m_device);
-                    m_foundDevice = true;
-                }
-            }
-        }
-
-        if (!m_foundDevice)
-        {
-            std::cerr << "no usable device found." << std::endl;
-            return false;
-        }
-
-        std::cout << "using: " << m_device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
-
         std::ifstream file(m_sourceFile);
         std::string prog(std::istreambuf_iterator<char>(file),(std::istreambuf_iterator<char>()));
 
