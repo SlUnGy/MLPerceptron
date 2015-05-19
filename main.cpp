@@ -1,17 +1,11 @@
 #include "seqOCR.h"
 #include "parOCR.h"
 #include "loadData.h"
+#include "tdata.h"
 
 #include <iostream>
 
-enum TrainingType
-{
-    invalid,
-    parallel,
-    sequential
-};
-
-void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
+void parseCommandlineParameters(int argc, char* argv[], TrainingData &pTData)
 {
     if(argc > 1)
     {
@@ -24,11 +18,11 @@ void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
         {
             if(par == "-parallel" || par == "-p")
             {
-                    pType = parallel;
+                pTData.setType(parallel);
             }
             else if(par == "-sequential" || par == "-s")
             {
-                    pType = sequential;
+                pTData.setType(sequential);
             }
             else if( par.find_first_not_of(' ') != std::string::npos )//ignore whitespace
             {
@@ -48,19 +42,19 @@ int main(int argc, char* argv[])
     int inputWidth  = 0;
     int outputWidth = 0;
 
-    TrainingType type = invalid;
+    TrainingData tdata;
 
-    parseCommandlineParameters(argc, argv, type);
+    parseCommandlineParameters(argc, argv, tdata);
 
     std::cout << "loading and initialising images." << std::endl;
     if(loadImageData(&trainingData, &trainingClassifications, &testingData, &testingClassifications, inputWidth, outputWidth))
     {
         int retCode = 0;
-        if(type == parallel)
+        if(tdata.getType() == parallel)
         {
             retCode = parallelOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
         }
-        else if (type == sequential)
+        else if (tdata.getType() == sequential)
         {
             retCode = sequentialOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
         }
