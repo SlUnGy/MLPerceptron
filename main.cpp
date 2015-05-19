@@ -30,7 +30,7 @@ void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
             {
                     pType = sequential;
             }
-            else
+            else if( par.find_first_not_of(' ') != std::string::npos )//ignore whitespace
             {
                 std::cerr << "didn't recognize the option: " << par << std::endl;
             }
