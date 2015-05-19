@@ -8,14 +8,12 @@
 #include <algorithm>
 
 OpenCLPerceptron::OpenCLPerceptron(const float pEta, const int pInputPerceptrons, const int pHiddenPerceptrons, const int pOutputPerceptrons)
-    :m_foundDevice{false}, m_sourceFile{"mlp.cl"}, m_eta{pEta},
+    :m_sourceFile{"mlp.cl"}, m_eta{pEta},
      m_inpPerceptrons{pInputPerceptrons}, m_hidPerceptrons{pHiddenPerceptrons},
      m_outPerceptrons{pOutputPerceptrons},
-     m_hidWeights(m_hidPerceptrons*(m_inpPerceptrons+1)),
-     m_outWeights(m_outPerceptrons*(m_hidPerceptrons+1)),
      m_trainingDataSets{0}, m_testDataSets{0}
 {
-    randomizeWeights();
+
 }
 
 OpenCLPerceptron::~OpenCLPerceptron()
@@ -23,75 +21,10 @@ OpenCLPerceptron::~OpenCLPerceptron()
 
 }
 
-
-void OpenCLPerceptron::randomizeWeights()
-{
-	/*
-        doesn't work on mingw&windows....
-        std::random_device rd;
-    */
-	std::mt19937 mt(time(NULL));
-	std::uniform_real_distribution<> distribution(-1, 1);
-
-    for (unsigned int i=0;i<m_hidWeights.size();i++)
-    {
-		m_hidWeights[i] = distribution(mt);
-    }
-
-    for (unsigned int i=0;i<m_outWeights.size();i++)
-    {
-		m_outWeights[i] = distribution(mt);
-	}
-}
-
 bool OpenCLPerceptron::initOpenCL()
 {
     try
     {
-        std::vector<cl::Platform> allPlatforms;
-        cl::Platform::get(&allPlatforms);
-
-        if (allPlatforms.empty())
-        {
-            std::cerr << "OpenCL platforms not found." << std::endl;
-            return false;
-        }
-
-        for(auto currentPlatform = allPlatforms.begin();
-            !m_foundDevice && currentPlatform != allPlatforms.end();
-            currentPlatform++)
-        {
-            std::vector<cl::Device> allDevices;
-            try
-            {
-                currentPlatform->getDevices(CL_DEVICE_TYPE_CPU, &allDevices);
-            }
-            catch (const cl::Error &err)
-            {
-                std::cerr << "no cpu found, trying next" << std::endl;
-            }
-
-            for(auto currentDevice = allDevices.begin();
-                !m_foundDevice && currentDevice != allDevices.end();
-                currentDevice++)
-            {
-                if (currentDevice->getInfo<CL_DEVICE_AVAILABLE>())//add other selection criteria here
-                {
-                    m_device.push_back(*currentDevice);
-                    m_context = cl::Context(m_device);
-                    m_foundDevice = true;
-                }
-            }
-        }
-
-        if (!m_foundDevice)
-        {
-            std::cerr << "no usable device found." << std::endl;
-            return false;
-        }
-
-        std::cout << "using: " << m_device[0].getInfo<CL_DEVICE_NAME>() << std::endl;
-
         std::ifstream file(m_sourceFile);
         std::string prog(std::istreambuf_iterator<char>(file),(std::istreambuf_iterator<char>()));
 
@@ -124,12 +57,32 @@ bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<fl
     if(trainImg != nullptr && trainClf != nullptr && testImg != nullptr)
     {
         try {
+            std::vector<float> hidWeights(m_hidPerceptrons*(m_inpPerceptrons+1));
+            std::vector<float> outWeights(m_outPerceptrons*(m_hidPerceptrons+1));
+
+            /*
+                    doesn't work on mingw&windows....
+                    std::random_device rd;
+            */
+            std::mt19937 mt(time(NULL));
+            std::uniform_real_distribution<> distribution(-1, 1);
+
+            for (unsigned int i=0; i<hidWeights.size(); i++)
+            {
+                hidWeights[i] = distribution(mt);
+            }
+
+            for (unsigned int i=0; i<outWeights.size(); i++)
+            {
+                outWeights[i] = distribution(mt);
+            }
+
             m_bTrImg     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainImg->size()*sizeof(float), trainImg->data());
             m_bTrClf     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainClf->size()*sizeof(float), trainClf->data());
-            m_bHWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_hidWeights.size()*sizeof(float), m_hidWeights.data());
+            m_bHWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, hidWeights.size()*sizeof(float), hidWeights.data());
             m_bHOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidPerceptrons*sizeof(float));
             m_bHDelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidPerceptrons*sizeof(float));
-            m_bOWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_outWeights.size()*sizeof(float), m_outWeights.data());
+            m_bOWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, outWeights.size()*sizeof(float), outWeights.data());
             m_bOOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
             m_bODelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
 

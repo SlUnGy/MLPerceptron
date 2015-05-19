@@ -1,17 +1,9 @@
-#include "seqOCR.h"
-#include "parOCR.h"
 #include "loadData.h"
+#include "tdata.h"
 
 #include <iostream>
 
-enum TrainingType
-{
-    invalid,
-    parallel,
-    sequential
-};
-
-void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
+void parseCommandlineParameters(int argc, char* argv[], TrainingEnvironment &pEnv)
 {
     if(argc > 1)
     {
@@ -24,11 +16,11 @@ void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
         {
             if(par == "-parallel" || par == "-p")
             {
-                    pType = parallel;
+                pEnv.setType(parallel);
             }
             else if(par == "-sequential" || par == "-s")
             {
-                    pType = sequential;
+                pEnv.setType(sequential);
             }
             else if( par.find_first_not_of(' ') != std::string::npos )//ignore whitespace
             {
@@ -40,42 +32,14 @@ void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
 
 int main(int argc, char* argv[])
 {
-    std::vector<float> *trainingData            = nullptr;
-    std::vector<float> *trainingClassifications = nullptr;
-    std::vector<float> *testingData             = nullptr;
-    std::vector<int>   *testingClassifications  = nullptr;
+    TrainingEnvironment tEnv;
 
-    int inputWidth  = 0;
-    int outputWidth = 0;
-
-    TrainingType type = invalid;
-
-    parseCommandlineParameters(argc, argv, type);
+    parseCommandlineParameters(argc, argv, tEnv);
 
     std::cout << "loading and initialising images." << std::endl;
-    if(loadImageData(&trainingData, &trainingClassifications, &testingData, &testingClassifications, inputWidth, outputWidth))
+    if(loadImageData(tEnv))
     {
-        int retCode = 0;
-        if(type == parallel)
-        {
-            retCode = parallelOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
-        }
-        else if (type == sequential)
-        {
-            retCode = sequentialOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
-        }
-        else
-        {
-            retCode = -1;
-            std::cerr << "training type not recognized. Have you set a command line parameter(-s or -p)?" << std::endl;
-        }
-
-        trainingData->clear();
-        trainingClassifications->clear();
-        testingData->clear();
-        testingClassifications->clear();
-
-        return retCode;
+        return tEnv.executeOCR();
     }
     else
     {
