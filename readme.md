@@ -6,12 +6,12 @@
 
 For compilation you will need to have OpenCL installed and link the project to the correct headers and libraries. Depending on the OpenCL Implementation you use you may need to move an OpenCL.dll to the folder containing the binary.
 
-Your compiler also __has to have C++11 enabled to compile the code.
+Your compiler also **has to have C++11** enabled to compile the code.
 
 **Execution**
 
 The compiled program uses the following parameters:
-You __have to__ use one of these:
+You **have to** use one of these:
 - *-p or -parallel* : OpenCL implementation will be used
 - *-s or -sequential*: C++ sequential implementation will be used.
 
