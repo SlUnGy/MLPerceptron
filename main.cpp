@@ -6,9 +6,37 @@
 
 enum TrainingType
 {
+    invalid,
     parallel,
     sequential
 };
+
+void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
+{
+    if(argc > 1)
+    {
+        std::vector<std::string> cmdParams(argc);
+        for(int i=1; i<argc; ++i)
+        {
+            cmdParams[i] = std::string(argv[i]);
+        }
+        for(const std::string &par : cmdParams)
+        {
+            if(par == "-parallel" || par == "-p")
+            {
+                    pType = parallel;
+            }
+            else if(par == "-sequential" || par == "-s")
+            {
+                    pType = sequential;
+            }
+            else
+            {
+                std::cerr << "didn't recognize the option: " << par << std::endl;
+            }
+        }
+    }
+}
 
 int main(int argc, char* argv[])
 {
@@ -20,11 +48,27 @@ int main(int argc, char* argv[])
     int inputWidth  = 0;
     int outputWidth = 0;
 
+    TrainingType type = invalid;
+
+    parseCommandlineParameters(argc, argv, type);
+
     std::cout << "loading and initialising images." << std::endl;
     if(loadImageData(&trainingData, &trainingClassifications, &testingData, &testingClassifications, inputWidth, outputWidth))
     {
         int retCode = 0;
-        retCode = parallelOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
+        if(type == parallel)
+        {
+            retCode = parallelOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
+        }
+        else if (type == sequential)
+        {
+            retCode = sequentialOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
+        }
+        else
+        {
+            retCode = -1;
+            std::cerr << "training type not recognized. Have you set a command line parameter(-s or -p)?" << std::endl;
+        }
 
         trainingData->clear();
         trainingClassifications->clear();

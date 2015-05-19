@@ -26,7 +26,7 @@ int sequentialOCR(std::vector<float> *pTrainingImages, std::vector<float> *pTrai
         ++epoch;
         for(unsigned int i=0; i<trainingSamples; ++i)
         {
-            const unsigned int imageOffset = i*pInputwidth;
+            const unsigned int imageOffset = i*pInputwidth;//offsets are needed, due to all data being stored in a contiguous array
             const unsigned int classOffset = i*pOutputwidth;
             olp.train(pTrainingImages->data()+imageOffset, pTrainingClassifications->data()+classOffset);
         }
