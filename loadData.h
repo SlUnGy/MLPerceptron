@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 #include "idxfile.h"
+#include "tdata.h"
 
 //used in loadData to convert the IDXFile data to floats
 float normalizeU8(uint8_t pVal)
@@ -17,22 +19,7 @@ int copyU8T2I(uint8_t pVal)
     return pVal;
 }
 
-bool loadXORData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
-                 std::vector<float> **pTestImages, std::vector<float> **pTestClassifications,
-                 int &pInputwidth, int &pOutputwidth )
-{
-    *pTrainingImages            = new std::vector<float>{0.f,0.f, 0.f,1.f, 1.f,0.f, 1.f,1.f};
-    *pTrainingClassifications   = new std::vector<float>{    0.f,     1.f,     1.f,     0.f};
-    *pTestImages                = new std::vector<float>{0.f,0.f, 0.f,1.f, 1.f,0.f, 1.f,1.f};
-    *pTestClassifications       = new std::vector<float>{    0.f,     1.f,     1.f,     0.f};
-    pInputwidth     = 2;
-    pOutputwidth    = 1;
-    return true;
-}
-
-bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pTrainingClassifications,
-                   std::vector<float> **pTestImages, std::vector<int> **pTestClassifications,
-                   int &pInputwidth, int &pOutputwidth )
+bool loadImageData( TrainingEnvironment &pTData )
 {
     IDXFile idxTrainLabels("./data/train-labels.idx1-ubyte" );
     IDXFile idxTrainImages("./data/train-images.idx3-ubyte" );
@@ -52,30 +39,31 @@ bool loadImageData(std::vector<float> **pTrainingImages, std::vector<float> **pT
 
         if(trainImageSize == testImageSize)
         {
-            pInputwidth  = trainImageSize;
-            pOutputwidth = 10;
+            pTData.setInputSampleWidth(trainImageSize);
+            pTData.setOutputSampleWidth(10);//one for each classification
 
-            *pTrainingImages = new std::vector<float>(idxTrainImages.getTotalSize());
+            //load all training data as normalized floats into the vector
+            pTData.setTrainingData( new std::vector<float>(idxTrainImages.getTotalSize()) );
             std::transform(idxTrainImages.getDataPointer(), idxTrainImages.getDataPointer()+idxTrainImages.getTotalSize(),
-                           (*pTrainingImages)->data(), normalizeU8);
+                           pTData.getTrainingData()->data(), normalizeU8);
             idxTrainImages.deleteData();
 
-            *pTrainingClassifications = new std::vector<float>(idxTrainLabels.getTotalSize()*10);
+            pTData.setTrainingClassifications( new std::vector<float>(idxTrainLabels.getTotalSize()*10) );
             for(unsigned int i=0; i<idxTrainLabels.getTotalSize(); ++i)
             {
-                unsigned int index = *(idxTrainLabels.getDataPointer()+i);
-                (*pTrainingClassifications)->data()[i*10+index] = 1.0f;
+                const unsigned int index = *(idxTrainLabels.getDataPointer()+i);
+                pTData.getTrainingClassifications()->data()[i*10+index] = 1.0f;//zeroing not needed, std::vector takes care of that
             }
             idxTrainLabels.deleteData();
 
-            *pTestImages = new std::vector<float>(idxTestImages.getTotalSize());
+            pTData.setTestingData( new std::vector<float>(idxTestImages.getTotalSize()) );
             std::transform(idxTestImages.getDataPointer(), idxTestImages.getDataPointer()+idxTestImages.getTotalSize(),
-                           (*pTestImages)->data(), normalizeU8);
+                           pTData.getTestingData()->data(), normalizeU8);
             idxTestImages.deleteData();
 
-            *pTestClassifications = new std::vector<int>(idxTestLabels.getTotalSize());
+            pTData.setTestingClassifications( new std::vector<int>(idxTestLabels.getTotalSize()) );
             std::transform(idxTestLabels.getDataPointer(), idxTestLabels.getDataPointer()+idxTestLabels.getTotalSize(),
-                           (*pTestClassifications)->data(), copyU8T2I);
+                           pTData.getTestingClassifications()->data(), copyU8T2I);
             idxTestLabels.deleteData();
 
             return true;

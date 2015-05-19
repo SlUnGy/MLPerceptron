@@ -9,7 +9,7 @@
 
 int sequentialOCR(std::vector<float> *pTrainingImages, std::vector<float> *pTrainingClassifications,
                   std::vector<float> *pTestImages, std::vector<int> *pTestClassifications,
-                  int &pInputwidth, int &pOutputwidth )
+                  unsigned int &pInputwidth, unsigned int &pOutputwidth )
 {
     std::cout << "constructing one layered perceptron" << std::endl;
     OneLayerPerceptron olp(0.025f, pInputwidth, 300, pOutputwidth);
