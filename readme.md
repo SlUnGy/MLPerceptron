@@ -1,6 +1,9 @@
 #Multilayer Perceptron
 
-##Setting up the Code:
+This program will train a Multilayer Perceptron for Optical Character Recognition. The Multilayer Perceptron will be trained for recognizing the digits zero to nine.  
+By supplying command line parameters you can use either a sequential C++ implementation or a parallel OpenCL implementation for training. The program will try to reach over 95% correct estimates and then terminate.
+
+##Using the Code:
 
 **Compilation**
 
