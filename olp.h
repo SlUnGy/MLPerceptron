@@ -27,7 +27,7 @@ class OneLayerPerceptron {
         }
 
 		void train(const float*, const float*);
-		float* classify(const float*);
+		void classify(const float*, float*);
 
         static float sigmoid( const float pNum )
         {

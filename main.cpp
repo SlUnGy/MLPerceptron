@@ -1,63 +1,45 @@
-#include "nlp.h"
-#include "olp.h"
-#include "oclp.h"
+#include "seqOCR.h"
+#include "parOCR.h"
 #include "loadData.h"
 
 #include <iostream>
 
-float calcMeanSquaredError(const int pSize,const float* pTarget, const float* pResult)
+enum TrainingType
 {
-    float error = 0;
-    for(int i=0; i<pSize; ++i)
-    {
-        error += (pResult[i]-pTarget[i])*(pResult[i]-pTarget[i]);
-    }
-    return error/pSize;
-}
+    invalid,
+    parallel,
+    sequential
+};
 
-int findHighestIndex(const float* pResults, const int pSize)
+void parseCommandlineParameters(int argc, char* argv[], TrainingType &pType)
 {
-    int highestIndex = 0;
-    float highestValue = 0.0f;
-    for(int i=0;i<pSize;++i)
+    if(argc > 1)
     {
-        if(pResults[i]>highestValue)
+        std::vector<std::string> cmdParams(argc);
+        for(int i=1; i<argc; ++i)
         {
-            highestIndex = i;
-            highestValue = pResults[i];
+            cmdParams[i] = std::string(argv[i]);
         }
-    }
-    return highestIndex;
-}
-
-float calcCorrect(const float * pClassifications, const std::vector<float> *pTargets, const unsigned int pSampleSize)
-{
-    if( pTargets != nullptr )
-    {
-        return calcMeanSquaredError(pSampleSize, pTargets->data(), pClassifications);
-    }
-    return -1.0f;
-}
-
-float calcCorrect(const float * pClassifications, const std::vector<int> *pTargets, const unsigned int pSampleSize)
-{
-    if( pTargets != nullptr )
-    {
-        const unsigned int classifications = pTargets->size()/pSampleSize;
-        unsigned int correct = 0;
-        for(unsigned int i=0; i<classifications; ++i)
+        for(const std::string &par : cmdParams)
         {
-            if(findHighestIndex(pClassifications+(i*pSampleSize),pSampleSize) == pTargets->data()[i])
+            if(par == "-parallel" || par == "-p")
             {
-                ++correct;
+                    pType = parallel;
+            }
+            else if(par == "-sequential" || par == "-s")
+            {
+                    pType = sequential;
+            }
+            else if( par.find_first_not_of(' ') != std::string::npos )//ignore whitespace
+            {
+                std::cerr << "didn't recognize the option: " << par << std::endl;
             }
         }
-        return correct/(float)classifications;
     }
-    return -1.0f;
 }
 
-int OCLTest() {
+int main(int argc, char* argv[])
+{
     std::vector<float> *trainingData            = nullptr;
     std::vector<float> *trainingClassifications = nullptr;
     std::vector<float> *testingData             = nullptr;
@@ -66,58 +48,37 @@ int OCLTest() {
     int inputWidth  = 0;
     int outputWidth = 0;
 
+    TrainingType type = invalid;
+
+    parseCommandlineParameters(argc, argv, type);
+
     std::cout << "loading and initialising images." << std::endl;
-    if(loadImageData(&trainingData,&trainingClassifications,&testingData,&testingClassifications,inputWidth,outputWidth))
+    if(loadImageData(&trainingData, &trainingClassifications, &testingData, &testingClassifications, inputWidth, outputWidth))
     {
-        std::cout << "constructing opencl perceptron." << std::endl;
-        OpenCLPerceptron oclp(0.05f, inputWidth, 300, outputWidth);
-        float *outputBuffer = new float[trainingClassifications->size()];
-
-        std::cout << "setting up opencl." << std::endl;
-        if(oclp.initOpenCL())
+        int retCode = 0;
+        if(type == parallel)
         {
-            std::cout << "initialising opencl buffers." << std::endl;
-            if(oclp.initTraining(trainingData,trainingClassifications, testingData))
-            {
-                std::cout << "training." << std::endl;
-                unsigned int epoch  = 0;
-                float correctness   = 0.0f;
-                const float target  = 0.95f;
-                while(correctness<target)
-                {
-                    ++epoch;
-                    oclp.trainAll();
-                    oclp.testAll(outputBuffer);
-                    correctness = calcCorrect(outputBuffer, testingClassifications, outputWidth);
-
-                    std::cout << "correct: " << correctness << " - epoch: " << epoch << std::endl;
-                }
-                delete [] outputBuffer;
-                trainingData->clear();
-                trainingClassifications->clear();
-                testingData->clear();
-                testingClassifications->clear();
-                return 0;
-            }
-            else
-            {
-                delete [] outputBuffer;
-                return 1;
-            }
+            retCode = parallelOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
+        }
+        else if (type == sequential)
+        {
+            retCode = sequentialOCR(trainingData, trainingClassifications, testingData, testingClassifications, inputWidth, outputWidth);
         }
         else
         {
-            delete [] outputBuffer;
-            return 2;
+            retCode = -1;
+            std::cerr << "training type not recognized. Have you set a command line parameter(-s or -p)?" << std::endl;
         }
+
+        trainingData->clear();
+        trainingClassifications->clear();
+        testingData->clear();
+        testingClassifications->clear();
+
+        return retCode;
     }
     else
     {
         return 3;
     }
-}
-
-int main()
-{
-    return OCLTest();
 }
