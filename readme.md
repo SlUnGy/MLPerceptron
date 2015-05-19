@@ -13,9 +13,9 @@ Your compiler also has to have C++11 enabled to compile the code.
 **Execution**
 
 The compiled program uses the following parameters:
-You have to use one of these:
-- __-p or -parallel__ : OpenCL implementation will be used
-- __s or -sequential__: C++ sequential implementation will be used.
+You __have to__ use one of these:
+- **-p or -parallel** : OpenCL implementation will be used
+- **-s or -sequential**: C++ sequential implementation will be used.
 
 It uses a subfolder called "data" for test- and training- image and classification files.
 
