@@ -30,8 +30,6 @@ public:
     //will only do classification
     void testAll(float*);
 
-    void randomizeWeights();
-
     void setOpenCLContext( std::vector<cl::Device> *pDevice, cl::Context *pContext ){ m_device = *pDevice; m_context = *pContext; }
 protected:
     const std::string m_sourceFile;
@@ -41,9 +39,6 @@ protected:
     const int m_inpPerceptrons;
     const int m_hidPerceptrons;
     const int m_outPerceptrons;
-
-    std::vector<float> m_hidWeights;
-    std::vector<float> m_outWeights;
 
     int m_trainingDataSets;
     int m_testDataSets;

@@ -11,37 +11,14 @@ OpenCLPerceptron::OpenCLPerceptron(const float pEta, const int pInputPerceptrons
     :m_sourceFile{"mlp.cl"}, m_eta{pEta},
      m_inpPerceptrons{pInputPerceptrons}, m_hidPerceptrons{pHiddenPerceptrons},
      m_outPerceptrons{pOutputPerceptrons},
-     m_hidWeights(m_hidPerceptrons*(m_inpPerceptrons+1)),
-     m_outWeights(m_outPerceptrons*(m_hidPerceptrons+1)),
      m_trainingDataSets{0}, m_testDataSets{0}
 {
-    randomizeWeights();
+
 }
 
 OpenCLPerceptron::~OpenCLPerceptron()
 {
 
-}
-
-
-void OpenCLPerceptron::randomizeWeights()
-{
-	/*
-        doesn't work on mingw&windows....
-        std::random_device rd;
-    */
-	std::mt19937 mt(time(NULL));
-	std::uniform_real_distribution<> distribution(-1, 1);
-
-    for (unsigned int i=0;i<m_hidWeights.size();i++)
-    {
-		m_hidWeights[i] = distribution(mt);
-    }
-
-    for (unsigned int i=0;i<m_outWeights.size();i++)
-    {
-		m_outWeights[i] = distribution(mt);
-	}
 }
 
 bool OpenCLPerceptron::initOpenCL()
@@ -80,12 +57,32 @@ bool OpenCLPerceptron::initTraining(std::vector<float> *trainImg, std::vector<fl
     if(trainImg != nullptr && trainClf != nullptr && testImg != nullptr)
     {
         try {
+            std::vector<float> hidWeights(m_hidPerceptrons*(m_inpPerceptrons+1));
+            std::vector<float> outWeights(m_outPerceptrons*(m_hidPerceptrons+1));
+
+            /*
+                    doesn't work on mingw&windows....
+                    std::random_device rd;
+            */
+            std::mt19937 mt(time(NULL));
+            std::uniform_real_distribution<> distribution(-1, 1);
+
+            for (unsigned int i=0; i<hidWeights.size(); i++)
+            {
+                hidWeights[i] = distribution(mt);
+            }
+
+            for (unsigned int i=0; i<outWeights.size(); i++)
+            {
+                outWeights[i] = distribution(mt);
+            }
+
             m_bTrImg     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainImg->size()*sizeof(float), trainImg->data());
             m_bTrClf     = cl::Buffer(m_context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, trainClf->size()*sizeof(float), trainClf->data());
-            m_bHWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_hidWeights.size()*sizeof(float), m_hidWeights.data());
+            m_bHWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, hidWeights.size()*sizeof(float), hidWeights.data());
             m_bHOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidPerceptrons*sizeof(float));
             m_bHDelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_hidPerceptrons*sizeof(float));
-            m_bOWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, m_outWeights.size()*sizeof(float), m_outWeights.data());
+            m_bOWeights  = cl::Buffer(m_context, CL_MEM_READ_WRITE| CL_MEM_COPY_HOST_PTR, outWeights.size()*sizeof(float), outWeights.data());
             m_bOOut      = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
             m_bODelta    = cl::Buffer(m_context, CL_MEM_READ_WRITE, m_outPerceptrons*sizeof(float));
 
