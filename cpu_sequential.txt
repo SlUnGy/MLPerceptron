@@ -1,0 +1,1049 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 93.32   1193.56  1193.56   395598     3.02     3.02  OneLayerPerceptron::train(float const*, float const*)
+  6.41   1275.51    81.95    60000     1.37     1.37  OneLayerPerceptron::classify(float const*, float*)
+  0.14   1277.27     1.76 141235380     0.00     0.00  OneLayerPerceptron::sigmoid(float)
+  0.05   1277.87     0.60                             expf
+  0.04   1278.36     0.49 54880000     0.00     0.00  normalizeU8(unsigned char)
+  0.01   1278.54     0.18        3    60.00    60.00  __gnu_cxx::__enable_if<std::__is_scalar<float>::__value, float*>::__type std::__fill_n_a<float*, unsigned int, float>(float*, unsigned int, float const&)
+  0.01   1278.69     0.15        2    75.00   320.00  float* std::transform<unsigned char*, float*, float (*)(unsigned char)>(unsigned char*, unsigned char*, float*, float (*)(unsigned char))
+  0.01   1278.78     0.09    10000     0.01     0.01  copyU8T2I(unsigned char)
+  0.00   1278.82     0.04                             _fu27___ZSt4cout
+  0.00   1278.86     0.04                             exp
+  0.00   1278.89     0.03                             _fu0___ZSt4cerr
+  0.00   1278.92     0.03                             logl
+  0.00   1278.94     0.02   911198     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::__normal_iterator(float* const&)
+  0.00   1278.96     0.02   911198     0.00     0.00  std::vector<float, std::allocator<float> >::data()
+  0.00   1278.97     0.01   911198     0.00     0.00  float* std::__addressof<float>(float&)
+  0.00   1278.98     0.01      765     0.01     0.01  std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::_M_gen_rand()
+  0.00   1278.98     0.00   911198     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::operator*() const
+  0.00   1278.98     0.00   911198     0.00     0.00  std::vector<float, std::allocator<float> >::begin()
+  0.00   1278.98     0.00   911198     0.00     0.00  std::vector<float, std::allocator<float> >::front()
+  0.00   1278.98     0.00   715530     0.00     0.00  std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::min()
+  0.00   1278.98     0.00   477020     0.00     0.00  std::uniform_real_distribution<double>::param_type::a() const
+  0.00   1278.98     0.00   477020     0.00     0.00  std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::operator()()
+  0.00   1278.98     0.00   477020     0.00     0.00  std::log(long double)
+  0.00   1278.98     0.00   238510     0.00     0.00  std::uniform_real_distribution<double>::param_type::b() const
+  0.00   1278.98     0.00   238510     0.00     0.00  std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::max()
+  0.00   1278.98     0.00   238510     0.00     0.00  double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&)
+  0.00   1278.98     0.00   238510     0.00     0.00  double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&)
+  0.00   1278.98     0.00   238510     0.00     0.00  std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::_Adaptor(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&)
+  0.00   1278.98     0.00   238510     0.00     0.00  std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::operator()()
+  0.00   1278.98     0.00   238510     0.00     0.00  double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&)
+  0.00   1278.98     0.00   238510     0.00     0.00  unsigned int const& std::max<unsigned int>(unsigned int const&, unsigned int const&)
+  0.00   1278.98     0.00   238510     0.00     0.00  unsigned int const& std::min<unsigned int>(unsigned int const&, unsigned int const&)
+  0.00   1278.98     0.00    60008     0.00     0.00  IDXFile::getTotalSize() const
+  0.00   1278.98     0.00    60006     0.00     0.00  IDXFile::getDataPointer() const
+  0.00   1278.98     0.00    60000     0.00     0.00  findHighestIndex(float const*, int)
+  0.00   1278.98     0.00    60000     0.00     0.00  TrainingEnvironment::getTrainingClassifications()
+  0.00   1278.98     0.00    60000     0.00     0.00  __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::__normal_iterator(int const* const&)
+  0.00   1278.98     0.00    60000     0.00     0.00  __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::operator*() const
+  0.00   1278.98     0.00    60000     0.00     0.00  std::vector<int, std::allocator<int> >::data() const
+  0.00   1278.98     0.00    60000     0.00     0.00  std::vector<int, std::allocator<int> >::begin() const
+  0.00   1278.98     0.00    60000     0.00     0.00  std::vector<int, std::allocator<int> >::front() const
+  0.00   1278.98     0.00    60000     0.00     0.00  int const* std::__addressof<int const>(int const&)
+  0.00   1278.98     0.00      624     0.00     0.00  std::__detail::_Mod<unsigned int, 0u, 1u, 0u, true, false>::__calc(unsigned int)
+  0.00   1278.98     0.00      624     0.00     0.00  unsigned int std::__detail::__mod<unsigned int, 0u, 1u, 0u>(unsigned int)
+  0.00   1278.98     0.00      623     0.00     0.00  std::__detail::_Mod<unsigned int, 624u, 1u, 0u, true, true>::__calc(unsigned int)
+  0.00   1278.98     0.00      623     0.00     0.00  unsigned int std::__detail::__mod<unsigned int, 624u, 1u, 0u>(unsigned int)
+  0.00   1278.98     0.00       12     0.00     0.00  read32_be(std::istream&)
+  0.00   1278.98     0.00        8     0.00     0.00  IDXFile::deleteData()
+  0.00   1278.98     0.00        8     0.00     0.00  bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+  0.00   1278.98     0.00        6     0.00     0.00  calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int)
+  0.00   1278.98     0.00        6     0.00     0.00  __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::base() const
+  0.00   1278.98     0.00        6     0.00     0.00  std::vector<int, std::allocator<int> >::size() const
+  0.00   1278.98     0.00        4     0.00     0.00  IDXFile::readFile(std::string const&)
+  0.00   1278.98     0.00        4     0.00     0.00  IDXFile::IDXFile(std::string const&)
+  0.00   1278.98     0.00        4     0.00     0.00  IDXFile::~IDXFile()
+  0.00   1278.98     0.00        4     0.00     0.00  IDXFile::getDimensions() const
+  0.00   1278.98     0.00        4     0.00     0.00  IDXFile::getDimensionNumber() const
+  0.00   1278.98     0.00        4     0.00     0.00  IDXFile::hasError() const
+  0.00   1278.98     0.00        4     0.00     0.00  std::string* std::__addressof<std::string>(std::string&)
+  0.00   1278.98     0.00        4     0.00     0.00  std::operator|(std::_Ios_Openmode, std::_Ios_Openmode)
+  0.00   1278.98     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<float>::allocate(unsigned int, void const*)
+  0.00   1278.98     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<float>::new_allocator(__gnu_cxx::new_allocator<float> const&)
+  0.00   1278.98     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<float>::new_allocator()
+  0.00   1278.98     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<float>::~new_allocator()
+  0.00   1278.98     0.00        3     0.00     0.00  bool __gnu_cxx::operator!=<std::string*, std::vector<std::string, std::allocator<std::string> > >(__gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&, __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&)
+  0.00   1278.98     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<float>::max_size() const
+  0.00   1278.98     0.00        3     0.00     0.00  std::vector<float, std::allocator<float> >::size() const
+  0.00   1278.98     0.00        3     0.00     0.00  std::allocator<float>::allocator()
+  0.00   1278.98     0.00        3     0.00     0.00  std::allocator<float>::allocator(std::allocator<float> const&)
+  0.00   1278.98     0.00        3     0.00     0.00  std::allocator<float>::~allocator()
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Iter_base<float*, false>::_S_base(float*)
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned int)
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_Vector_impl::_Vector_impl(std::allocator<float> const&)
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_create_storage(unsigned int)
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_get_Tp_allocator()
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_Vector_base(unsigned int, std::allocator<float> const&)
+  0.00   1278.98     0.00        3     0.00    60.00  void std::__uninitialized_default_n_1<true>::__uninit_default_n<float*, unsigned int>(float*, unsigned int)
+  0.00   1278.98     0.00        3     0.00    60.00  std::vector<float, std::allocator<float> >::_M_default_initialize(unsigned int)
+  0.00   1278.98     0.00        3     0.00    60.00  std::vector<float, std::allocator<float> >::vector(unsigned int, std::allocator<float> const&)
+  0.00   1278.98     0.00        3     0.00     0.00  std::_Niter_base<float*>::iterator_type std::__niter_base<float*>(float*)
+  0.00   1278.98     0.00        3     0.00    60.00  void std::__uninitialized_default_n<float*, unsigned int>(float*, unsigned int)
+  0.00   1278.98     0.00        3     0.00    60.00  void std::__uninitialized_default_n_a<float*, unsigned int, float>(float*, unsigned int, std::allocator<float>&)
+  0.00   1278.98     0.00        3     0.00    60.00  float* std::fill_n<float*, unsigned int, float>(float*, unsigned int, float const&)
+  0.00   1278.98     0.00        2     0.00     0.00  __gnu_cxx::new_allocator<std::string>::~new_allocator()
+  0.00   1278.98     0.00        2     0.00     0.00  __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::__normal_iterator(std::string* const&)
+  0.00   1278.98     0.00        2     0.00     0.00  __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator++()
+  0.00   1278.98     0.00        2     0.00     0.00  __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator*() const
+  0.00   1278.98     0.00        2     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_M_get_Tp_allocator()
+  0.00   1278.98     0.00        2     0.00     0.00  _ZSt10_ConstructISsIEEvPT_DpOT0_
+  0.00   1278.98     0.00        2     0.00     0.00  void std::_Destroy<std::string>(std::string*)
+  0.00   1278.98     0.00        2     0.00     0.00  operator new(unsigned int, void*)
+  0.00   1278.98     0.00        1     0.00   913.29  loadImageData(TrainingEnvironment&)
+  0.00   1278.98     0.00        1     0.00     0.00  sequentialOCR(std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<int, std::allocator<int> >*, unsigned int&, unsigned int&)
+  0.00   1278.98     0.00        1     0.00     0.00  parseCommandlineParameters(int, char**, TrainingEnvironment&)
+  0.00   1278.98     0.00        1     0.00    10.00  OneLayerPerceptron::randomizeWeights()
+  0.00   1278.98     0.00        1     0.00    10.00  OneLayerPerceptron::OneLayerPerceptron(float, int, int, int)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::executeOCR()
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::getTestingData()
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setTestingData(std::vector<float, std::allocator<float> >*)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::getTrainingData()
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setTrainingData(std::vector<float, std::allocator<float> >*)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setInputSampleWidth(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setOutputSampleWidth(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::getTestingClassifications()
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setTestingClassifications(std::vector<int, std::allocator<int> >*)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setTrainingClassifications(std::vector<float, std::allocator<float> >*)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::isValid()
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::setType(TrainingType)
+  0.00   1278.98     0.00        1     0.00     0.00  TrainingEnvironment::TrainingEnvironment()
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<std::string>::deallocate(std::string*, unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<std::string>::allocate(unsigned int, void const*)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<std::string>::new_allocator(__gnu_cxx::new_allocator<std::string> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<std::string>::new_allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<int>::allocate(unsigned int, void const*)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<int>::new_allocator(__gnu_cxx::new_allocator<int> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<int>::new_allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<int>::~new_allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator(int* const&)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<std::string>::max_size() const
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<int>::max_size() const
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator*() const
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<std::string>::allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<std::string>::allocator(std::allocator<std::string> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<std::string>::~allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<std::string>::~allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<int>::allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<int>::allocator(std::allocator<int> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::allocator<int>::~allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Iter_base<int*, false>::_S_base(int*)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::_Destroy_aux<false>::__destroy<std::string*>(std::string*, std::string*)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_M_allocate(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::_Vector_impl(std::allocator<std::string> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::~_Vector_impl()
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_M_deallocate(std::string*, unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_M_create_storage(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_base(unsigned int, std::allocator<std::string> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<std::string, std::allocator<std::string> >::~_Vector_base()
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<int, std::allocator<int> >::_Vector_impl::_Vector_impl(std::allocator<int> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<int, std::allocator<int> >::_M_get_Tp_allocator()
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned int, std::allocator<int> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::seed(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::mersenne_twister_engine(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::uniform_real_distribution<double>::param_type::param_type(double, double)
+  0.00   1278.98     0.00        1     0.00     0.00  std::uniform_real_distribution<double>::uniform_real_distribution(double, double)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::__uninitialized_default_n_1<false>::__uninit_default_n<std::string*, unsigned int>(std::string*, unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::__uninitialized_default_n_1<true>::__uninit_default_n<int*, unsigned int>(int*, unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::_M_default_initialize(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::end()
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::begin()
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::vector(unsigned int, std::allocator<std::string> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::~vector()
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<std::string, std::allocator<std::string> >::operator[](unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<int, std::allocator<int> >::_M_default_initialize(unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<int, std::allocator<int> >::data()
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<int, std::allocator<int> >::begin()
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<int, std::allocator<int> >::front()
+  0.00   1278.98     0.00        1     0.00     0.00  std::vector<int, std::allocator<int> >::vector(unsigned int, std::allocator<int> const&)
+  0.00   1278.98     0.00        1     0.00     0.00  __gnu_cxx::__enable_if<std::__is_scalar<int>::__value, int*>::__type std::__fill_n_a<int*, unsigned int, int>(int*, unsigned int, int const&)
+  0.00   1278.98     0.00        1     0.00     0.00  int* std::__addressof<int>(int&)
+  0.00   1278.98     0.00        1     0.00     0.00  std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::__uninitialized_default_n<std::string*, unsigned int>(std::string*, unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::__uninitialized_default_n<int*, unsigned int>(int*, unsigned int)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::__uninitialized_default_n_a<std::string*, unsigned int, std::string>(std::string*, unsigned int, std::allocator<std::string>&)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::__uninitialized_default_n_a<int*, unsigned int, int>(int*, unsigned int, std::allocator<int>&)
+  0.00   1278.98     0.00        1     0.00     0.00  int* std::fill_n<int*, unsigned int, int>(int*, unsigned int, int const&)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::_Destroy<std::string*>(std::string*, std::string*)
+  0.00   1278.98     0.00        1     0.00     0.00  void std::_Destroy<std::string*, std::string>(std::string*, std::string*, std::allocator<std::string>&)
+  0.00   1278.98     0.00        1     0.00    90.00  int* std::transform<unsigned char*, int*, int (*)(unsigned char)>(unsigned char*, unsigned char*, int*, int (*)(unsigned char))
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.00% of 1278.98 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     99.9    0.04 1277.33                 _fu27___ZSt4cout [1]
+             1193.56    1.53  395598/395598      OneLayerPerceptron::train(float const*, float const*) [2]
+               81.95    0.23   60000/60000       OneLayerPerceptron::classify(float const*, float*) [3]
+                0.02    0.03  851196/911198      std::vector<float, std::allocator<float> >::data() [19]
+                0.00    0.01       1/1           OneLayerPerceptron::OneLayerPerceptron(float, int, int, int) [34]
+                0.00    0.00       6/6           calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int) [62]
+                0.00    0.00       3/3           std::vector<float, std::allocator<float> >::size() const [79]
+-----------------------------------------------
+             1193.56    1.53  395598/395598      _fu27___ZSt4cout [1]
+[2]     93.4 1193.56    1.53  395598         OneLayerPerceptron::train(float const*, float const*) [2]
+                1.53    0.00 122635380/141235380     OneLayerPerceptron::sigmoid(float) [4]
+-----------------------------------------------
+               81.95    0.23   60000/60000       _fu27___ZSt4cout [1]
+[3]      6.4   81.95    0.23   60000         OneLayerPerceptron::classify(float const*, float*) [3]
+                0.23    0.00 18600000/141235380     OneLayerPerceptron::sigmoid(float) [4]
+-----------------------------------------------
+                0.23    0.00 18600000/141235380     OneLayerPerceptron::classify(float const*, float*) [3]
+                1.53    0.00 122635380/141235380     OneLayerPerceptron::train(float const*, float const*) [2]
+[4]      0.1    1.76    0.00 141235380         OneLayerPerceptron::sigmoid(float) [4]
+-----------------------------------------------
+                0.00    0.91       1/1           _fu22___ZSt4cout [6]
+[5]      0.1    0.00    0.91       1         loadImageData(TrainingEnvironment&) [5]
+                0.15    0.49       2/2           float* std::transform<unsigned char*, float*, float (*)(unsigned char)>(unsigned char*, unsigned char*, float*, float (*)(unsigned char)) [7]
+                0.00    0.18       3/3           std::vector<float, std::allocator<float> >::vector(unsigned int, std::allocator<float> const&) [12]
+                0.00    0.09       1/1           int* std::transform<unsigned char*, int*, int (*)(unsigned char)>(unsigned char*, unsigned char*, int*, int (*)(unsigned char)) [18]
+                0.00    0.00   60002/911198      std::vector<float, std::allocator<float> >::data() [19]
+                0.00    0.00   60008/60008       IDXFile::getTotalSize() const [45]
+                0.00    0.00   60006/60006       IDXFile::getDataPointer() const [46]
+                0.00    0.00   60000/60000       TrainingEnvironment::getTrainingClassifications() [48]
+                0.00    0.00       4/4           IDXFile::IDXFile(std::string const&) [66]
+                0.00    0.00       4/4           IDXFile::hasError() const [70]
+                0.00    0.00       4/4           IDXFile::getDimensionNumber() const [69]
+                0.00    0.00       4/4           IDXFile::getDimensions() const [68]
+                0.00    0.00       4/8           IDXFile::deleteData() [60]
+                0.00    0.00       3/3           std::allocator<float>::allocator() [80]
+                0.00    0.00       3/3           std::allocator<float>::~allocator() [82]
+                0.00    0.00       1/1           TrainingEnvironment::setInputSampleWidth(unsigned int) [105]
+                0.00    0.00       1/1           TrainingEnvironment::setOutputSampleWidth(unsigned int) [106]
+                0.00    0.00       1/1           TrainingEnvironment::setTrainingData(std::vector<float, std::allocator<float> >*) [104]
+                0.00    0.00       1/1           TrainingEnvironment::getTrainingData() [103]
+                0.00    0.00       1/1           TrainingEnvironment::setTrainingClassifications(std::vector<float, std::allocator<float> >*) [109]
+                0.00    0.00       1/1           TrainingEnvironment::setTestingData(std::vector<float, std::allocator<float> >*) [102]
+                0.00    0.00       1/1           TrainingEnvironment::getTestingData() [101]
+                0.00    0.00       1/1           std::allocator<int>::allocator() [129]
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::vector(unsigned int, std::allocator<int> const&) [162]
+                0.00    0.00       1/1           TrainingEnvironment::setTestingClassifications(std::vector<int, std::allocator<int> >*) [108]
+                0.00    0.00       1/1           std::allocator<int>::~allocator() [131]
+                0.00    0.00       1/1           TrainingEnvironment::getTestingClassifications() [107]
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::data() [159]
+-----------------------------------------------
+                                                 <spontaneous>
+[6]      0.1    0.00    0.91                 _fu22___ZSt4cout [6]
+                0.00    0.91       1/1           loadImageData(TrainingEnvironment&) [5]
+                0.00    0.00       1/1           TrainingEnvironment::executeOCR() [100]
+-----------------------------------------------
+                0.15    0.49       2/2           loadImageData(TrainingEnvironment&) [5]
+[7]      0.1    0.15    0.49       2         float* std::transform<unsigned char*, float*, float (*)(unsigned char)>(unsigned char*, unsigned char*, float*, float (*)(unsigned char)) [7]
+                0.49    0.00 54880000/54880000     normalizeU8(unsigned char) [9]
+-----------------------------------------------
+                                                 <spontaneous>
+[8]      0.0    0.60    0.00                 expf [8]
+-----------------------------------------------
+                0.49    0.00 54880000/54880000     float* std::transform<unsigned char*, float*, float (*)(unsigned char)>(unsigned char*, unsigned char*, float*, float (*)(unsigned char)) [7]
+[9]      0.0    0.49    0.00 54880000         normalizeU8(unsigned char) [9]
+-----------------------------------------------
+                0.00    0.18       3/3           void std::__uninitialized_default_n<float*, unsigned int>(float*, unsigned int) [14]
+[10]     0.0    0.00    0.18       3         void std::__uninitialized_default_n_1<true>::__uninit_default_n<float*, unsigned int>(float*, unsigned int) [10]
+                0.00    0.18       3/3           float* std::fill_n<float*, unsigned int, float>(float*, unsigned int, float const&) [16]
+-----------------------------------------------
+                0.00    0.18       3/3           std::vector<float, std::allocator<float> >::vector(unsigned int, std::allocator<float> const&) [12]
+[11]     0.0    0.00    0.18       3         std::vector<float, std::allocator<float> >::_M_default_initialize(unsigned int) [11]
+                0.00    0.18       3/3           void std::__uninitialized_default_n_a<float*, unsigned int, float>(float*, unsigned int, std::allocator<float>&) [15]
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_M_get_Tp_allocator() [87]
+-----------------------------------------------
+                0.00    0.18       3/3           loadImageData(TrainingEnvironment&) [5]
+[12]     0.0    0.00    0.18       3         std::vector<float, std::allocator<float> >::vector(unsigned int, std::allocator<float> const&) [12]
+                0.00    0.18       3/3           std::vector<float, std::allocator<float> >::_M_default_initialize(unsigned int) [11]
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_Vector_base(unsigned int, std::allocator<float> const&) [88]
+-----------------------------------------------
+                0.18    0.00       3/3           float* std::fill_n<float*, unsigned int, float>(float*, unsigned int, float const&) [16]
+[13]     0.0    0.18    0.00       3         __gnu_cxx::__enable_if<std::__is_scalar<float>::__value, float*>::__type std::__fill_n_a<float*, unsigned int, float>(float*, unsigned int, float const&) [13]
+-----------------------------------------------
+                0.00    0.18       3/3           void std::__uninitialized_default_n_a<float*, unsigned int, float>(float*, unsigned int, std::allocator<float>&) [15]
+[14]     0.0    0.00    0.18       3         void std::__uninitialized_default_n<float*, unsigned int>(float*, unsigned int) [14]
+                0.00    0.18       3/3           void std::__uninitialized_default_n_1<true>::__uninit_default_n<float*, unsigned int>(float*, unsigned int) [10]
+-----------------------------------------------
+                0.00    0.18       3/3           std::vector<float, std::allocator<float> >::_M_default_initialize(unsigned int) [11]
+[15]     0.0    0.00    0.18       3         void std::__uninitialized_default_n_a<float*, unsigned int, float>(float*, unsigned int, std::allocator<float>&) [15]
+                0.00    0.18       3/3           void std::__uninitialized_default_n<float*, unsigned int>(float*, unsigned int) [14]
+-----------------------------------------------
+                0.00    0.18       3/3           void std::__uninitialized_default_n_1<true>::__uninit_default_n<float*, unsigned int>(float*, unsigned int) [10]
+[16]     0.0    0.00    0.18       3         float* std::fill_n<float*, unsigned int, float>(float*, unsigned int, float const&) [16]
+                0.18    0.00       3/3           __gnu_cxx::__enable_if<std::__is_scalar<float>::__value, float*>::__type std::__fill_n_a<float*, unsigned int, float>(float*, unsigned int, float const&) [13]
+                0.00    0.00       3/3           std::_Niter_base<float*>::iterator_type std::__niter_base<float*>(float*) [89]
+-----------------------------------------------
+                0.09    0.00   10000/10000       int* std::transform<unsigned char*, int*, int (*)(unsigned char)>(unsigned char*, unsigned char*, int*, int (*)(unsigned char)) [18]
+[17]     0.0    0.09    0.00   10000         copyU8T2I(unsigned char) [17]
+-----------------------------------------------
+                0.00    0.09       1/1           loadImageData(TrainingEnvironment&) [5]
+[18]     0.0    0.00    0.09       1         int* std::transform<unsigned char*, int*, int (*)(unsigned char)>(unsigned char*, unsigned char*, int*, int (*)(unsigned char)) [18]
+                0.09    0.00   10000/10000       copyU8T2I(unsigned char) [17]
+-----------------------------------------------
+                0.00    0.00   60002/911198      loadImageData(TrainingEnvironment&) [5]
+                0.02    0.03  851196/911198      _fu27___ZSt4cout [1]
+[19]     0.0    0.02    0.03  911198         std::vector<float, std::allocator<float> >::data() [19]
+                0.00    0.02  911198/911198      std::vector<float, std::allocator<float> >::front() [25]
+                0.01    0.00  911198/911198      float* std::__addressof<float>(float&) [26]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.0    0.04    0.00                 exp [20]
+-----------------------------------------------
+                                                 <spontaneous>
+[21]     0.0    0.03    0.00                 _fu0___ZSt4cerr [21]
+-----------------------------------------------
+                                                 <spontaneous>
+[22]     0.0    0.03    0.00                 logl [22]
+-----------------------------------------------
+                0.02    0.00  911198/911198      std::vector<float, std::allocator<float> >::begin() [24]
+[23]     0.0    0.02    0.00  911198         __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::__normal_iterator(float* const&) [23]
+-----------------------------------------------
+                0.00    0.02  911198/911198      std::vector<float, std::allocator<float> >::front() [25]
+[24]     0.0    0.00    0.02  911198         std::vector<float, std::allocator<float> >::begin() [24]
+                0.02    0.00  911198/911198      __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::__normal_iterator(float* const&) [23]
+-----------------------------------------------
+                0.00    0.02  911198/911198      std::vector<float, std::allocator<float> >::data() [19]
+[25]     0.0    0.00    0.02  911198         std::vector<float, std::allocator<float> >::front() [25]
+                0.00    0.02  911198/911198      std::vector<float, std::allocator<float> >::begin() [24]
+                0.00    0.00  911198/911198      __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::operator*() const [36]
+-----------------------------------------------
+                0.01    0.00  911198/911198      std::vector<float, std::allocator<float> >::data() [19]
+[26]     0.0    0.01    0.00  911198         float* std::__addressof<float>(float&) [26]
+-----------------------------------------------
+                0.00    0.01  477020/477020      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+[27]     0.0    0.00    0.01  477020         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::operator()() [27]
+                0.01    0.00     765/765         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::_M_gen_rand() [32]
+-----------------------------------------------
+                0.00    0.01  238510/238510      OneLayerPerceptron::randomizeWeights() [33]
+[28]     0.0    0.00    0.01  238510         double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [28]
+                0.00    0.01  238510/238510      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [29]
+-----------------------------------------------
+                0.00    0.01  238510/238510      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [28]
+[29]     0.0    0.00    0.01  238510         double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [29]
+                0.00    0.01  238510/238510      std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::operator()() [30]
+                0.00    0.00  477020/477020      std::uniform_real_distribution<double>::param_type::a() const [38]
+                0.00    0.00  238510/238510      std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::_Adaptor(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [42]
+                0.00    0.00  238510/238510      std::uniform_real_distribution<double>::param_type::b() const [40]
+-----------------------------------------------
+                0.00    0.01  238510/238510      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [29]
+[30]     0.0    0.00    0.01  238510         std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::operator()() [30]
+                0.00    0.01  238510/238510      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+-----------------------------------------------
+                0.00    0.01  238510/238510      std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::operator()() [30]
+[31]     0.0    0.00    0.01  238510         double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+                0.00    0.01  477020/477020      std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::operator()() [27]
+                0.00    0.00  715530/715530      std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::min() [37]
+                0.00    0.00  477020/477020      std::log(long double) [39]
+                0.00    0.00  238510/238510      unsigned int const& std::min<unsigned int>(unsigned int const&, unsigned int const&) [44]
+                0.00    0.00  238510/238510      std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::max() [41]
+                0.00    0.00  238510/238510      unsigned int const& std::max<unsigned int>(unsigned int const&, unsigned int const&) [43]
+-----------------------------------------------
+                0.01    0.00     765/765         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::operator()() [27]
+[32]     0.0    0.01    0.00     765         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::_M_gen_rand() [32]
+-----------------------------------------------
+                0.00    0.01       1/1           OneLayerPerceptron::OneLayerPerceptron(float, int, int, int) [34]
+[33]     0.0    0.00    0.01       1         OneLayerPerceptron::randomizeWeights() [33]
+                0.00    0.01  238510/238510      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [28]
+                0.00    0.00       1/1           std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::mersenne_twister_engine(unsigned int) [147]
+                0.00    0.00       1/1           std::uniform_real_distribution<double>::uniform_real_distribution(double, double) [149]
+-----------------------------------------------
+                0.00    0.01       1/1           _fu27___ZSt4cout [1]
+[34]     0.0    0.00    0.01       1         OneLayerPerceptron::OneLayerPerceptron(float, int, int, int) [34]
+                0.00    0.01       1/1           OneLayerPerceptron::randomizeWeights() [33]
+-----------------------------------------------
+                0.00    0.00  911198/911198      std::vector<float, std::allocator<float> >::front() [25]
+[36]     0.0    0.00    0.00  911198         __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::operator*() const [36]
+-----------------------------------------------
+                0.00    0.00  715530/715530      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+[37]     0.0    0.00    0.00  715530         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::min() [37]
+-----------------------------------------------
+                0.00    0.00  477020/477020      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [29]
+[38]     0.0    0.00    0.00  477020         std::uniform_real_distribution<double>::param_type::a() const [38]
+-----------------------------------------------
+                0.00    0.00  477020/477020      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+[39]     0.0    0.00    0.00  477020         std::log(long double) [39]
+-----------------------------------------------
+                0.00    0.00  238510/238510      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [29]
+[40]     0.0    0.00    0.00  238510         std::uniform_real_distribution<double>::param_type::b() const [40]
+-----------------------------------------------
+                0.00    0.00  238510/238510      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+[41]     0.0    0.00    0.00  238510         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::max() [41]
+-----------------------------------------------
+                0.00    0.00  238510/238510      double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [29]
+[42]     0.0    0.00    0.00  238510         std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::_Adaptor(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [42]
+-----------------------------------------------
+                0.00    0.00  238510/238510      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+[43]     0.0    0.00    0.00  238510         unsigned int const& std::max<unsigned int>(unsigned int const&, unsigned int const&) [43]
+-----------------------------------------------
+                0.00    0.00  238510/238510      double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [31]
+[44]     0.0    0.00    0.00  238510         unsigned int const& std::min<unsigned int>(unsigned int const&, unsigned int const&) [44]
+-----------------------------------------------
+                0.00    0.00   60008/60008       loadImageData(TrainingEnvironment&) [5]
+[45]     0.0    0.00    0.00   60008         IDXFile::getTotalSize() const [45]
+-----------------------------------------------
+                0.00    0.00   60006/60006       loadImageData(TrainingEnvironment&) [5]
+[46]     0.0    0.00    0.00   60006         IDXFile::getDataPointer() const [46]
+-----------------------------------------------
+                0.00    0.00   60000/60000       calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int) [62]
+[47]     0.0    0.00    0.00   60000         findHighestIndex(float const*, int) [47]
+-----------------------------------------------
+                0.00    0.00   60000/60000       loadImageData(TrainingEnvironment&) [5]
+[48]     0.0    0.00    0.00   60000         TrainingEnvironment::getTrainingClassifications() [48]
+-----------------------------------------------
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::begin() const [52]
+[49]     0.0    0.00    0.00   60000         __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::__normal_iterator(int const* const&) [49]
+-----------------------------------------------
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::front() const [53]
+[50]     0.0    0.00    0.00   60000         __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::operator*() const [50]
+-----------------------------------------------
+                0.00    0.00   60000/60000       calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int) [62]
+[51]     0.0    0.00    0.00   60000         std::vector<int, std::allocator<int> >::data() const [51]
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::front() const [53]
+                0.00    0.00   60000/60000       int const* std::__addressof<int const>(int const&) [54]
+-----------------------------------------------
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::front() const [53]
+[52]     0.0    0.00    0.00   60000         std::vector<int, std::allocator<int> >::begin() const [52]
+                0.00    0.00   60000/60000       __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::__normal_iterator(int const* const&) [49]
+-----------------------------------------------
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::data() const [51]
+[53]     0.0    0.00    0.00   60000         std::vector<int, std::allocator<int> >::front() const [53]
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::begin() const [52]
+                0.00    0.00   60000/60000       __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::operator*() const [50]
+-----------------------------------------------
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::data() const [51]
+[54]     0.0    0.00    0.00   60000         int const* std::__addressof<int const>(int const&) [54]
+-----------------------------------------------
+                0.00    0.00     624/624         unsigned int std::__detail::__mod<unsigned int, 0u, 1u, 0u>(unsigned int) [56]
+[55]     0.0    0.00    0.00     624         std::__detail::_Mod<unsigned int, 0u, 1u, 0u, true, false>::__calc(unsigned int) [55]
+-----------------------------------------------
+                0.00    0.00     624/624         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::seed(unsigned int) [146]
+[56]     0.0    0.00    0.00     624         unsigned int std::__detail::__mod<unsigned int, 0u, 1u, 0u>(unsigned int) [56]
+                0.00    0.00     624/624         std::__detail::_Mod<unsigned int, 0u, 1u, 0u, true, false>::__calc(unsigned int) [55]
+-----------------------------------------------
+                0.00    0.00     623/623         unsigned int std::__detail::__mod<unsigned int, 624u, 1u, 0u>(unsigned int) [58]
+[57]     0.0    0.00    0.00     623         std::__detail::_Mod<unsigned int, 624u, 1u, 0u, true, true>::__calc(unsigned int) [57]
+-----------------------------------------------
+                0.00    0.00     623/623         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::seed(unsigned int) [146]
+[58]     0.0    0.00    0.00     623         unsigned int std::__detail::__mod<unsigned int, 624u, 1u, 0u>(unsigned int) [58]
+                0.00    0.00     623/623         std::__detail::_Mod<unsigned int, 624u, 1u, 0u, true, true>::__calc(unsigned int) [57]
+-----------------------------------------------
+                0.00    0.00      12/12          IDXFile::readFile(std::string const&) [65]
+[59]     0.0    0.00    0.00      12         read32_be(std::istream&) [59]
+-----------------------------------------------
+                0.00    0.00       4/8           IDXFile::~IDXFile() [67]
+                0.00    0.00       4/8           loadImageData(TrainingEnvironment&) [5]
+[60]     0.0    0.00    0.00       8         IDXFile::deleteData() [60]
+-----------------------------------------------
+                0.00    0.00       8/8           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[61]     0.0    0.00    0.00       8         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [61]
+-----------------------------------------------
+                0.00    0.00       6/6           _fu27___ZSt4cout [1]
+[62]     0.0    0.00    0.00       6         calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int) [62]
+                0.00    0.00   60000/60000       findHighestIndex(float const*, int) [47]
+                0.00    0.00   60000/60000       std::vector<int, std::allocator<int> >::data() const [51]
+                0.00    0.00       6/6           std::vector<int, std::allocator<int> >::size() const [64]
+-----------------------------------------------
+                0.00    0.00       6/6           bool __gnu_cxx::operator!=<std::string*, std::vector<std::string, std::allocator<std::string> > >(__gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&, __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&) [77]
+[63]     0.0    0.00    0.00       6         __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::base() const [63]
+-----------------------------------------------
+                0.00    0.00       6/6           calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int) [62]
+[64]     0.0    0.00    0.00       6         std::vector<int, std::allocator<int> >::size() const [64]
+-----------------------------------------------
+                0.00    0.00       4/4           IDXFile::IDXFile(std::string const&) [66]
+[65]     0.0    0.00    0.00       4         IDXFile::readFile(std::string const&) [65]
+                0.00    0.00      12/12          read32_be(std::istream&) [59]
+                0.00    0.00       4/4           std::operator|(std::_Ios_Openmode, std::_Ios_Openmode) [72]
+-----------------------------------------------
+                0.00    0.00       4/4           loadImageData(TrainingEnvironment&) [5]
+[66]     0.0    0.00    0.00       4         IDXFile::IDXFile(std::string const&) [66]
+                0.00    0.00       4/4           IDXFile::readFile(std::string const&) [65]
+-----------------------------------------------
+                0.00    0.00       4/4           _fu6___ZSt4cerr [762]
+[67]     0.0    0.00    0.00       4         IDXFile::~IDXFile() [67]
+                0.00    0.00       4/8           IDXFile::deleteData() [60]
+-----------------------------------------------
+                0.00    0.00       4/4           loadImageData(TrainingEnvironment&) [5]
+[68]     0.0    0.00    0.00       4         IDXFile::getDimensions() const [68]
+-----------------------------------------------
+                0.00    0.00       4/4           loadImageData(TrainingEnvironment&) [5]
+[69]     0.0    0.00    0.00       4         IDXFile::getDimensionNumber() const [69]
+-----------------------------------------------
+                0.00    0.00       4/4           loadImageData(TrainingEnvironment&) [5]
+[70]     0.0    0.00    0.00       4         IDXFile::hasError() const [70]
+-----------------------------------------------
+                0.00    0.00       2/4           void std::_Destroy_aux<false>::__destroy<std::string*>(std::string*, std::string*) [133]
+                0.00    0.00       2/4           void std::__uninitialized_default_n_1<false>::__uninit_default_n<std::string*, unsigned int>(std::string*, unsigned int) [150]
+[71]     0.0    0.00    0.00       4         std::string* std::__addressof<std::string>(std::string&) [71]
+-----------------------------------------------
+                0.00    0.00       4/4           IDXFile::readFile(std::string const&) [65]
+[72]     0.0    0.00    0.00       4         std::operator|(std::_Ios_Openmode, std::_Ios_Openmode) [72]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned int) [84]
+[73]     0.0    0.00    0.00       3         __gnu_cxx::new_allocator<float>::allocate(unsigned int, void const*) [73]
+                0.00    0.00       3/3           __gnu_cxx::new_allocator<float>::max_size() const [78]
+-----------------------------------------------
+                0.00    0.00       3/3           std::allocator<float>::allocator(std::allocator<float> const&) [81]
+[74]     0.0    0.00    0.00       3         __gnu_cxx::new_allocator<float>::new_allocator(__gnu_cxx::new_allocator<float> const&) [74]
+-----------------------------------------------
+                0.00    0.00       3/3           std::allocator<float>::allocator() [80]
+[75]     0.0    0.00    0.00       3         __gnu_cxx::new_allocator<float>::new_allocator() [75]
+-----------------------------------------------
+                0.00    0.00       3/3           std::allocator<float>::~allocator() [82]
+[76]     0.0    0.00    0.00       3         __gnu_cxx::new_allocator<float>::~new_allocator() [76]
+-----------------------------------------------
+                0.00    0.00       3/3           _fu7___ZSt4cerr [763]
+[77]     0.0    0.00    0.00       3         bool __gnu_cxx::operator!=<std::string*, std::vector<std::string, std::allocator<std::string> > >(__gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&, __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&) [77]
+                0.00    0.00       6/6           __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::base() const [63]
+-----------------------------------------------
+                0.00    0.00       3/3           __gnu_cxx::new_allocator<float>::allocate(unsigned int, void const*) [73]
+[78]     0.0    0.00    0.00       3         __gnu_cxx::new_allocator<float>::max_size() const [78]
+-----------------------------------------------
+                0.00    0.00       3/3           _fu27___ZSt4cout [1]
+[79]     0.0    0.00    0.00       3         std::vector<float, std::allocator<float> >::size() const [79]
+-----------------------------------------------
+                0.00    0.00       3/3           loadImageData(TrainingEnvironment&) [5]
+[80]     0.0    0.00    0.00       3         std::allocator<float>::allocator() [80]
+                0.00    0.00       3/3           __gnu_cxx::new_allocator<float>::new_allocator() [75]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_Vector_impl::_Vector_impl(std::allocator<float> const&) [85]
+[81]     0.0    0.00    0.00       3         std::allocator<float>::allocator(std::allocator<float> const&) [81]
+                0.00    0.00       3/3           __gnu_cxx::new_allocator<float>::new_allocator(__gnu_cxx::new_allocator<float> const&) [74]
+-----------------------------------------------
+                0.00    0.00       3/3           loadImageData(TrainingEnvironment&) [5]
+[82]     0.0    0.00    0.00       3         std::allocator<float>::~allocator() [82]
+                0.00    0.00       3/3           __gnu_cxx::new_allocator<float>::~new_allocator() [76]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Niter_base<float*>::iterator_type std::__niter_base<float*>(float*) [89]
+[83]     0.0    0.00    0.00       3         std::_Iter_base<float*, false>::_S_base(float*) [83]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_M_create_storage(unsigned int) [86]
+[84]     0.0    0.00    0.00       3         std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned int) [84]
+                0.00    0.00       3/3           __gnu_cxx::new_allocator<float>::allocate(unsigned int, void const*) [73]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_Vector_base(unsigned int, std::allocator<float> const&) [88]
+[85]     0.0    0.00    0.00       3         std::_Vector_base<float, std::allocator<float> >::_Vector_impl::_Vector_impl(std::allocator<float> const&) [85]
+                0.00    0.00       3/3           std::allocator<float>::allocator(std::allocator<float> const&) [81]
+-----------------------------------------------
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_Vector_base(unsigned int, std::allocator<float> const&) [88]
+[86]     0.0    0.00    0.00       3         std::_Vector_base<float, std::allocator<float> >::_M_create_storage(unsigned int) [86]
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned int) [84]
+-----------------------------------------------
+                0.00    0.00       3/3           std::vector<float, std::allocator<float> >::_M_default_initialize(unsigned int) [11]
+[87]     0.0    0.00    0.00       3         std::_Vector_base<float, std::allocator<float> >::_M_get_Tp_allocator() [87]
+-----------------------------------------------
+                0.00    0.00       3/3           std::vector<float, std::allocator<float> >::vector(unsigned int, std::allocator<float> const&) [12]
+[88]     0.0    0.00    0.00       3         std::_Vector_base<float, std::allocator<float> >::_Vector_base(unsigned int, std::allocator<float> const&) [88]
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_Vector_impl::_Vector_impl(std::allocator<float> const&) [85]
+                0.00    0.00       3/3           std::_Vector_base<float, std::allocator<float> >::_M_create_storage(unsigned int) [86]
+-----------------------------------------------
+                0.00    0.00       3/3           float* std::fill_n<float*, unsigned int, float>(float*, unsigned int, float const&) [16]
+[89]     0.0    0.00    0.00       3         std::_Niter_base<float*>::iterator_type std::__niter_base<float*>(float*) [89]
+                0.00    0.00       3/3           std::_Iter_base<float*, false>::_S_base(float*) [83]
+-----------------------------------------------
+                0.00    0.00       1/2           std::allocator<std::string>::~allocator() [127]
+                0.00    0.00       1/2           std::allocator<std::string>::~allocator() [128]
+[90]     0.0    0.00    0.00       2         __gnu_cxx::new_allocator<std::string>::~new_allocator() [90]
+-----------------------------------------------
+                0.00    0.00       1/2           std::vector<std::string, std::allocator<std::string> >::end() [153]
+                0.00    0.00       1/2           std::vector<std::string, std::allocator<std::string> >::begin() [154]
+[91]     0.0    0.00    0.00       2         __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::__normal_iterator(std::string* const&) [91]
+-----------------------------------------------
+                0.00    0.00       2/2           _fu7___ZSt4cerr [763]
+[92]     0.0    0.00    0.00       2         __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator++() [92]
+-----------------------------------------------
+                0.00    0.00       2/2           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[93]     0.0    0.00    0.00       2         __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator*() const [93]
+-----------------------------------------------
+                0.00    0.00       1/2           std::vector<std::string, std::allocator<std::string> >::_M_default_initialize(unsigned int) [152]
+                0.00    0.00       1/2           std::vector<std::string, std::allocator<std::string> >::~vector() [156]
+[94]     0.0    0.00    0.00       2         std::_Vector_base<std::string, std::allocator<std::string> >::_M_get_Tp_allocator() [94]
+-----------------------------------------------
+                0.00    0.00       2/2           void std::__uninitialized_default_n_1<false>::__uninit_default_n<std::string*, unsigned int>(std::string*, unsigned int) [150]
+[95]     0.0    0.00    0.00       2         _ZSt10_ConstructISsIEEvPT_DpOT0_ [95]
+                0.00    0.00       2/2           operator new(unsigned int, void*) [97]
+-----------------------------------------------
+                0.00    0.00       2/2           void std::_Destroy_aux<false>::__destroy<std::string*>(std::string*, std::string*) [133]
+[96]     0.0    0.00    0.00       2         void std::_Destroy<std::string>(std::string*) [96]
+-----------------------------------------------
+                0.00    0.00       2/2           _ZSt10_ConstructISsIEEvPT_DpOT0_ [95]
+[97]     0.0    0.00    0.00       2         operator new(unsigned int, void*) [97]
+-----------------------------------------------
+                0.00    0.00       1/1           TrainingEnvironment::executeOCR() [100]
+[98]     0.0    0.00    0.00       1         sequentialOCR(std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<int, std::allocator<int> >*, unsigned int&, unsigned int&) [98]
+-----------------------------------------------
+                0.00    0.00       1/1           main [816]
+[99]     0.0    0.00    0.00       1         parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+                0.00    0.00       8/8           bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [61]
+                0.00    0.00       2/2           __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator*() const [93]
+                0.00    0.00       1/1           std::allocator<std::string>::allocator() [125]
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::vector(unsigned int, std::allocator<std::string> const&) [155]
+                0.00    0.00       1/1           std::allocator<std::string>::~allocator() [127]
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::operator[](unsigned int) [157]
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::begin() [154]
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::end() [153]
+                0.00    0.00       1/1           TrainingEnvironment::setType(TrainingType) [111]
+-----------------------------------------------
+                0.00    0.00       1/1           _fu22___ZSt4cout [6]
+[100]    0.0    0.00    0.00       1         TrainingEnvironment::executeOCR() [100]
+                0.00    0.00       1/1           TrainingEnvironment::isValid() [110]
+                0.00    0.00       1/1           sequentialOCR(std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<int, std::allocator<int> >*, unsigned int&, unsigned int&) [98]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[101]    0.0    0.00    0.00       1         TrainingEnvironment::getTestingData() [101]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[102]    0.0    0.00    0.00       1         TrainingEnvironment::setTestingData(std::vector<float, std::allocator<float> >*) [102]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[103]    0.0    0.00    0.00       1         TrainingEnvironment::getTrainingData() [103]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[104]    0.0    0.00    0.00       1         TrainingEnvironment::setTrainingData(std::vector<float, std::allocator<float> >*) [104]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[105]    0.0    0.00    0.00       1         TrainingEnvironment::setInputSampleWidth(unsigned int) [105]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[106]    0.0    0.00    0.00       1         TrainingEnvironment::setOutputSampleWidth(unsigned int) [106]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[107]    0.0    0.00    0.00       1         TrainingEnvironment::getTestingClassifications() [107]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[108]    0.0    0.00    0.00       1         TrainingEnvironment::setTestingClassifications(std::vector<int, std::allocator<int> >*) [108]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[109]    0.0    0.00    0.00       1         TrainingEnvironment::setTrainingClassifications(std::vector<float, std::allocator<float> >*) [109]
+-----------------------------------------------
+                0.00    0.00       1/1           TrainingEnvironment::executeOCR() [100]
+[110]    0.0    0.00    0.00       1         TrainingEnvironment::isValid() [110]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[111]    0.0    0.00    0.00       1         TrainingEnvironment::setType(TrainingType) [111]
+-----------------------------------------------
+                0.00    0.00       1/1           main [816]
+[112]    0.0    0.00    0.00       1         TrainingEnvironment::TrainingEnvironment() [112]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_M_deallocate(std::string*, unsigned int) [137]
+[113]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<std::string>::deallocate(std::string*, unsigned int) [113]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_M_allocate(unsigned int) [134]
+[114]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<std::string>::allocate(unsigned int, void const*) [114]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<std::string>::max_size() const [122]
+-----------------------------------------------
+                0.00    0.00       1/1           std::allocator<std::string>::allocator(std::allocator<std::string> const&) [126]
+[115]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<std::string>::new_allocator(__gnu_cxx::new_allocator<std::string> const&) [115]
+-----------------------------------------------
+                0.00    0.00       1/1           std::allocator<std::string>::allocator() [125]
+[116]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<std::string>::new_allocator() [116]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned int) [141]
+[117]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<int>::allocate(unsigned int, void const*) [117]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<int>::max_size() const [123]
+-----------------------------------------------
+                0.00    0.00       1/1           std::allocator<int>::allocator(std::allocator<int> const&) [130]
+[118]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<int>::new_allocator(__gnu_cxx::new_allocator<int> const&) [118]
+-----------------------------------------------
+                0.00    0.00       1/1           std::allocator<int>::allocator() [129]
+[119]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<int>::new_allocator() [119]
+-----------------------------------------------
+                0.00    0.00       1/1           std::allocator<int>::~allocator() [131]
+[120]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<int>::~new_allocator() [120]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::begin() [160]
+[121]    0.0    0.00    0.00       1         __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator(int* const&) [121]
+-----------------------------------------------
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<std::string>::allocate(unsigned int, void const*) [114]
+[122]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<std::string>::max_size() const [122]
+-----------------------------------------------
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<int>::allocate(unsigned int, void const*) [117]
+[123]    0.0    0.00    0.00       1         __gnu_cxx::new_allocator<int>::max_size() const [123]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::front() [161]
+[124]    0.0    0.00    0.00       1         __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator*() const [124]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[125]    0.0    0.00    0.00       1         std::allocator<std::string>::allocator() [125]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<std::string>::new_allocator() [116]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::_Vector_impl(std::allocator<std::string> const&) [135]
+[126]    0.0    0.00    0.00       1         std::allocator<std::string>::allocator(std::allocator<std::string> const&) [126]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<std::string>::new_allocator(__gnu_cxx::new_allocator<std::string> const&) [115]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[127]    0.0    0.00    0.00       1         std::allocator<std::string>::~allocator() [127]
+                0.00    0.00       1/2           __gnu_cxx::new_allocator<std::string>::~new_allocator() [90]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::~_Vector_impl() [136]
+[128]    0.0    0.00    0.00       1         std::allocator<std::string>::~allocator() [128]
+                0.00    0.00       1/2           __gnu_cxx::new_allocator<std::string>::~new_allocator() [90]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[129]    0.0    0.00    0.00       1         std::allocator<int>::allocator() [129]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<int>::new_allocator() [119]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_Vector_impl::_Vector_impl(std::allocator<int> const&) [142]
+[130]    0.0    0.00    0.00       1         std::allocator<int>::allocator(std::allocator<int> const&) [130]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<int>::new_allocator(__gnu_cxx::new_allocator<int> const&) [118]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[131]    0.0    0.00    0.00       1         std::allocator<int>::~allocator() [131]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<int>::~new_allocator() [120]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*) [165]
+[132]    0.0    0.00    0.00       1         std::_Iter_base<int*, false>::_S_base(int*) [132]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::_Destroy<std::string*>(std::string*, std::string*) [171]
+[133]    0.0    0.00    0.00       1         void std::_Destroy_aux<false>::__destroy<std::string*>(std::string*, std::string*) [133]
+                0.00    0.00       2/4           std::string* std::__addressof<std::string>(std::string&) [71]
+                0.00    0.00       2/2           void std::_Destroy<std::string>(std::string*) [96]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_M_create_storage(unsigned int) [138]
+[134]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::_M_allocate(unsigned int) [134]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<std::string>::allocate(unsigned int, void const*) [114]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_base(unsigned int, std::allocator<std::string> const&) [139]
+[135]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::_Vector_impl(std::allocator<std::string> const&) [135]
+                0.00    0.00       1/1           std::allocator<std::string>::allocator(std::allocator<std::string> const&) [126]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::~_Vector_base() [140]
+[136]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::~_Vector_impl() [136]
+                0.00    0.00       1/1           std::allocator<std::string>::~allocator() [128]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::~_Vector_base() [140]
+[137]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::_M_deallocate(std::string*, unsigned int) [137]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<std::string>::deallocate(std::string*, unsigned int) [113]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_base(unsigned int, std::allocator<std::string> const&) [139]
+[138]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::_M_create_storage(unsigned int) [138]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_M_allocate(unsigned int) [134]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::vector(unsigned int, std::allocator<std::string> const&) [155]
+[139]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_base(unsigned int, std::allocator<std::string> const&) [139]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::_Vector_impl(std::allocator<std::string> const&) [135]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_M_create_storage(unsigned int) [138]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::~vector() [156]
+[140]    0.0    0.00    0.00       1         std::_Vector_base<std::string, std::allocator<std::string> >::~_Vector_base() [140]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_M_deallocate(std::string*, unsigned int) [137]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::~_Vector_impl() [136]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned int) [143]
+[141]    0.0    0.00    0.00       1         std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned int) [141]
+                0.00    0.00       1/1           __gnu_cxx::new_allocator<int>::allocate(unsigned int, void const*) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned int, std::allocator<int> const&) [145]
+[142]    0.0    0.00    0.00       1         std::_Vector_base<int, std::allocator<int> >::_Vector_impl::_Vector_impl(std::allocator<int> const&) [142]
+                0.00    0.00       1/1           std::allocator<int>::allocator(std::allocator<int> const&) [130]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned int, std::allocator<int> const&) [145]
+[143]    0.0    0.00    0.00       1         std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned int) [143]
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned int) [141]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::_M_default_initialize(unsigned int) [158]
+[144]    0.0    0.00    0.00       1         std::_Vector_base<int, std::allocator<int> >::_M_get_Tp_allocator() [144]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::vector(unsigned int, std::allocator<int> const&) [162]
+[145]    0.0    0.00    0.00       1         std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned int, std::allocator<int> const&) [145]
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_Vector_impl::_Vector_impl(std::allocator<int> const&) [142]
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned int) [143]
+-----------------------------------------------
+                0.00    0.00       1/1           std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::mersenne_twister_engine(unsigned int) [147]
+[146]    0.0    0.00    0.00       1         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::seed(unsigned int) [146]
+                0.00    0.00     624/624         unsigned int std::__detail::__mod<unsigned int, 0u, 1u, 0u>(unsigned int) [56]
+                0.00    0.00     623/623         unsigned int std::__detail::__mod<unsigned int, 624u, 1u, 0u>(unsigned int) [58]
+-----------------------------------------------
+                0.00    0.00       1/1           OneLayerPerceptron::randomizeWeights() [33]
+[147]    0.0    0.00    0.00       1         std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::mersenne_twister_engine(unsigned int) [147]
+                0.00    0.00       1/1           std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::seed(unsigned int) [146]
+-----------------------------------------------
+                0.00    0.00       1/1           std::uniform_real_distribution<double>::uniform_real_distribution(double, double) [149]
+[148]    0.0    0.00    0.00       1         std::uniform_real_distribution<double>::param_type::param_type(double, double) [148]
+-----------------------------------------------
+                0.00    0.00       1/1           OneLayerPerceptron::randomizeWeights() [33]
+[149]    0.0    0.00    0.00       1         std::uniform_real_distribution<double>::uniform_real_distribution(double, double) [149]
+                0.00    0.00       1/1           std::uniform_real_distribution<double>::param_type::param_type(double, double) [148]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::__uninitialized_default_n<std::string*, unsigned int>(std::string*, unsigned int) [166]
+[150]    0.0    0.00    0.00       1         void std::__uninitialized_default_n_1<false>::__uninit_default_n<std::string*, unsigned int>(std::string*, unsigned int) [150]
+                0.00    0.00       2/4           std::string* std::__addressof<std::string>(std::string&) [71]
+                0.00    0.00       2/2           _ZSt10_ConstructISsIEEvPT_DpOT0_ [95]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::__uninitialized_default_n<int*, unsigned int>(int*, unsigned int) [167]
+[151]    0.0    0.00    0.00       1         void std::__uninitialized_default_n_1<true>::__uninit_default_n<int*, unsigned int>(int*, unsigned int) [151]
+                0.00    0.00       1/1           int* std::fill_n<int*, unsigned int, int>(int*, unsigned int, int const&) [170]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::vector(unsigned int, std::allocator<std::string> const&) [155]
+[152]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::_M_default_initialize(unsigned int) [152]
+                0.00    0.00       1/2           std::_Vector_base<std::string, std::allocator<std::string> >::_M_get_Tp_allocator() [94]
+                0.00    0.00       1/1           void std::__uninitialized_default_n_a<std::string*, unsigned int, std::string>(std::string*, unsigned int, std::allocator<std::string>&) [168]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[153]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::end() [153]
+                0.00    0.00       1/2           __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::__normal_iterator(std::string* const&) [91]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[154]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::begin() [154]
+                0.00    0.00       1/2           __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::__normal_iterator(std::string* const&) [91]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[155]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::vector(unsigned int, std::allocator<std::string> const&) [155]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_base(unsigned int, std::allocator<std::string> const&) [139]
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::_M_default_initialize(unsigned int) [152]
+-----------------------------------------------
+                0.00    0.00       1/1           _fu7___ZSt4cerr [763]
+[156]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::~vector() [156]
+                0.00    0.00       1/2           std::_Vector_base<std::string, std::allocator<std::string> >::_M_get_Tp_allocator() [94]
+                0.00    0.00       1/1           void std::_Destroy<std::string*, std::string>(std::string*, std::string*, std::allocator<std::string>&) [172]
+                0.00    0.00       1/1           std::_Vector_base<std::string, std::allocator<std::string> >::~_Vector_base() [140]
+-----------------------------------------------
+                0.00    0.00       1/1           parseCommandlineParameters(int, char**, TrainingEnvironment&) [99]
+[157]    0.0    0.00    0.00       1         std::vector<std::string, std::allocator<std::string> >::operator[](unsigned int) [157]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::vector(unsigned int, std::allocator<int> const&) [162]
+[158]    0.0    0.00    0.00       1         std::vector<int, std::allocator<int> >::_M_default_initialize(unsigned int) [158]
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_M_get_Tp_allocator() [144]
+                0.00    0.00       1/1           void std::__uninitialized_default_n_a<int*, unsigned int, int>(int*, unsigned int, std::allocator<int>&) [169]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[159]    0.0    0.00    0.00       1         std::vector<int, std::allocator<int> >::data() [159]
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::front() [161]
+                0.00    0.00       1/1           int* std::__addressof<int>(int&) [164]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::front() [161]
+[160]    0.0    0.00    0.00       1         std::vector<int, std::allocator<int> >::begin() [160]
+                0.00    0.00       1/1           __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator(int* const&) [121]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::data() [159]
+[161]    0.0    0.00    0.00       1         std::vector<int, std::allocator<int> >::front() [161]
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::begin() [160]
+                0.00    0.00       1/1           __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator*() const [124]
+-----------------------------------------------
+                0.00    0.00       1/1           loadImageData(TrainingEnvironment&) [5]
+[162]    0.0    0.00    0.00       1         std::vector<int, std::allocator<int> >::vector(unsigned int, std::allocator<int> const&) [162]
+                0.00    0.00       1/1           std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned int, std::allocator<int> const&) [145]
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::_M_default_initialize(unsigned int) [158]
+-----------------------------------------------
+                0.00    0.00       1/1           int* std::fill_n<int*, unsigned int, int>(int*, unsigned int, int const&) [170]
+[163]    0.0    0.00    0.00       1         __gnu_cxx::__enable_if<std::__is_scalar<int>::__value, int*>::__type std::__fill_n_a<int*, unsigned int, int>(int*, unsigned int, int const&) [163]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::data() [159]
+[164]    0.0    0.00    0.00       1         int* std::__addressof<int>(int&) [164]
+-----------------------------------------------
+                0.00    0.00       1/1           int* std::fill_n<int*, unsigned int, int>(int*, unsigned int, int const&) [170]
+[165]    0.0    0.00    0.00       1         std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*) [165]
+                0.00    0.00       1/1           std::_Iter_base<int*, false>::_S_base(int*) [132]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::__uninitialized_default_n_a<std::string*, unsigned int, std::string>(std::string*, unsigned int, std::allocator<std::string>&) [168]
+[166]    0.0    0.00    0.00       1         void std::__uninitialized_default_n<std::string*, unsigned int>(std::string*, unsigned int) [166]
+                0.00    0.00       1/1           void std::__uninitialized_default_n_1<false>::__uninit_default_n<std::string*, unsigned int>(std::string*, unsigned int) [150]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::__uninitialized_default_n_a<int*, unsigned int, int>(int*, unsigned int, std::allocator<int>&) [169]
+[167]    0.0    0.00    0.00       1         void std::__uninitialized_default_n<int*, unsigned int>(int*, unsigned int) [167]
+                0.00    0.00       1/1           void std::__uninitialized_default_n_1<true>::__uninit_default_n<int*, unsigned int>(int*, unsigned int) [151]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::_M_default_initialize(unsigned int) [152]
+[168]    0.0    0.00    0.00       1         void std::__uninitialized_default_n_a<std::string*, unsigned int, std::string>(std::string*, unsigned int, std::allocator<std::string>&) [168]
+                0.00    0.00       1/1           void std::__uninitialized_default_n<std::string*, unsigned int>(std::string*, unsigned int) [166]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<int, std::allocator<int> >::_M_default_initialize(unsigned int) [158]
+[169]    0.0    0.00    0.00       1         void std::__uninitialized_default_n_a<int*, unsigned int, int>(int*, unsigned int, std::allocator<int>&) [169]
+                0.00    0.00       1/1           void std::__uninitialized_default_n<int*, unsigned int>(int*, unsigned int) [167]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::__uninitialized_default_n_1<true>::__uninit_default_n<int*, unsigned int>(int*, unsigned int) [151]
+[170]    0.0    0.00    0.00       1         int* std::fill_n<int*, unsigned int, int>(int*, unsigned int, int const&) [170]
+                0.00    0.00       1/1           std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*) [165]
+                0.00    0.00       1/1           __gnu_cxx::__enable_if<std::__is_scalar<int>::__value, int*>::__type std::__fill_n_a<int*, unsigned int, int>(int*, unsigned int, int const&) [163]
+-----------------------------------------------
+                0.00    0.00       1/1           void std::_Destroy<std::string*, std::string>(std::string*, std::string*, std::allocator<std::string>&) [172]
+[171]    0.0    0.00    0.00       1         void std::_Destroy<std::string*>(std::string*, std::string*) [171]
+                0.00    0.00       1/1           void std::_Destroy_aux<false>::__destroy<std::string*>(std::string*, std::string*) [133]
+-----------------------------------------------
+                0.00    0.00       1/1           std::vector<std::string, std::allocator<std::string> >::~vector() [156]
+[172]    0.0    0.00    0.00       1         void std::_Destroy<std::string*, std::string>(std::string*, std::string*, std::allocator<std::string>&) [172]
+                0.00    0.00       1/1           void std::_Destroy<std::string*>(std::string*, std::string*) [171]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [62] calcCorrect(float const*, std::vector<int, std::allocator<int> > const*, unsigned int) [123] __gnu_cxx::new_allocator<int>::max_size() const [152] std::vector<std::string, std::allocator<std::string> >::_M_default_initialize(unsigned int)
+   [9] normalizeU8(unsigned char) [50] __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::operator*() const [153] std::vector<std::string, std::allocator<std::string> >::end()
+   [5] loadImageData(TrainingEnvironment&) [63] __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::base() const [154] std::vector<std::string, std::allocator<std::string> >::begin()
+  [98] sequentialOCR(std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<float, std::allocator<float> >*, std::vector<int, std::allocator<int> >*, unsigned int&, unsigned int&) [93] __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator*() const [155] std::vector<std::string, std::allocator<std::string> >::vector(unsigned int, std::allocator<std::string> const&)
+  [47] findHighestIndex(float const*, int) [36] __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::operator*() const [156] std::vector<std::string, std::allocator<std::string> >::~vector()
+  [99] parseCommandlineParameters(int, char**, TrainingEnvironment&) [124] __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::operator*() const [157] std::vector<std::string, std::allocator<std::string> >::operator[](unsigned int)
+  [17] copyU8T2I(unsigned char) [38] std::uniform_real_distribution<double>::param_type::a() const [11] std::vector<float, std::allocator<float> >::_M_default_initialize(unsigned int)
+  [59] read32_be(std::istream&) [40] std::uniform_real_distribution<double>::param_type::b() const [19] std::vector<float, std::allocator<float> >::data()
+  [33] OneLayerPerceptron::randomizeWeights() [79] std::vector<float, std::allocator<float> >::size() const [24] std::vector<float, std::allocator<float> >::begin()
+   [2] OneLayerPerceptron::train(float const*, float const*) [51] std::vector<int, std::allocator<int> >::data() const [25] std::vector<float, std::allocator<float> >::front()
+   [4] OneLayerPerceptron::sigmoid(float) [64] std::vector<int, std::allocator<int> >::size() const [12] std::vector<float, std::allocator<float> >::vector(unsigned int, std::allocator<float> const&)
+   [3] OneLayerPerceptron::classify(float const*, float*) [52] std::vector<int, std::allocator<int> >::begin() const [158] std::vector<int, std::allocator<int> >::_M_default_initialize(unsigned int)
+  [34] OneLayerPerceptron::OneLayerPerceptron(float, int, int, int) [53] std::vector<int, std::allocator<int> >::front() const [159] std::vector<int, std::allocator<int> >::data()
+ [100] TrainingEnvironment::executeOCR() [125] std::allocator<std::string>::allocator() [160] std::vector<int, std::allocator<int> >::begin()
+ [101] TrainingEnvironment::getTestingData() [126] std::allocator<std::string>::allocator(std::allocator<std::string> const&) [161] std::vector<int, std::allocator<int> >::front()
+ [102] TrainingEnvironment::setTestingData(std::vector<float, std::allocator<float> >*) [127] std::allocator<std::string>::~allocator() [162] std::vector<int, std::allocator<int> >::vector(unsigned int, std::allocator<int> const&)
+ [103] TrainingEnvironment::getTrainingData() [128] std::allocator<std::string>::~allocator() [55] std::__detail::_Mod<unsigned int, 0u, 1u, 0u, true, false>::__calc(unsigned int)
+ [104] TrainingEnvironment::setTrainingData(std::vector<float, std::allocator<float> >*) [80] std::allocator<float>::allocator() [57] std::__detail::_Mod<unsigned int, 624u, 1u, 0u, true, true>::__calc(unsigned int)
+ [105] TrainingEnvironment::setInputSampleWidth(unsigned int) [81] std::allocator<float>::allocator(std::allocator<float> const&) [56] unsigned int std::__detail::__mod<unsigned int, 0u, 1u, 0u>(unsigned int)
+ [106] TrainingEnvironment::setOutputSampleWidth(unsigned int) [82] std::allocator<float>::~allocator() [58] unsigned int std::__detail::__mod<unsigned int, 624u, 1u, 0u>(unsigned int)
+ [107] TrainingEnvironment::getTestingClassifications() [129] std::allocator<int>::allocator() [42] std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::_Adaptor(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&)
+ [108] TrainingEnvironment::setTestingClassifications(std::vector<int, std::allocator<int> >*) [130] std::allocator<int>::allocator(std::allocator<int> const&) [30] std::__detail::_Adaptor<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>, double>::operator()()
+  [48] TrainingEnvironment::getTrainingClassifications() [131] std::allocator<int>::~allocator() [95] _ZSt10_ConstructISsIEEvPT_DpOT0_
+ [109] TrainingEnvironment::setTrainingClassifications(std::vector<float, std::allocator<float> >*) [83] std::_Iter_base<float*, false>::_S_base(float*) [13] __gnu_cxx::__enable_if<std::__is_scalar<float>::__value, float*>::__type std::__fill_n_a<float*, unsigned int, float>(float*, unsigned int, float const&)
+ [110] TrainingEnvironment::isValid() [132] std::_Iter_base<int*, false>::_S_base(int*) [163] __gnu_cxx::__enable_if<std::__is_scalar<int>::__value, int*>::__type std::__fill_n_a<int*, unsigned int, int>(int*, unsigned int, int const&)
+ [111] TrainingEnvironment::setType(TrainingType) [133] void std::_Destroy_aux<false>::__destroy<std::string*>(std::string*, std::string*) [54] int const* std::__addressof<int const>(int const&)
+ [112] TrainingEnvironment::TrainingEnvironment() [134] std::_Vector_base<std::string, std::allocator<std::string> >::_M_allocate(unsigned int) [71] std::string* std::__addressof<std::string>(std::string&)
+  [60] IDXFile::deleteData() [135] std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::_Vector_impl(std::allocator<std::string> const&) [26] float* std::__addressof<float>(float&)
+  [65] IDXFile::readFile(std::string const&) [136] std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_impl::~_Vector_impl() [164] int* std::__addressof<int>(int&)
+  [66] IDXFile::IDXFile(std::string const&) [137] std::_Vector_base<std::string, std::allocator<std::string> >::_M_deallocate(std::string*, unsigned int) [89] std::_Niter_base<float*>::iterator_type std::__niter_base<float*>(float*)
+  [67] IDXFile::~IDXFile()   [138] std::_Vector_base<std::string, std::allocator<std::string> >::_M_create_storage(unsigned int) [165] std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*)
+ [113] __gnu_cxx::new_allocator<std::string>::deallocate(std::string*, unsigned int) [94] std::_Vector_base<std::string, std::allocator<std::string> >::_M_get_Tp_allocator() [31] double std::generate_canonical<double, 53u, std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&)
+ [114] __gnu_cxx::new_allocator<std::string>::allocate(unsigned int, void const*) [139] std::_Vector_base<std::string, std::allocator<std::string> >::_Vector_base(unsigned int, std::allocator<std::string> const&) [166] void std::__uninitialized_default_n<std::string*, unsigned int>(std::string*, unsigned int)
+ [115] __gnu_cxx::new_allocator<std::string>::new_allocator(__gnu_cxx::new_allocator<std::string> const&) [140] std::_Vector_base<std::string, std::allocator<std::string> >::~_Vector_base() [14] void std::__uninitialized_default_n<float*, unsigned int>(float*, unsigned int)
+ [116] __gnu_cxx::new_allocator<std::string>::new_allocator() [84] std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned int) [167] void std::__uninitialized_default_n<int*, unsigned int>(int*, unsigned int)
+  [90] __gnu_cxx::new_allocator<std::string>::~new_allocator() [85] std::_Vector_base<float, std::allocator<float> >::_Vector_impl::_Vector_impl(std::allocator<float> const&) [168] void std::__uninitialized_default_n_a<std::string*, unsigned int, std::string>(std::string*, unsigned int, std::allocator<std::string>&)
+  [73] __gnu_cxx::new_allocator<float>::allocate(unsigned int, void const*) [86] std::_Vector_base<float, std::allocator<float> >::_M_create_storage(unsigned int) [15] void std::__uninitialized_default_n_a<float*, unsigned int, float>(float*, unsigned int, std::allocator<float>&)
+  [74] __gnu_cxx::new_allocator<float>::new_allocator(__gnu_cxx::new_allocator<float> const&) [87] std::_Vector_base<float, std::allocator<float> >::_M_get_Tp_allocator() [169] void std::__uninitialized_default_n_a<int*, unsigned int, int>(int*, unsigned int, std::allocator<int>&)
+  [75] __gnu_cxx::new_allocator<float>::new_allocator() [88] std::_Vector_base<float, std::allocator<float> >::_Vector_base(unsigned int, std::allocator<float> const&) [39] std::log(long double)
+  [76] __gnu_cxx::new_allocator<float>::~new_allocator() [141] std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned int) [43] unsigned int const& std::max<unsigned int>(unsigned int const&, unsigned int const&)
+ [117] __gnu_cxx::new_allocator<int>::allocate(unsigned int, void const*) [142] std::_Vector_base<int, std::allocator<int> >::_Vector_impl::_Vector_impl(std::allocator<int> const&) [44] unsigned int const& std::min<unsigned int>(unsigned int const&, unsigned int const&)
+ [118] __gnu_cxx::new_allocator<int>::new_allocator(__gnu_cxx::new_allocator<int> const&) [143] std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned int) [16] float* std::fill_n<float*, unsigned int, float>(float*, unsigned int, float const&)
+ [119] __gnu_cxx::new_allocator<int>::new_allocator() [144] std::_Vector_base<int, std::allocator<int> >::_M_get_Tp_allocator() [170] int* std::fill_n<int*, unsigned int, int>(int*, unsigned int, int const&)
+ [120] __gnu_cxx::new_allocator<int>::~new_allocator() [145] std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned int, std::allocator<int> const&) [171] void std::_Destroy<std::string*>(std::string*, std::string*)
+  [49] __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::__normal_iterator(int const* const&) [32] std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::_M_gen_rand() [172] void std::_Destroy<std::string*, std::string>(std::string*, std::string*, std::allocator<std::string>&)
+  [91] __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::__normal_iterator(std::string* const&) [41] std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::max() [96] void std::_Destroy<std::string>(std::string*)
+  [92] __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > >::operator++() [37] std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::min() [7] float* std::transform<unsigned char*, float*, float (*)(unsigned char)>(unsigned char*, unsigned char*, float*, float (*)(unsigned char))
+  [23] __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::__normal_iterator(float* const&) [146] std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::seed(unsigned int) [18] int* std::transform<unsigned char*, int*, int (*)(unsigned char)>(unsigned char*, unsigned char*, int*, int (*)(unsigned char))
+ [121] __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::__normal_iterator(int* const&) [147] std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::mersenne_twister_engine(unsigned int) [61] bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+  [77] bool __gnu_cxx::operator!=<std::string*, std::vector<std::string, std::allocator<std::string> > >(__gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&, __gnu_cxx::__normal_iterator<std::string*, std::vector<std::string, std::allocator<std::string> > > const&) [27] std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>::operator()() [72] std::operator|(std::_Ios_Openmode, std::_Ios_Openmode)
+  [45] IDXFile::getTotalSize() const [148] std::uniform_real_distribution<double>::param_type::param_type(double, double) [97] operator new(unsigned int, void*)
+  [68] IDXFile::getDimensions() const [149] std::uniform_real_distribution<double>::uniform_real_distribution(double, double) [21] _fu0___ZSt4cerr
+  [46] IDXFile::getDataPointer() const [28] double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&) [1] _fu27___ZSt4cout
+  [69] IDXFile::getDimensionNumber() const [29] double std::uniform_real_distribution<double>::operator()<std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u> >(std::mersenne_twister_engine<unsigned int, 32u, 624u, 397u, 31u, 2567483615u, 11u, 4294967295u, 7u, 2636928640u, 15u, 4022730752u, 18u, 1812433253u>&, std::uniform_real_distribution<double>::param_type const&) [20] exp
+  [70] IDXFile::hasError() const [150] void std::__uninitialized_default_n_1<false>::__uninit_default_n<std::string*, unsigned int>(std::string*, unsigned int) [8] expf
+ [122] __gnu_cxx::new_allocator<std::string>::max_size() const [10] void std::__uninitialized_default_n_1<true>::__uninit_default_n<float*, unsigned int>(float*, unsigned int) [22] logl
+  [78] __gnu_cxx::new_allocator<float>::max_size() const [151] void std::__uninitialized_default_n_1<true>::__uninit_default_n<int*, unsigned int>(int*, unsigned int)
