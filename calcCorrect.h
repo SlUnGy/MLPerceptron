@@ -39,7 +39,7 @@ float calcCorrect(const float * pClassifications, const std::vector<int> *pTarge
 {
     if( pTargets != nullptr )
     {
-        const unsigned int classifications = pTargets->size()/pSampleSize;
+        const unsigned int classifications = pTargets->size();
         unsigned int correct = 0;
         for(unsigned int i=0; i<classifications; ++i)
         {
