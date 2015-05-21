@@ -35,6 +35,8 @@ float calcCorrect(const float * pClassifications, const std::vector<float> *pTar
     return -1.0f;
 }
 
+/*will calculate how much of the classifications are correct
+based on a vec<int> containing the highest classification index*/
 float calcCorrect(const float * pClassifications, const std::vector<int> *pTargets, const unsigned int pSampleSize)
 {
     if( pTargets != nullptr )
