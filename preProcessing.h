@@ -1,8 +1,6 @@
 #ifndef PREPROCESSING_H_INCLUDED
 #define PREPROCESSING_H_INCLUDED
 
-#include "allheaders.h"
-
 enum PreprocessingType
 {
     none,
