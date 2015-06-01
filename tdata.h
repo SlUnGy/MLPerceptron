@@ -21,12 +21,6 @@ enum TrainingType
     sequential
 };
 
-enum PreprocessingType
-{
-    none,
-    distortions
-};
-
 class TrainingEnvironment
 {
 public:
