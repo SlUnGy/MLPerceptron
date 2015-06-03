@@ -38,13 +38,11 @@ Data that could be used for training can be found on the MNIST Database webpage.
 
 ##Contained Files and usage:
 
-- oclp: Contains the OpenCL implementation of a single hidden layer multilayer perceptron.
-
-- olp: Contains a sequential c++ implementation of a single hidden layer multilayer perceptron.
-
-- nlp: Contains a sequential c++ implementation of a multiple hidden layer multilayer perceptron. This implementation wasn't used often for OCR, the single hidden layer implementation is sufficient.
-
-- idxfile: Contains simple code loading an IDX file into memory. It only supports the unsigned byte datatype.
+- oclp: Contains the host part of the OpenCL implementation of a single hidden layer multilayer perceptron.  
+- mlp.cl: Contains the client OpenCL implementation.  
+- olp: Contains a sequential c++ implementation of a single hidden layer multilayer perceptron.  
+- nlp: Contains a sequential c++ implementation of a multiple hidden layer multilayer perceptron. This implementation wasn't used often for OCR, the single hidden layer implementation is sufficient.  
+- idxfile: Contains simple code loading an IDX file into memory. It only supports the unsigned byte datatype.  
 
 
 ##License
